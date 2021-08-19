@@ -25,4 +25,6 @@ class InvoiceItem extends Model
     public static function insert($invoiceItem){
         DB::table('invoice_item')->insert($invoiceItem);
     }
+
+
 }

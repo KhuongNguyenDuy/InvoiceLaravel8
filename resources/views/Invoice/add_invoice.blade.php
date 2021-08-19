@@ -151,33 +151,7 @@
             </table>
         </div>    
         <!--table show tax and total-->
-        <!-- <div class="row clearfix" style="margin-top:20px">
-            <div class="pull-right col-md-5"></div>
-            <div class="pull-right col-md-6">
-                <table class="table table-bordered table-hover" id="tab_logic_total">
-                    <tbody>
-                        <tr>
-                            <th class="number-right">Tổng phụ</th>
-                            <td><input type="text" name='sub_total' placeholder='0' class="form-control" id="sub_total" readonly/></td>
-                        </tr>
-                    <tr>
-                        <th class="number-right">Thuế (%)</th>
-                        <td><div class="input-group mb-2 mb-sm-0">
-                            <input type="text" readonly class="form-control" id="tax" value=<?php echo config('global.tax');?>>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <th class="number-right">Tổng thuế</th>
-                        <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' class="form-control" readonly/></td>
-                    </tr>
-                    <tr>
-                        <th class="number-right">Tổng cộng</th>
-                        <td><input type="text" name='total_amount' id="total_amount" value="0" placeholder='0' class="form-control cart_total" readonly/></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div> -->
+     
         <!--row button sumit add invoice-->
         <div class="form-row">
             <div class="form-group col-md-8"></div>

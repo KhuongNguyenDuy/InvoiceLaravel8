@@ -16,8 +16,8 @@
                 <b><label for="customer_name" >Tên công ty : (*)</label></b>
             </div>
             <div class="form-group col-md-10">
-                <input type="hidden" name="customer_id" value="{{$customers[0]->id}}">
-                <input type="text" value="{{$customers[0]->name}}" id="customer_name" name="customer_name" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập tên công ty')" oninput="this.setCustomValidity('')">
+                <input type="hidden" name="customer_id" value="{{$customers->id}}">
+                <input type="text" value="{{$customers->name}}" id="customer_name" name="customer_name" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập tên công ty')" oninput="this.setCustomValidity('')">
                 <p class="help-block" id="mess_name"><i>Tên công ty không quá 225 ký tự</i></p>                        
             </div>
         </div>
@@ -27,7 +27,7 @@
                 <b><label for="abbreviate_name" >Tên viết tắt : (*)</label></b>
             </div>
             <div class="form-group col-md-7">
-                <input type="text"  value="{{$customers[0]->abbreviate}}" id="abbreviate_name" name="abbreviate_name" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập tên viết tắt công ty')" oninput="this.setCustomValidity('')">
+                <input type="text"  value="{{$customers->abbreviate}}" id="abbreviate_name" name="abbreviate_name" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập tên viết tắt công ty')" oninput="this.setCustomValidity('')">
                 <p class="help-block" id="mess_abbreviate_name"><i>Tên viết tắt không quá 50 ký tự</i></p>                        
             </div>
         </div>
@@ -37,7 +37,7 @@
                 <b><label for="address">Địa chỉ : (*)</label></b>
             </div>
             <div class="form-group col-md-10">
-                <input type="text" value="{{$customers[0]->address}}" id="address" name="address" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập địa chỉ')" oninput="this.setCustomValidity('')">
+                <input type="text" value="{{$customers->address}}" id="address" name="address" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập địa chỉ')" oninput="this.setCustomValidity('')">
                 <p class="help-block" id="mess_address"><i>Địa chỉ không quá 255 ký tự</i></p>                        
             </div>
         </div>
@@ -47,7 +47,7 @@
                 <b><label for="phone_number">Số điện thoại : (*)</label></b>
             </div>
             <div class="form-group col-md-5">
-                <input type="text" value="{{$customers[0]->phone}}" id="phone_number" name="phone_number" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập số điện thoại')" oninput="this.setCustomValidity('')">
+                <input type="text" value="{{$customers->phone}}" id="phone_number" name="phone_number" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập số điện thoại')" oninput="this.setCustomValidity('')">
                 <p class="help-block" id="mess_phone"><i>Không quá 11 chữ số</i></p>                        
             </div>
         </div>
@@ -57,7 +57,7 @@
                 <b><label for="fax_number">Số Fax : (*)</label></b>
             </div>
             <div class="form-group col-md-5">
-                <input type="text" value="{{$customers[0]->fax}}" id="fax_number" name="fax_number" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập số Fax')" oninput="this.setCustomValidity('')">
+                <input type="text" value="{{$customers->fax}}" id="fax_number" name="fax_number" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập số Fax')" oninput="this.setCustomValidity('')">
                 <p class="help-block" id="mess_fax"><i>Không quá 11 chữ số</i></p>                        
             </div>
         </div>

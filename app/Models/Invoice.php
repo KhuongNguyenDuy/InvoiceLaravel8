@@ -25,7 +25,11 @@ class Invoice extends Model
     protected $table = 'invoices';
 
     //show invoice detail by id
-    public static function showInvoiceDetail($id){
+    /** showInvoiceDetail2()
+     * this old function useless
+     */
+    public static function showInvoiceDetail2($id){
+        
         $invoiceDetails = DB::table('invoices')
               ->join('invoice_item', 'invoices.id', '=', 'invoice_item.invoice_id')
               ->join('customers', 'invoices.customer_id', '=', 'customers.id')
@@ -52,7 +56,46 @@ class Invoice extends Model
               return $invoiceDetails;
     }
 
-    //show all invoice
+    public static function showCustomerInvoice($id){
+        
+        //get info customer and estimate
+        $customerInvoice = DB::table('invoices')
+              ->join('customers', 'invoices.customer_id', '=', 'customers.id')
+              ->join('estimates', 'invoices.estimate_id', '=', 'estimates.id')
+              ->select(
+                    'invoices.*',
+                    'customers.name as customer_name',
+                    'customers.address as customer_address',
+                    'customers.phone as customer_phone',
+                    'customers.fax as customer_fax',
+                    'estimates.name as estimate_name',
+                     )
+              ->where('invoices.id','=',$id)
+              ->first();
+            return $customerInvoice;
+    }
+
+    public static function showInvoiceCart($id){
+        // get info invoice details
+        $invoiceCart =  DB::table('invoices')
+            ->join('invoice_item', 'invoices.id', '=', 'invoice_item.invoice_id')
+            ->join('items', 'items.id', '=', 'invoice_item.item_id')
+            ->join('projects', 'items.project_id', '=', 'projects.id')
+            ->select(
+                'items.name as item_name',
+                'items.price',
+                'projects.name as project_name',
+                'invoice_item.quantity',
+                'invoice_item.amount',
+                )
+            ->where('invoices.id','=',$id)
+            ->get();
+            return $invoiceCart;
+    }
+    /**
+     * SHOW all invoice
+     *
+     */
     public static function showAllInvoice(){
         $invoices = DB::table('invoices')
               ->join('customers', 'invoices.customer_id', '=', 'customers.id')
@@ -62,12 +105,19 @@ class Invoice extends Model
               ->Paginate(10);
         return $invoices;
     }
-    //insert invoice
+    /**
+     * INSERT invoice
+     *
+     */
     public static function insert($invoice){
         $invoiceID = DB::table('invoices')->insertGetId($invoice);
         return $invoiceID;
     }
-    //update status invoice
+
+    /**
+     * UPDATE status invoice
+     *
+     */
     public static function updateStatus($id,$status){
         $invoiceID = DB::table('invoices')->where('id', $id)->update(['status' => $status]);
         return $invoiceID;

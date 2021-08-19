@@ -26,7 +26,6 @@ class EstimateController extends Controller
             $estimateName =  $estimate->name;
             $filePath = public_path()."/download/".$estimateName;
             $headers = ['Content-Type: application/pdf'];
-            //$fileName = time().'.pdf';
             $fileName = $estimateName;
             return response()->download($filePath, $fileName, $headers);
         }
@@ -46,7 +45,7 @@ class EstimateController extends Controller
      */
     public function addEstimate(Request $request){
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,pdf|max:2048'
+            'file' => 'required|mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
             ]);
 
         if (!$request->hasFile('file')) {

@@ -10,12 +10,12 @@ $(document).ready(function(){
                 data:{id:idc},
                 success:function(data){
                     if(data.success == true){
-                        $('#sdt').val(data.info[0].phone);
-                        $('#diachi').val(data.info[0].address);
-                        $('#fax').val(data.info[0].fax);
+                        $('#sdt').val(data.info.phone);
+                        $('#diachi').val(data.info.address);
+                        $('#fax').val(data.info.fax);
                      }                                                                                
                     else{
-                        alert("that bai");
+                        alert("Fail");
                      }
                                         
                 }

@@ -33,8 +33,13 @@ class InvoiceController extends Controller
      * Show invoice detail by invoice_id
      */
      public function invoiceDetail($invoice_id){
-        $invoiceDetails = Invoice::showInvoiceDetail($invoice_id);
-        return view('Invoice.invoice_detail', ['invoiceDetails' => $invoiceDetails]);
+        $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
+        $invoiceCart = Invoice::showInvoiceCart($invoice_id);
+        return view('Invoice.invoice_detail', 
+        [
+            'customerInvoice' => $customerInvoice,
+            'invoiceCart' => $invoiceCart
+        ]);
      }
      /**
       * get table customer, project, estimate, item
@@ -45,6 +50,7 @@ class InvoiceController extends Controller
          $projects = Project::showProjectById($request->project);
          $estimates = Estimate::showAllEstimate();
          $items = Item::showItemByProjectId($request->project);
+        
          return view('Invoice.add_invoice',[
             'customers' => $customers,
             'projects' => $projects,
@@ -139,54 +145,63 @@ class InvoiceController extends Controller
       * export file excel: import exist file excel-> map data
       */
      public function exportInvoice($invoice_id,$type){
+        
+        $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
+        $cart = Invoice::showInvoiceCart($invoice_id);
+
          //get invoie detail from model
-        $invoiceDetails = Invoice::showInvoiceDetail($invoice_id);
-        $count = $invoiceDetails->count(); 
-        $date = new DateTime($invoiceDetails[0]->create_date);
+        $count = $cart->count(); 
+        $date = new DateTime($customerInvoice->create_date);
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('TrainingProject.xlsx');
+
         //remove worksheet Input
         $sheetIndex = $spreadsheet->getIndex(
             $spreadsheet->getSheetByName('Input')
         );
         $spreadsheet->removeSheetByIndex($sheetIndex);
+
         //set active sheet Invoice
         $spreadsheet->setActiveSheetIndexByName('Invoice');
         $worksheet = $spreadsheet->getActiveSheet();
         $worksheet->getCell('E9')->setValue($date->format('Y/m/d'));
-        $worksheet->getCell('E10')->setValue($invoiceDetails[0]->customer_name);
-        $worksheet->getCell('E11')->setValue($invoiceDetails[0]->customer_address);
-        $worksheet->getCell('E12')->setValue($invoiceDetails[0]->customer_phone);
-        $worksheet->getCell('H12')->setValue($invoiceDetails[0]->customer_fax);
-        $worksheet->setCellValueExplicit('E13',$invoiceDetails[0]->estimate_id,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+        $worksheet->getCell('E10')->setValue($customerInvoice->customer_name);
+        $worksheet->getCell('E11')->setValue($customerInvoice->customer_address);
+        $worksheet->getCell('E12')->setValue($customerInvoice->customer_phone);
+        $worksheet->getCell('H12')->setValue($customerInvoice->customer_fax);
+        $worksheet->setCellValueExplicit('E13',$customerInvoice->estimate_name,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
         $worksheet->getStyle('E13')->getNumberFormat()->setFormatCode("00000000000");
-        $worksheet->getCell('E15')->setValue($invoiceDetails[0]->project_name);
+        $worksheet->getCell('E15')->setValue($cart[0]->project_name);
+
         //table content list item
         if($count > 1){
             $worksheet->insertNewRowBefore(20, $count-1); //insert $count-1 row before row 20
         }
+
         $rows = 19;
         $subTotal = 0;
         $tax = config('global.tax'); //call file global- get tax
+
         for ( $i = 0; $i < $count; $i++ ) {
-            $subTotal += $invoiceDetails[$i]->amount;
+            $subTotal += $cart[$i]->amount;
             $worksheet->mergeCells('D'.$rows.':G'.$rows);
             $worksheet->setCellValue('C' . $rows, $i+1);
-            $worksheet->setCellValue('D' . $rows, $invoiceDetails[$i]->item_name);
-            $worksheet->setCellValue('H' . $rows, ($invoiceDetails[$i]->quantity).'式');
-            $worksheet->setCellValue('I' . $rows, $invoiceDetails[$i]->price);
-            $worksheet->setCellValue('J' . $rows, $invoiceDetails[$i]->amount);
+            $worksheet->setCellValue('D' . $rows, $cart[$i]->item_name);
+            $worksheet->setCellValue('H' . $rows, ($cart[$i]->quantity).'式');
+            $worksheet->setCellValue('I' . $rows, $cart[$i]->price);
+            $worksheet->setCellValue('J' . $rows, $cart[$i]->amount);
             $rows++;
         }
+
         $worksheet->setCellValue('C' . $rows, $i+1);
         $subTax = $subTotal * $tax / 100;
         $worksheet->setCellValue('J'.(22+$count),$subTotal);
         $worksheet->setCellValue('J'.(23+$count),$subTax);
         $worksheet->setCellValue('J'.(24+$count),($subTax+$subTotal));        
-        $expireDate = new DateTime($invoiceDetails[0]->expire_date);
+        $expireDate = new DateTime($customerInvoice->expire_date);
         $worksheet->getCell('E'.(30+$count))->setValue($expireDate->format('Y/m/d'));
         $worksheet->setCellValueExplicit('E'.(34+$count),"21410410265442",\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 
-        $fileName =  $invoiceDetails[0]->estimate_id;
+        $fileName =  $customerInvoice->estimate_name;
         if($type == 'xlsx'){
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             /* Here there will be some code where you create $spreadsheet */

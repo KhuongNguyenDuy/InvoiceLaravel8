@@ -34,7 +34,7 @@ class Customer extends Model
      * show customer by id 
      */
     public static function showCustomerById($id){
-        $customers = DB::table('customers')->where('id',$id)->get();
+        $customers = DB::table('customers')->where('id',$id)->first();
         return $customers;
     }
      /**
