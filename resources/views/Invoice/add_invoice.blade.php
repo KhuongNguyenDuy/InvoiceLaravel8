@@ -120,15 +120,6 @@
                     </tr>
                 </thead>
                 <tbody id="table_tr"></tbody>
-                    <!-- @foreach($items as $item)
-                    <tr>
-                        <input type="hidden" name="id[]" value="<?php echo $item->id;?>">
-                        <td class="text-left">{{$item->name}}</td>                
-                        <td><input type="text" name="price[]" class="form-control price number-right" value="<?php echo number_format($item->price);?>" readonly/></td>
-                        <td><input type="number" id="" name="qty[]"  class="form-control qty number-right" min="0" max="500"/></td>
-                        <td><input type="text" name="total[]"  id="" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>
-                    </tr>
-                    @endforeach --> 
                 <tbody>                  
                     <tr>
                         <td></td>                

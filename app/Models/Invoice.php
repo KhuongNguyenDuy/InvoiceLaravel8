@@ -64,6 +64,7 @@ class Invoice extends Model
               ->join('estimates', 'invoices.estimate_id', '=', 'estimates.id')
               ->select(
                     'invoices.*',
+                    'customers.id as customer_id',
                     'customers.name as customer_name',
                     'customers.address as customer_address',
                     'customers.phone as customer_phone',
@@ -82,9 +83,11 @@ class Invoice extends Model
             ->join('items', 'items.id', '=', 'invoice_item.item_id')
             ->join('projects', 'items.project_id', '=', 'projects.id')
             ->select(
+                'items.id as item_id',
                 'items.name as item_name',
                 'items.price',
                 'projects.name as project_name',
+                'projects.id as project_id',
                 'invoice_item.quantity',
                 'invoice_item.amount',
                 )

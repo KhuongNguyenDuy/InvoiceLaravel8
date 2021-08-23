@@ -49,12 +49,10 @@ class InvoiceController extends Controller
          $customers = Customer::showAllCustomer();
          $projects = Project::getAllProject();
          $estimates = Estimate::showAllEstimate();
-         $items = Item::showItemByProjectId($request->project);
-        
+
          return view('Invoice.add_invoice',[
             'customers' => $customers,
             'projects' => $projects,
-            'items' => $items,
             'estimates' => $estimates
         ]);
      }
@@ -226,13 +224,38 @@ class InvoiceController extends Controller
      * 
      */
     //show edit invoice
-    public function formEditInvoice($id){
+    public function formEditInvoice($invoice_id){
+        $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
+        $invoiceCart = Invoice::showInvoiceCart($invoice_id);
+
+        $customers = Customer::showAllCustomer();
+        $projects = Project::getAllProject();
+        $estimates = Estimate::showAllEstimate();
+        $items = Item::showItemByProjectId($invoiceCart[0]->project_id);
+        // echo "<pre>";
+        // print_r($customerInvoice);
+        // print_r($invoiceCart);
+        // print_r($customers);
+        // print_r($projects);
+        // print_r($estimates);
+        // echo "</pre>";
         
+        return view('Invoice.edit_invoice',[
+           'customers' => $customers,
+           'projects' => $projects,
+           'estimates' => $estimates,
+           'items' => $items,
+           'customerInvoice' => $customerInvoice,
+           'invoiceCart' => $invoiceCart
+        ]);
     } 
     /**
      * Update info invoice
      */
     public function editInvoice(Request $request){
+        echo "<pre>";
+        print_r($request->all());
+        echo "</pre>";
     } 
     /**
      * Delete invoice
