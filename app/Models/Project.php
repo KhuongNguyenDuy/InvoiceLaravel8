@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Models;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Project extends Model
+{
+    use HasFactory;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+    protected $table = 'projects';
+    /**
+     * Get the items for the project.
+     */
+    public function items(){
+        return $this->hasMany( 'App\Models\Item', 'project_id', 'id' );
+    }
+    public static function showAllProject(){
+        $projects = DB::table('projects')
+        ->orderBy('projects.id', 'DESC')
+        ->Paginate(15);
+        return $projects;
+    }
+    public static function getAllProject(){
+        $projects = DB::table('projects')->get();
+        return $projects;
+    }
+    public static function showProjectById($id){
+        $projects = DB::table('projects')->where('id',$id)->first();
+        return $projects;
+    }
+        /**
+     * insert project
+     */
+    public static function insert($project){
+        DB::table('projects')->insert($project);
+    }
+    /**
+     * edit project
+     */
+    public static function edit($id,$project){
+        DB::table('projects')->where('id',$id)->update($project);
+    }
+    public static function destroy($id){
+        DB::table('projects')->where('id', '=', $id)->delete();
+    }
+}
