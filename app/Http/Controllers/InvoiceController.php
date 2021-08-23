@@ -15,7 +15,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use DateTime;
 class InvoiceController extends Controller
 {
-    /**
+    /** get all invoice
      * Get all invoice
      */
     public function index(){
