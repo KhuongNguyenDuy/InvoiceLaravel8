@@ -68,16 +68,16 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/customers')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý khách hàng</span></a>
+                                <span class="font_weight">Quản lý KH</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
 
                         <!-- Nav Item - Tables -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{URL::to('/invoices')}}">
+                            <a class="nav-link" href="{{URL::to('/estimates')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý hóa đơn</span></a>
+                                <span class="font_weight">Quản lý estimate</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
@@ -102,9 +102,9 @@
 
                         <!-- Nav Item - Tables -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{URL::to('/estimates')}}">
+                            <a class="nav-link" href="{{URL::to('/invoices')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý estimate</span></a>
+                                <span class="font_weight">Quản lý invoice</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider d-none d-md-block">

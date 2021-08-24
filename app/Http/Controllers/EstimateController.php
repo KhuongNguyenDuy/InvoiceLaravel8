@@ -13,7 +13,6 @@ class EstimateController extends Controller
      */
     public function index(){
         $estimates = Estimate::paginate(5);
-        //return view('admin.project',['projects' => $projects]);
         return view('Estimate.estimate') -> with('estimates',$estimates);
     }
 
@@ -21,13 +20,17 @@ class EstimateController extends Controller
      * Download file to my computer
      */
     public function downloadEstimate($id){
+
         $estimate = Estimate::showEstimateById($id);
+        
         if( $estimate != ""){
-            $estimateName =  $estimate->name;
-            $filePath = public_path()."/download/".$estimateName;
-            $headers = ['Content-Type: application/pdf'];
-            $fileName = $estimateName;
-            return response()->download($filePath, $fileName, $headers);
+
+            $fileName =  $estimate->name;
+
+            $filePath = storage_path()."/app/download_upload/".$fileName;
+
+            return response()->download($filePath);
+
         }
         
     }
@@ -44,22 +47,28 @@ class EstimateController extends Controller
      * Upload to folder: public/download
      */
     public function addEstimate(Request $request){
+
         $request->validate([
             'file' => 'required|mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
             ]);
 
         if (!$request->hasFile('file')) {
+
             return redirect('/file-upload')->with('success', 'Chưa chọn file cần upload');
         }
 
-        $file = $request->file('file'); //get file 
-        $path = $file->move('download', $file->getClientOriginalName()); // set folder to upload and set file name
+        $file = $request->file('file'); //get file
+
+        //$filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); get file name not include extension
+
+        $request->file('file')->storeAs('download_upload',  $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
+
         // insert database
         DB::beginTransaction();
         try {
            $estimate = array(
                'name' => $file->getClientOriginalName(),
-               'path' => "download/".$file->getClientOriginalName(),
+               'path' => ''           
             );
             Estimate::insert($estimate);
             DB::commit();
