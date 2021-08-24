@@ -1,5 +1,4 @@
 @extends('layout')
-@section('title', 'Home page')
 @section('title-detail', 'Danh sách Estimate')
 @section('content')
 <div class="add-button">

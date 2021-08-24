@@ -1,5 +1,4 @@
 @extends('layout')
-@section('title', 'Home page')
 @section('title-detail', 'Sửa thông tin khách hàng')
 @section('library')
 

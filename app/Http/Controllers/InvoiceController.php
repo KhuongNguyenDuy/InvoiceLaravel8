@@ -71,14 +71,10 @@ class InvoiceController extends Controller
                  'expire_date' => $request->hantt,
                  'estimate_id' => $request->estimate,
                  'customer_id' => $request->khachhang
-             );
+                );
              //get id of invoice inserted
-             $invoiceID = Invoice::insert($invoice);
-             DB::commit();
-             }
-             catch (Exception $e) {
-                 DB::rollback();
-             }
+             $invoiceID = Invoice::insertInvoice($invoice);
+            
              if($invoiceID > 0){ //if insert success -> insert invoice detail
                  $array_price = $request->price;
                  $array_qty = $request->qty;
@@ -100,11 +96,18 @@ class InvoiceController extends Controller
                              'price' => $value['price'],
                              'amount' => $value['total']
                          );
-                         InvoiceItem::insert($invoiceDetail);
-                     }
-                 }
-                 return redirect('invoices')->with('success', 'Thêm hoá đơn thành công!'); //return redirect()->back()->with('success', 'Thêm hoá đơn thành công!');
-             }
+                         
+                         InvoiceItem::insertInvoiceItem($invoiceDetail);
+                        }
+                    }
+                }
+                DB::commit();
+            }catch (Exception $e) {
+                DB::rollback();
+                return redirect()->back()->withErrors(['success' => $e->getMessage()]);
+            }
+
+            return redirect('invoices')->with('success', 'Thêm hoá đơn thành công!');
         }
 
     //  public function getItemByProjectId($id){
@@ -120,7 +123,7 @@ class InvoiceController extends Controller
      }
   
      /**
-      * 
+      * update status invoice
       */
     public function updateStatus(Request $request){
         if($request->stat == 0){
@@ -253,9 +256,47 @@ class InvoiceController extends Controller
      * Update info invoice
      */
     public function editInvoice(Request $request){
-        echo "<pre>";
-        print_r($request->all());
-        echo "</pre>";
+        $res = 0; //if == 0 -> update fail
+        DB::beginTransaction();
+        try {
+            $invoice = array(
+                'create_date' => $request->ngaytao,
+                'total' => (float)str_replace(",", "", $request->total_amount),
+                'expire_date' => $request->hantt,
+                'estimate_id' => $request->estimate,
+                'customer_id' => $request->khachhang
+            );
+            $res = Invoice::updateInvoice($request->invoice_id, $invoice);
+            if($res > 0){
+                $array_price = $request->price;
+                $array_qty = $request->qty;
+                $array_id = $request->id;
+                $array_total = $request->total;
+                foreach ($array_id as $id => $key) { //convert to array with key and value
+                    $result[$key] = array(
+                        'price'  => (float)str_replace(",", "", $array_price[$id]),
+                        'qty' => $array_qty[$id],
+                        'total'  => (float)str_replace(",", "", $array_total[$id])
+                    );
+                }
+                foreach($result as $key => $value){
+                    if($value['qty'] > 0){
+                        $content = array(
+                            'quantity' => $value['qty'],
+                            'price' => $value['price'],
+                            'amount' => $value['total']
+                        );
+                        InvoiceItem::updateInvoiceItem($request->invoice_id,$key,$content);                        
+                    }
+                }
+            }
+            DB::commit();
+        }
+        catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors(['success' => $e->getMessage()]);
+        }
+        return redirect('invoices')->with('success', 'Sửa hoá đơn thành công!'); 
     } 
     /**
      * Delete invoice

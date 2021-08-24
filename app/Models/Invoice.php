@@ -112,9 +112,18 @@ class Invoice extends Model
      * INSERT invoice
      *
      */
-    public static function insert($invoice){
+    public static function insertInvoice($invoice){
         $invoiceID = DB::table('invoices')->insertGetId($invoice);
         return $invoiceID;
+    }
+
+     /**
+     * UPDATE invoice
+     *
+     */
+    public static function updateInvoice($invoice_id,$content){
+        $result = DB::table('invoices')->where('id', $invoice_id)->update($content);
+        return $result;
     }
 
     /**

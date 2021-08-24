@@ -1,5 +1,4 @@
 @extends('layout')
-@section('title', 'Home page')
 @section('title-detail', 'Sửa hoá đơn.....')
 @section('library')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
@@ -17,8 +16,9 @@
 ?>
 <div style="font-size: 0.8rem; margin:20px;">
     <!--form submit request add invoice-->
-    <form action="{{URL::to('/edit-invoice')}}" method="post" name="form_add_invoice" onsubmit="return validateForm()">
+    <form action="{{URL::to('/edit-invoice')}}" method="post" name="form_edit_invoice" onsubmit="return validateForm()">
          @csrf
+         <input type="hidden" name="invoice_id" value="{{ $customerInvoice->id }}">
          <!--row create_at invoice -->
         <div class="form-row">
             <div class="form-group col-md-1">
@@ -179,7 +179,7 @@
                 <button type="submit"  class="btn btn-success">Cập nhật</button>
             </div>
         </div>
- </form>
+    </form>
  <!--#end form submit add invoice-->
 </div>
 <!--
@@ -187,14 +187,14 @@
  -->
 <script>
 function validateForm() {
-    let cart = document.forms["form_add_invoice"]["total_amount"].value;
+    let cart = document.forms["form_edit_invoice"]["total_amount"].value;
     var cart_total = parseInt(cart.replace(new RegExp(',', 'g'),"")); //convert string to int
     if (cart_total <= 0) { //if no choose item
-         alert("Hãy chọn sản phẩm cho hoá đơn.");
+         alert("Hãy chọn số lượng sản phẩm cho hoá đơn.");
          return false;
      }
-    let create_at = document.forms["form_add_invoice"]["ngaytao"].value; //get datepicker create day
-    let expire_at = document.forms["form_add_invoice"]["hantt"].value; //get datepicker expire
+    let create_at = document.forms["form_edit_invoice"]["ngaytao"].value; //get datepicker create day
+    let expire_at = document.forms["form_edit_invoice"]["hantt"].value; //get datepicker expire
     var current_day = new Date(getCurrentDay());
     var create_day = new Date(create_at); 
     var expire_day = new Date(expire_at); 
@@ -228,5 +228,5 @@ function getCurrentDay(){
     today = y + '/' + m + '/' + d;
     return today;
 }
-</>
+</script>
 @endsection

@@ -1,5 +1,4 @@
 @extends('layout')
-@section('title', 'Home page')
 @section('title-detail', 'Chi tiết hoá đơn')
 @section('content')
 <div class="container mt-5">

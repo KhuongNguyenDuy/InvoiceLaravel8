@@ -1,9 +1,7 @@
 @extends('layout')
-@section('title', 'Home page')
 @section('title-detail', 'Danh sách Invoice')
 @section('content')
-<div class="add-button">
-	<!--<button type="button" class="btn btn-success btn-lg"> <a href="{{URL::to('/get-project')}}">+ Add Invoice</a></button>-->
+<div class="add-button">	
 	<button type="button" onclick="window.location.href='/form-add-invoice'" class="btn btn-success btn-lg">+ Add Invoice</button>
 </div>
 	<!--check session add invoice if success-->

@@ -1,5 +1,4 @@
 @extends('layout')
-@section('title', 'Home page')
 @section('title-detail', 'ThêmThêm Estimate')
 @section('content')
 <style>

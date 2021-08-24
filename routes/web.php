@@ -94,7 +94,7 @@ Route::get('/form-add-invoice', [InvoiceController::class, 'formAddInvoice'])->m
 
 Route::post('/add-invoice', [InvoiceController::class, 'addInvoice'])->middleware('auth'); //add invoice
 
-Route::get('/get-project', [InvoiceController::class, 'getProject'])->middleware('auth');// show all project
+//Route::get('/get-project', [InvoiceController::class, 'getProject'])->middleware('auth');// show all project
 
 Route::get('/get-customer', [InvoiceController::class, 'getCustomer'])->middleware('auth');//show customer info by ajax
 

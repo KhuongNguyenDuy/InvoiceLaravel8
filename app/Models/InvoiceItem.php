@@ -22,9 +22,19 @@ class InvoiceItem extends Model
     public $incrementing = false;
 
     //insert invoice detail
-    public static function insert($invoiceItem){
+    public static function insertInvoiceItem($invoiceItem){
         DB::table('invoice_item')->insert($invoiceItem);
     }
+
+    //
+    public static function updateInvoiceItem($invoice_id,$item_id,$content){
+        $result = DB::table('invoice_item')
+                ->where('invoice_id', $invoice_id)
+                ->where('item_id',$item_id)
+                ->update($content);
+        return $result;
+    }
+
 
 
 }

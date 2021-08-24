@@ -1,5 +1,4 @@
 @extends('layout')
-@section('title', 'Home page')
 @section('title-detail', 'Thêm hoá đơn.....')
 @section('library')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
@@ -17,7 +16,7 @@
 ?>
 <div style="font-size: 0.8rem; margin:20px;">
     <!--form submit request add invoice-->
-    <form action='/add-invoice' method="post" name="form_add_invoice" onsubmit="return validateForm()">
+    <form action="{{URL::to('/add-invoice')}}" method="post" name="form_add_invoice" onsubmit="return validateForm()">
          @csrf
          <!--row create_at invoice -->
         <div class="form-row">
@@ -162,7 +161,7 @@
                 <button type="submit"  class="btn btn-success">Thêm hoá đơn</button>
             </div>
         </div>
- </form>
+    </form>
  <!--#end form submit add invoice-->
 </div>
 <!--
@@ -170,6 +169,7 @@
  -->
 <script>
 function validateForm() {
+    alert("fafasdfasdfd");
     let cart = document.forms["form_add_invoice"]["total_amount"].value;
     var cart_total = parseInt(cart.replace(new RegExp(',', 'g'),"")); //convert string to int
     if (cart_total <= 0) { //if no choose item
