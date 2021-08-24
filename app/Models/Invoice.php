@@ -134,5 +134,12 @@ class Invoice extends Model
         $invoiceID = DB::table('invoices')->where('id', $id)->update(['status' => $status]);
         return $invoiceID;
     }
+    /**
+     * DELETE  invoice
+     *
+     */
+    public static function deleteInvoice($id){
+        DB::table('invoices')->where('id', $id)->delete();
+    }
     
 }

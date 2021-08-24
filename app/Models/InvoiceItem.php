@@ -21,18 +21,32 @@ class InvoiceItem extends Model
     protected $primaryKey = ['invoice_id', 'item_id'];
     public $incrementing = false;
 
-    //insert invoice detail
+    /**
+     *   insert invoice detail
+     * 
+     */
     public static function insertInvoiceItem($invoiceItem){
         DB::table('invoice_item')->insert($invoiceItem);
     }
 
-    //
+    /**
+     * update invoice cart
+     * 
+     */
     public static function updateInvoiceItem($invoice_id,$item_id,$content){
         $result = DB::table('invoice_item')
                 ->where('invoice_id', $invoice_id)
                 ->where('item_id',$item_id)
                 ->update($content);
         return $result;
+    }
+    /**
+     * 
+     *DELETE invoice cart
+     * 
+     */
+    public static function deleteInvoiceItem($id){
+        DB::table('invoice_item')->where('invoice_id', $id)->delete();
     }
 
 

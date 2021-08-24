@@ -75,14 +75,17 @@ class CustomerController extends Controller
      * Delete customer
      */
     public function deleteCustomer($id){
+        
         DB::beginTransaction();
         try {
+
            Customer::destroy($id);
            DB::commit();
         }
         catch (Exception $e) {
+
             DB::rollback();
-            }
+        }
        return redirect('customers')->with('success', 'Xoá khách hàng thành công!'); 
     } 
     

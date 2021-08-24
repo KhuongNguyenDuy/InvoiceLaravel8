@@ -303,6 +303,18 @@ class InvoiceController extends Controller
      */
     public function deleteInvoice($id){
 
+        DB::beginTransaction();
+
+        try {
+            Invoice::deleteInvoice($id);
+            InvoiceItem::deleteInvoiceItem($id);
+            DB::commit();
+        }
+        catch (Exception $e) {
+
+            DB::rollback();
+        }
+       return redirect('invoices')->with('success', 'Xoá hóa đơn thành công!'); 
     }
      /**
      * ajax get item when change select project

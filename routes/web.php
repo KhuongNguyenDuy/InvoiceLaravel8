@@ -102,15 +102,15 @@ Route::get('/export-invoice/{id}={type}', [InvoiceController::class, 'exportInvo
 
 Route::post('/update-status', [InvoiceController::class, 'updateStatus'])->middleware('auth'); //update status invoice
 
-Route::get('/form-edit-invoice/{id}', [InvoiceController::class, 'formEditInvoice'])->middleware('auth');
+Route::get('/form-edit-invoice/{id}', [InvoiceController::class, 'formEditInvoice'])->middleware('auth'); //show form edit
 
-Route::post('/edit-invoice', [InvoiceController::class, 'editInvoice'])->middleware('auth');
+Route::post('/edit-invoice', [InvoiceController::class, 'editInvoice'])->middleware('auth'); //update invoice
 
-Route::get('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice'])->middleware('auth');
+Route::get('/delete-invoice/{id}', [InvoiceController::class, 'deleteInvoice'])->middleware('auth'); //delete invoice
 
-Route::get('/ajax-get-item', [InvoiceController::class, 'getItem'])->middleware('auth');
+Route::get('/ajax-get-item', [InvoiceController::class, 'getItem'])->middleware('auth'); // get item when select project
 
-//Route::get('/export-invoice{id}','ProjectController@exportInvoice');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Item

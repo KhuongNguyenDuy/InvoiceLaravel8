@@ -52,7 +52,7 @@
 				</td>				                
                 <td class="text-mid"><a href="{{URL::to('/invoice-detail/'.$invoice->id)}}" style="color:blue;">Details</a></td>
 				<td class="display-text"><a href="{{'/form-edit-invoice/'.$invoice->id}}" class="fas fa-edit" style="color:seagreen;font-size:17px;"></a></td>
-				<td class="display-text"><a href="{{'/delete-invoice/'.$invoice->id}}" class="fas fa-trash delete_customer" style="color:red;font-size:17px;"></a></td>
+				<td class="display-text"><a href="{{'/delete-invoice/'.$invoice->id}}" class="fas fa-trash delete_invoice" style="color:red;font-size:17px;"></a></td>
 			</tr>
 			<!-- last day of next month
 			<?php
@@ -63,6 +63,11 @@
 		@endforeach
   		</tbody> 
 	</table>
+	<script type="text/javascript">
+		$('.delete_invoice').on('click', function () {
+			return confirm('Bạn có muốn xoá mục đã chọn không?');
+		});
+	</script>
 	{{ $invoices -> links() }}
 @endsection
 
