@@ -137,7 +137,8 @@ class InvoiceController extends Controller
             DB::commit();
         }
         catch (Exception $e) {
-                DB::rollback();
+            DB::rollback();
+            return redirect()->back()->withErrors(['success' => $e->getMessage()]);
         }
         return redirect('invoices');
     }
@@ -235,13 +236,6 @@ class InvoiceController extends Controller
         $projects = Project::getAllProject();
         $estimates = Estimate::showAllEstimate();
         $items = Item::showItemByProjectId($invoiceCart[0]->project_id);
-        // echo "<pre>";
-        // print_r($customerInvoice);
-        // print_r($invoiceCart);
-        // print_r($customers);
-        // print_r($projects);
-        // print_r($estimates);
-        // echo "</pre>";
         
         return view('Invoice.edit_invoice',[
            'customers' => $customers,
@@ -313,6 +307,7 @@ class InvoiceController extends Controller
         catch (Exception $e) {
 
             DB::rollback();
+            return redirect()->back()->withErrors(['success' => $e->getMessage()]);
         }
        return redirect('invoices')->with('success', 'Xoá hóa đơn thành công!'); 
     }

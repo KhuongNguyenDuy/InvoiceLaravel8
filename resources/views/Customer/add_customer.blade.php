@@ -6,7 +6,7 @@
 
 @section('content')
 <div style="font-size:0.9rem; margin: auto; width:80%;border: solid 1px gray;padding:15px;">
-    <!--form submit request add invoice-->
+    <!--form submit request add customer-->
     <form action='/add-customer' method="post" name="form_add_customer" onsubmit="return validateForm()">
          @csrf
          <!--row ten customer name-->
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-         <!--row ten customer name-->
+         <!--row button add submit-->
         <div class="form-row">
             <div class="form-group col-md-8"></div>
             <div class="form-group col-md-4">

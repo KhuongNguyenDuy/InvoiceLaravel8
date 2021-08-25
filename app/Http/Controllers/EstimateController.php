@@ -12,7 +12,7 @@ class EstimateController extends Controller
      * show list estimate
      */
     public function index(){
-        $estimates = Estimate::paginate(5);
+        $estimates = Estimate::showAllEstimate();
         return view('Estimate.estimate') -> with('estimates',$estimates);
     }
 

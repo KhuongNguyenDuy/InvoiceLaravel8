@@ -169,7 +169,6 @@
  -->
 <script>
 function validateForm() {
-    alert("fafasdfasdfd");
     let cart = document.forms["form_add_invoice"]["total_amount"].value;
     var cart_total = parseInt(cart.replace(new RegExp(',', 'g'),"")); //convert string to int
     if (cart_total <= 0) { //if no choose item

@@ -41,7 +41,7 @@
 </table>
 <script type="text/javascript">
     $('.delete_customer').on('click', function () {
-        return confirm('Bạn có muốn xoá mục đã chọn không?');
+        return confirm('Khi xóa khách hàng, thông tin hóa đơn liên quan đến khách hàng cũng bị xóa?');
     });
 </script>
 	{{ $customers -> links() }}

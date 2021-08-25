@@ -15,12 +15,14 @@ class CustomerController extends Controller
         $customers = Customer::showAllCustomer();
         return view('Customer.customer')->with('customers',$customers);
     }
+
     /**
      * Show form input info customer to add
      */
     public function formAddCustomer(){
         return view('Customer.add_customer');
     } 
+
     /**
      * function insert customer
      */
@@ -34,7 +36,7 @@ class CustomerController extends Controller
                'phone' => $request->phone_number,
                'fax' => $request->fax_number
        );
-           Customer::insert($customer);
+           Customer::insertCustomer($customer);
            DB::commit();
        }
        catch (Exception $e) {
@@ -42,6 +44,7 @@ class CustomerController extends Controller
        }
        return redirect('customers')->with('success', 'Thêm khách hàng thành công!'); 
     }
+
     /**
      * 
      */
@@ -50,6 +53,8 @@ class CustomerController extends Controller
         $customers = Customer::showCustomerById($id);
         return view('Customer.edit_customer')->with('customers',$customers);; 
     } 
+
+
     /**
      * Update info customer
      */
@@ -71,6 +76,8 @@ class CustomerController extends Controller
        }
        return redirect('customers')->with('success', 'Cập nhật khách hàng thành công!'); 
     } 
+
+    
     /**
      * Delete customer
      */

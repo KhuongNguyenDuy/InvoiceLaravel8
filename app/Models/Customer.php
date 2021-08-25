@@ -27,7 +27,7 @@ class Customer extends Model
     public static function showAllCustomer(){
         $customers = DB::table('customers')
         ->orderBy('customers.id', 'DESC')
-        ->Paginate(15);
+        ->Paginate(20);
         return $customers;
     }
      /**
@@ -40,7 +40,7 @@ class Customer extends Model
      /**
      * insert customer
      */
-    public static function insert($customer){
+    public static function insertCustomer($customer){
         DB::table('customers')->insert($customer);
     }
     /**

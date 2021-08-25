@@ -26,7 +26,7 @@ class Estimate extends Model
     }
     //show all estimate
     public static function showAllEstimate(){
-        $estimates = DB::table('estimates')->get();
+        $estimates = DB::table('estimates')->Paginate(20);;
         return $estimates;
     }
 

@@ -22,7 +22,7 @@ class ProjectController extends Controller
            $project = array(
                'name' => $request->project_name,
         );
-           Project::insert($project);
+           Project::insertProject($project);
            DB::commit();
        }
        catch (Exception $e) {
@@ -73,8 +73,7 @@ class ProjectController extends Controller
      * show project
      */
     public function index(){
-        $projects = Project::paginate(5);
-        //return view('admin.project',['projects' => $projects]);
+        $projects = Project::showAllProject();
         return view('Project.project') -> with('projects',$projects);
  
         

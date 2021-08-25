@@ -23,11 +23,16 @@
 			<tr>
 				<td class="col-sm-1 display-text">{{($projects->currentPage()-1) * $projects->perPage() + $loop->index + 1 }}</td>
 				<td class="col-sm-9">{{$project->name}}</td>
-				<td class="display-text"><a href="{{'/form-edit-project/'.$project->id}}" class="fas fa-edit" style="color:seagreen;font-size:20px;"></a></td>
-				<td class="display-text"><a href="{{'/delete-project/'.$project->id}}" class="fas fa-trash delete_project" style="color:red;font-size:20px;"></a></td>
+				<td class="display-text"><a href="{{'/form-edit-project/'.$project->id}}" class="fas fa-edit" style="color:seagreen;font-size:16px;"></a></td>
+				<td class="display-text"><a href="{{'/delete-project/'.$project->id}}" class="fas fa-trash delete_project" style="color:red;font-size:16px;"></a></td>
 			</tr>
 		@endforeach
   		</tbody> 
 	</table>
+	<script type="text/javascript">
+	$('.delete_project').on('click', function () {
+			return confirm('Khi xóa Project, tấc cả Item thuộc project này, và hóa đơn liên quan cũng sẽ bị xóa?');
+	});
+	</script>
 	{{ $projects -> links() }}
 @endsection

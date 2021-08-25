@@ -120,3 +120,13 @@ Route::get('/items', [ItemController::class, 'index'])->middleware('auth');
 
 Route::get('/items/{projectId}', [ItemController::class, 'findItemByProjectID'])->middleware('auth');
 
+Route::get('/form-add-item', [ItemController::class, 'formAddItem'])->middleware('auth'); //show form add item
+
+Route::post('/add-item', [ItemController::class, 'addItem'])->middleware('auth'); //add item
+
+Route::get('/form-edit-item/{id}', [ItemController::class, 'formEditItem'])->middleware('auth'); //show form edit item
+
+Route::post('/edit-item', [ItemController::class, 'editItem'])->middleware('auth'); //post: edit item
+
+Route::get('/delete-item/{id}', [ItemController::class, 'deleteItem'])->middleware('auth'); //delete item by id
+

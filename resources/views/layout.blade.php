@@ -68,7 +68,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/customers')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý KH</span></a>
+                                <span class="font_weight">Quản lý Khách Hàng</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
@@ -77,7 +77,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/estimates')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý estimate</span></a>
+                                <span class="font_weight">Quản lý Estimate</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
@@ -86,7 +86,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/projects')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý project</span></a>
+                                <span class="font_weight">Quản lý Project</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
@@ -95,7 +95,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/items')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý item</span></a>
+                                <span class="font_weight">Quản lý Item</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
@@ -104,7 +104,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/invoices')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý invoice</span></a>
+                                <span class="font_weight">Quản lý Invoice</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider d-none d-md-block">
@@ -169,7 +169,7 @@
                         <footer class="sticky-footer bg-white">
                             <div class="container my-auto">
                                 <div class="copyright text-center my-auto">
-                                    <span>Copyright &copy;  Website 2021</span>
+                                    <span>Copyright &copy;  VAIX GROUP 2021</span>
                                 </div>
                             </div>
                         </footer>

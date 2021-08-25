@@ -26,7 +26,7 @@ class Project extends Model
     public static function showAllProject(){
         $projects = DB::table('projects')
         ->orderBy('projects.id', 'DESC')
-        ->Paginate(15);
+        ->Paginate(20);
         return $projects;
     }
     public static function getAllProject(){
@@ -40,7 +40,7 @@ class Project extends Model
         /**
      * insert project
      */
-    public static function insert($project){
+    public static function insertProject($project){
         DB::table('projects')->insert($project);
     }
     /**

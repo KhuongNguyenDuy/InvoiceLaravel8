@@ -7,7 +7,7 @@
 @section('content')
 <div style="font-size:0.9rem; margin: auto; width:80%;border: solid 1px gray;padding:15px;">
     <!--form submit request add invoice-->
-    <form action='/edit-customer' method="post" name="form_edit_customer" onsubmit="return validateForm()">
+    <form action="{{URL::to('/edit-customer')}}" method="post" name="form_edit_customer" onsubmit="return validateForm()">
          @csrf
          <!--row ten customer name-->
         <div class="form-row">
