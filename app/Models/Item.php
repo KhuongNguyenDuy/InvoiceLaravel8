@@ -4,6 +4,8 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 
 class Item extends Model
 {
@@ -75,6 +77,32 @@ class Item extends Model
      *
      */
     public static function deleteItem($id){
+        // pp:1
+        // $invoices = DB::table('invoices')
+        // ->whereIn('invoices.id',function ($query) use ($id){
+        //                                   $query->select('invoice_item.invoice_id')
+        //                                       ->from('items')
+        //                                       ->join('invoice_item', 'invoice_item.item_id', '=', 'items.id')
+        //                                       ->where('items.id',$id);
+        //                                     })
+        
+        // ->get();
+        // DB::table('items')->where('id', $id)->delete();
+        // foreach ($invoices as $invoice) {
+        //     Invoice::deleteInvoice($invoice->id);
+        //     InvoiceItem::deleteInvoiceItem($invoice->id);
+        // }
+        //pp: 2
+       
+        $invoices = DB::table('items')
+        ->join('invoice_item', 'invoice_item.item_id', '=', 'items.id')
+        ->select('invoice_item.invoice_id')
+        ->where('items.id',$id)
+        ->get();
+        foreach ($invoices as $invoice) {
+            Invoice::deleteInvoice($invoice->invoice_id);
+            InvoiceItem::deleteInvoiceItem($invoice->invoice_id);
+        }
         DB::table('items')->where('id', $id)->delete();
     }
     

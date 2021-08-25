@@ -103,19 +103,19 @@ class ItemController extends Controller
    * Delete item
    */
   public function deleteItem($id){
-      
-      DB::beginTransaction();
-      try {
-         Item::deleteItem($id);
-         DB::commit();
-      }
-      catch (Exception $e) {
 
-          DB::rollback();
-          return redirect()->back()->withErrors(['success' => $e->getMessage()]);
-      }
-     return redirect('items')->with('success', 'Xoá item thành công!'); 
-  } 
+       DB::beginTransaction();
+       try {
+          Item::deleteItem($id);
+          DB::commit();
+       }
+       catch (Exception $e) {
+           DB::rollback();
+           return redirect()->back()->withErrors(['success' => $e->getMessage()]);
+       }
+      return redirect('items')->with('success', 'Xoá item thành công!'); 
+        } 
+
 
 
 }
