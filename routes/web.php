@@ -22,9 +22,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 
@@ -32,7 +32,7 @@ require __DIR__.'/auth.php';
 /*
 /*
 |--------------------------------------------------------------------------
-| Admin Project
+| Admin PROJECT
 |--------------------------------------------------------------------------
 */
 //Route::get('/projects', 'ProjectController@index');
@@ -52,7 +52,7 @@ Route::get('/delete-project/{id}', [ProjectController::class, 'deleteProject'])-
 
 /*
 |--------------------------------------------------------------------------
-| Admin Estimate
+| Admin ESTIMATE
 |--------------------------------------------------------------------------
 */
 //Route::get('/estimates', 'EstimateController@index');
@@ -65,9 +65,15 @@ Route::get('/form-add-estimate', [EstimateController::class, 'formAddEstimate'])
 
 Route::post('/add-estimate', [EstimateController::class, 'addEstimate'])->middleware('auth'); // add estimate and upload file
 
+Route::get('/form-edit-estimate/{id}', [EstimateController::class, 'formEditEstimate'])->middleware('auth'); //show form edit estimate
+
+Route::post('/edit-estimate', [EstimateController::class, 'editEstimate'])->middleware('auth'); // edit estimate 
+
+Route::get('/delete-estimate/{id}', [EstimateController::class, 'deleteEstimate'])->middleware('auth'); //delete estimate by id
+
 /*
 |--------------------------------------------------------------------------
-| Admin Customer
+| Admin CUSTOMER
 |--------------------------------------------------------------------------
 */
 Route::get('/customers', [CustomerController::class, 'index'])->middleware('auth');   // show list customer
@@ -83,7 +89,7 @@ Route::get('/form-add-customer', [CustomerController::class, 'formAddCustomer'])
 Route::post('/add-customer', [CustomerController::class, 'addCustomer'])->middleware('auth'); //add customer
 /*
 |--------------------------------------------------------------------------
-| Admin Invoice
+| Admin INVOICE
 |--------------------------------------------------------------------------
 */
 Route::get('/invoices', [InvoiceController::class, 'index'])->middleware('auth');//get all invoice
@@ -113,7 +119,7 @@ Route::get('/ajax-get-item', [InvoiceController::class, 'getItem'])->middleware(
 
 /*
 |--------------------------------------------------------------------------
-| Admin Item
+| Admin ITEM
 |--------------------------------------------------------------------------
 */
 Route::get('/items', [ItemController::class, 'index'])->middleware('auth');

@@ -26,10 +26,15 @@
 				<td class="text-mid">{{$estimate->id}}</td>
                 <td><a href="{{URL::to('/download-estimate/'.$estimate->id)}}">{{$estimate->name}}</a></td>
 				<td class="display-text"><a href="{{'/form-edit-estimate/'.$estimate->id}}" class="fas fa-edit" style="color:seagreen;font-size:16px;"></a></td>
-				<td class="display-text"><a href="{{'/delete-estimate/'.$estimate->id}}" class="fas fa-trash delete_customer" style="color:red;font-size:16px;"></a></td>
+				<td class="display-text"><a href="{{'/delete-estimate/'.$estimate->id}}" class="fas fa-trash delete_estimate" style="color:red;font-size:16px;"></a></td>
 			</tr>
 		@endforeach
   		</tbody> 
 	</table>
+	<script type="text/javascript">
+    $('.delete_estimate').on('click', function () {
+        return confirm('Bạn có muốn xóa mục đã chọn?');
+    });
+	</script>
 	{{ $estimates -> links() }}
 @endsection

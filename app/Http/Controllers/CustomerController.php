@@ -67,14 +67,14 @@ class CustomerController extends Controller
                'abbreviate' => $request->abbreviate_name,
                'phone' => $request->phone_number,
                'fax' => $request->fax_number
-       );
+        );
            Customer::edit($request->customer_id,$customer);
            DB::commit();
-       }
-       catch (Exception $e) {
+        }
+        catch (Exception $e) {
                DB::rollback();
-       }
-       return redirect('customers')->with('success', 'Cập nhật khách hàng thành công!'); 
+        }
+        return redirect('customers')->with('success', 'Cập nhật khách hàng thành công!'); 
     } 
 
     

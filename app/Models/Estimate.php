@@ -34,4 +34,18 @@ class Estimate extends Model
     public static function insert($estimate){
         DB::table('estimates')->insert($estimate);
     }
+
+    /**
+     * update estimate
+     */
+    public static function editEstimate($id,$estimate){
+        DB::table('estimates')->where('id',$id)->update($estimate);
+    }
+    /**
+     * delete estimate
+     */
+    public static function deleteEstimate($id){
+        DB::table('estimates')->where('id', '=', $id)->delete();
+    }
+
 }

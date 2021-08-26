@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title-detail', 'Thêm Estimate')
+@section('title-detail', 'Sửa Estimate')
 @section('content')
 <style>
         .container {
@@ -12,7 +12,7 @@
         }
 </style>
 <div class="container mt-5">
-        <form action="/add-estimate" method="post" enctype="multipart/form-data">
+        <form action="/edit-estimate" method="post" enctype="multipart/form-data">
           <h3 class="text-center mb-3">Chọn file Estimate</h3>
             @csrf
           	@if (count($errors) > 0)
@@ -26,18 +26,20 @@
           	@endif
 
             <div class="custom-file">
-                <input type="file" name="file" class="custom-file-input" id="chooseFile">
-                <label class="custom-file-label" for="chooseFile">Select file</label>
+                <input type="hidden" name="estimate_id" value="{{$estimates->id}}">
+                <input type="hidden" name="estimate_name" value="{{$estimates->name}}">
+                <input type="file" name="file" class="custom-file-input" id="chooseFile" >
+                <label class="custom-file-label" for="chooseFile">{{ $estimates->name }}</label>
             </div>
 
             <button type="submit" name="submit" class="btn btn-primary btn-block mt-4">
-                Upload and Add Estimate
+                Change Estimate
             </button>
         </form>
-</div>
+    </div>
 <script>
  $('#chooseFile').on('change',function(){
-         fileName = $(this).val().replace('C:\\fakepath\\', " ");
+    fileName = $(this).val().replace('C:\\fakepath\\', " ");
      $(this).next('.custom-file-label').html(fileName);
  })
 </script>

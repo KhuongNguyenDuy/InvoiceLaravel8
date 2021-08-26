@@ -49,6 +49,7 @@ class Customer extends Model
     public static function edit($id,$customer){
         DB::table('customers')->where('id',$id)->update($customer);
     }
+    
     /**
      * delete customer
      */
