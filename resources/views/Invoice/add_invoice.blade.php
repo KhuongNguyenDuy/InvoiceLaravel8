@@ -102,7 +102,7 @@
                 <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
                 <option value="" selected disabled>Chọn estimate..</option>
                     @foreach($estimates as $e)
-                        <option value="{{$e->id}}">{{$e->name}}</option>
+                        <option value="{{$e->id}}">{{$e->id}}</option>
                     @endforeach   
                 </select>                   
             </div>

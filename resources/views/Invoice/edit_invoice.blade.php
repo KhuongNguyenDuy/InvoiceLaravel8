@@ -102,9 +102,9 @@
                 <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">        
                     @foreach($estimates as $e)
                         @if ($customerInvoice->estimate_id == $e->id)
-                            <option value="{{$customerInvoice->estimate_id}}" selected>{{$customerInvoice->estimate_name}}</option>
+                            <option value="{{$customerInvoice->estimate_id}}" selected>{{$customerInvoice->estimate_id}}</option>
                         @else
-                            <option value="{{$e->id}}">{{$e->name}}</option>
+                            <option value="{{$e->id}}">{{$e->id}}</option>
                         @endif                          
                     @endforeach   
                 </select>                   

@@ -170,7 +170,7 @@ class InvoiceController extends Controller
         $worksheet->getCell('E11')->setValue($customerInvoice->customer_address);
         $worksheet->getCell('E12')->setValue($customerInvoice->customer_phone);
         $worksheet->getCell('H12')->setValue($customerInvoice->customer_fax);
-        $worksheet->setCellValueExplicit('E13',$customerInvoice->estimate_name,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+        $worksheet->setCellValueExplicit('E13',$customerInvoice->estimate_id,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
         $worksheet->getStyle('E13')->getNumberFormat()->setFormatCode("00000000000");
         $worksheet->getCell('E15')->setValue($cart[0]->project_name);
 

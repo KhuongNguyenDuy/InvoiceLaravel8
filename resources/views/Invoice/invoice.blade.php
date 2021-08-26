@@ -39,7 +39,7 @@
 				<td class="text-left"><?php echo date_format(new DateTime($invoice->create_date),'Y/m/d');  ?></td>
 				<td class="text-left">{{$invoice->customer_name}}</td>
 				<td class="text-left">{{$invoice->customer_address}}</td>				
-				<td class="text-left">{{$invoice->estimate_name}}</td>
+				<td class="text-left">{{$invoice->estimate_id}}</td>
 				<td class="text-left"><?php echo date_format(new DateTime($invoice->expire_date),'Y/m/d');?></td>
 				<td class="number-right"><?php echo number_format($invoice->total)?></td>
                 <td class="text-mid">

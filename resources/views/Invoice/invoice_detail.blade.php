@@ -14,7 +14,7 @@
                             <div class="billed"><span class="font-weight-bold text-uppercase">Địa chỉ : </span><span class="ml-1">{{$customerInvoice->customer_address}}</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Số điện thoại : </span><span class="ml-1">{{$customerInvoice->customer_phone}}</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Fax :</span><span class="ml-1"> {{$customerInvoice->customer_fax}}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_name}}</span></div>                            
+                            <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_id}}</span></div>                            
                             <div class="billed"><span class="font-weight-bold text-uppercase">Project :</span><span class="ml-1">{{$invoiceCart[0]->project_name}}</span></div>                                                   
                     </div>
                     <div class="col-md-4 text-right mt-3">
