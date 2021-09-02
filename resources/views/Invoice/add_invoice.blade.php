@@ -24,19 +24,19 @@
                 <label for="ngaytao">Ngày tạo :</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="date form-control" name="ngaytao" id="ngaytao" value="<?php echo date("Y/m/d"); ?>" type="text" >                          
+                <input class="date form-control" name="ngaytao" id="ngaytao" value="<?php echo date("Y/m/d"); ?>" type="text" >
             </div>
             <div class="form-group col-md-1">
                  <label for="hantt">Hạn thanh toán :</label>
             </div>
-            <div class="form-group col-md-5">               
-                <input class="date form-control" id="hantt" name="hantt" type="text" value="<?php echo $date->format('Y/m/d');?>" >             
+            <div class="form-group col-md-5">
+                <input class="date form-control" id="hantt" name="hantt" type="text" value="<?php echo $date->format('Y/m/d');?>" >
                 <!--#add datepicker-->
                 <script type="text/javascript">
-                    $('.date').datepicker({  
+                    $('.date').datepicker({
                     format: 'yyyy/mm/dd'
-                    });  
-                </script> 
+                    });
+                </script>
                 <!--#daetpicker end-->
             </div>
         </div>
@@ -45,19 +45,19 @@
             <div class="form-group col-md-1">
                 <label for="khachang">Khách hàng :</label>
             </div>
-            <div class="form-group col-md-5">                
+            <div class="form-group col-md-5">
                 <select class="form-control customer-option" id="select-state" name="khachhang" placeholder="Chọn khách hàng..." required oninvalid="this.setCustomValidity('Xin vui lòng chọn khách hàng')" oninput="this.setCustomValidity('')">
                 <option value="">Chọn khách hàng..</option>
                     @foreach($customers as $c)
                         <option value="{{$c->id}}">{{$c->name}}</option>
-                    @endforeach   
-                </select>           
+                    @endforeach
+                </select>
             </div>
             <div class="form-group col-md-1">
                 <label for="sdt">Điện thoại :</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="date form-control" type="text" value="" id="sdt" name="txtsdt" disabled>             
+                <input class="date form-control" type="text" value="" id="sdt" name="txtsdt" disabled>
             </div>
         </div>
         <!--row address, fax customwr-->
@@ -66,45 +66,45 @@
                  <label for="diachi">Địa chỉ :</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="form-control" value="" type="text" id="diachi" disabled>                          
+                <input class="form-control" value="" type="text" id="diachi" disabled>
             </div>
             <div class="form-group col-md-1">
                 <label for="fax">Fax:</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="form-control" type="text" value="" id="fax" disabled >             
+                <input class="form-control" type="text" value="" id="fax" disabled >
             </div>
         </div>
         <!--row estimate id, project name-->
         <div class="form-row">
             <!-- <div class="form-group col-md-1">
-                <label for="project">Project :</label>     
+                <label for="project">Project :</label>
             </div>
             <div class="form-group col-md-5">
                 <input type="text" class="form-control" value="" disabled>
                 <input type="hidden" id="projectId" name="projectId" value="">
             </div> -->
             <div class="form-group col-md-1">
-                <label for="project">Project :</label>     
+                <label for="project">Project :</label>
             </div>
             <div class="form-group col-md-5">
                 <select class="form-control" id="project" name="project" required oninvalid="this.setCustomValidity('Xin vui lòng chọn project')" oninput="this.setCustomValidity('')">
                 <option value="" selected disabled>Chọn project..</option>
                     @foreach($projects as $p)
                         <option value="{{$p->id}}">{{$p->name}}</option>
-                    @endforeach   
-                </select>                   
+                    @endforeach
+                </select>
             </div>
             <div class="form-group col-md-1">
-                <label for="estimate">Estimate :</label>     
+                <label for="estimate">Estimate :</label>
             </div>
             <div class="form-group col-md-5">
                 <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
                 <option value="" selected disabled>Chọn estimate..</option>
                     @foreach($estimates as $e)
                         <option value="{{$e->id}}">{{$e->id}}</option>
-                    @endforeach   
-                </select>                   
+                    @endforeach
+                </select>
             </div>
         </div>
         <!--table show item-->
@@ -119,9 +119,9 @@
                     </tr>
                 </thead>
                 <tbody id="table_tr"></tbody>
-                <tbody>                  
+                <tbody>
                     <tr>
-                        <td></td>                
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td>
@@ -134,7 +134,7 @@
                                     <tr>
                                         <th class="number-right">Thuế (%) :</th>
                                         <td>
-                                            <input type="text" readonly class="form-control number-right" id="tax" value=<?php echo config('global.tax');?>>
+                                            <input type="text" name="tax_rate" class="form-control number-right" id="tax" value=<?php echo config('global.tax');?>>
                                         </td>
                                     </tr>
                                     <tr>
@@ -151,9 +151,9 @@
                     </tr>
                 </tbody>
             </table>
-        </div>    
+        </div>
         <!--table show tax and total-->
-     
+
         <!--row button sumit add invoice-->
         <div class="form-row">
             <div class="form-group col-md-8"></div>
@@ -178,8 +178,8 @@ function validateForm() {
     let create_at = document.forms["form_add_invoice"]["ngaytao"].value; //get datepicker create day
     let expire_at = document.forms["form_add_invoice"]["hantt"].value; //get datepicker expire
     var current_day = new Date(getCurrentDay());
-    var create_day = new Date(create_at); 
-    var expire_day = new Date(expire_at); 
+    var create_day = new Date(create_at);
+    var expire_day = new Date(expire_at);
     if(compareDate(current_day,create_day) == 1){ //if current day> create day
         alert("Ngày tạo nhỏ hơn ngày hiện tại");
         return false;
@@ -205,7 +205,7 @@ function compareDate(date1, date2) {
 function getCurrentDay(){
     var today = new Date();
     var d = String(today.getDate()).padStart(2, '0');
-    var m = String(today.getMonth() + 1).padStart(2, '0'); 
+    var m = String(today.getMonth() + 1).padStart(2, '0');
     var y = today.getFullYear();
     today = y + '/' + m + '/' + d;
     return today;

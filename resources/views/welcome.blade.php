@@ -32,7 +32,7 @@
                     @else
                         <a href="{{ route('login') }}" class="atag">Log in</a>
 
-                        @if (Route::has('register'))
+                        @if (Route::has('register') && env('APP_ENV') !== 'production')
                             <a href="{{ route('register') }}" class="atag">Register</a>
                         @endif
                     @endauth

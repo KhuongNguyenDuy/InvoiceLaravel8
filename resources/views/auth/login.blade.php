@@ -39,11 +39,13 @@
                 </label>
             </div>
 
+            @if(env('APP_ENV') !== 'production')
             <div class="flex items-center justify-end mt-4">
                 <div class="text-center">
                     <a class="small underline text-sm text-gray-600 hover:text-gray-900" style="margin-right:118px;" href="{{ route('register') }}">Create an Account!</a>
                 </div>
             </div>
+            @endif
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">

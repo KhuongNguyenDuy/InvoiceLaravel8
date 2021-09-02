@@ -21,8 +21,11 @@ class CreateInvoicesTable extends Migration
             $table->dateTime('expire_date');
             $table->integer('estimate_id')->unsigned();
             $table->foreign('estimate_id')->references('id')->on('estimates')->onDelete('cascade');
+            $table->integer('order_id')->unsigned()->nullable();
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->integer('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->float('tax_rate')->unsigned();
             $table->timestamps();
         });
     }
