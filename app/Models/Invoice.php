@@ -20,8 +20,9 @@ class Invoice extends Model
         'expire_date',
         'estimate_id',
         'customer_id',
+        'tax_rate'
     ];
-    
+
     protected $table = 'invoices';
 
     //show invoice detail by id
@@ -29,7 +30,7 @@ class Invoice extends Model
      * this old function useless
      */
     public static function showInvoiceDetail2($id){
-        
+
         $invoiceDetails = DB::table('invoices')
               ->join('invoice_item', 'invoices.id', '=', 'invoice_item.invoice_id')
               ->join('customers', 'invoices.customer_id', '=', 'customers.id')
@@ -39,6 +40,7 @@ class Invoice extends Model
                     'invoices.id',
                     'invoices.create_date',
                     'invoices.status',
+                    'invoices.tax_rate',
                     'customers.name as customer_name',
                     'customers.address as customer_address',
                     'customers.phone as customer_phone',
@@ -57,7 +59,7 @@ class Invoice extends Model
     }
 
     public static function showCustomerInvoice($id){
-        
+
         //get info customer and estimate
         $customerInvoice = DB::table('invoices')
               ->join('customers', 'invoices.customer_id', '=', 'customers.id')
@@ -89,7 +91,7 @@ class Invoice extends Model
                 'projects.name as project_name',
                 'projects.id as project_id',
                 'invoice_item.quantity',
-                'invoice_item.amount',
+                'invoice_item.amount'
                 )
             ->where('invoices.id','=',$id)
             ->get();
@@ -141,5 +143,5 @@ class Invoice extends Model
     public static function deleteInvoice($id){
         DB::table('invoices')->where('id', $id)->delete();
     }
-    
+
 }

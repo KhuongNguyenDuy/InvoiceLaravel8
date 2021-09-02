@@ -8,14 +8,14 @@
                 <!--row title invoice-->
                 <div class="row">
                     <div class="col-md-8">
-                            <h1 class="text-uppercase">Hoá Đơn</h1>                                                    
+                            <h1 class="text-uppercase">Hoá Đơn</h1>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Ngày tạo : </span><span class="ml-1"><?php echo date_format(new DateTime($customerInvoice->create_date),'Y/m/d');?></span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Khách hàng : </span><span class="ml-1">{{$customerInvoice->customer_name}}</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Địa chỉ : </span><span class="ml-1">{{$customerInvoice->customer_address}}</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Số điện thoại : </span><span class="ml-1">{{$customerInvoice->customer_phone}}</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Fax :</span><span class="ml-1"> {{$customerInvoice->customer_fax}}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_id}}</span></div>                            
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Project :</span><span class="ml-1">{{$invoiceCart[0]->project_name}}</span></div>                                                   
+                            <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_id}}</span></div>
+                            <div class="billed"><span class="font-weight-bold text-uppercase">Project :</span><span class="ml-1">{{$invoiceCart[0]->project_name}}</span></div>
                     </div>
                     <div class="col-md-4 text-right mt-3">
                         <h4 class="text-danger mb-0">VAIX CO., LTD</h4><span>Tel: +843-3384-6868</span>
@@ -35,10 +35,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php 
-                                $stt = 0;  
+                            <?php
+                                $stt = 0;
                                 $sub_total = 0;
-                                $tax = config('global.tax'); //take tax in file global
                             ?>
                             @for ($y = 0; $y < $invoiceCart->count();$y++)
                                 <?php $sub_total += $invoiceCart[$y]->amount; ?>
@@ -61,15 +60,15 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="number-right"><b>Thuế tiêu thụ ({{$tax}}%) :</b></td>
-                                    <td class="number-right"><?php echo number_format($sub_total*$tax/100);?></td><!--#echo tax in file global-->
+                                    <td class="number-right"><b>Thuế tiêu thụ ({{$customerInvoice->tax_rate}}%) :</b></td>
+                                    <td class="number-right"><?php echo number_format($sub_total * $customerInvoice->tax_rate / 100);?></td><!--#echo tax in file global-->
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td class="number-right"><b>Thành tiền :</b></td>
-                                    <td class="number-right"><?php echo number_format($sub_total+($sub_total*$tax/100));?></td>
+                                    <td class="number-right"><?php echo number_format($sub_total + ($sub_total * $customerInvoice->tax_rate / 100));?></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -92,5 +91,5 @@
         </div>
     </div>
 </div>
-    
+
 @endsection

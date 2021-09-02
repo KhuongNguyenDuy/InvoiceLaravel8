@@ -25,19 +25,19 @@
                 <label for="ngaytao">Ngày tạo :</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="date form-control" name="ngaytao" id="ngaytao" value="<?php echo  date_format(new DateTime($customerInvoice->create_date),'Y/m/d'); ?>" type="text" >                          
+                <input class="date form-control" name="ngaytao" id="ngaytao" value="<?php echo  date_format(new DateTime($customerInvoice->create_date),'Y/m/d'); ?>" type="text" >
             </div>
             <div class="form-group col-md-1">
                  <label for="hantt">Hạn thanh toán :</label>
             </div>
-            <div class="form-group col-md-5">               
-                <input class="date form-control" id="hantt" name="hantt" type="text" value="<?php echo date_format(new DateTime($customerInvoice->expire_date),'Y/m/d');?>" >             
+            <div class="form-group col-md-5">
+                <input class="date form-control" id="hantt" name="hantt" type="text" value="<?php echo date_format(new DateTime($customerInvoice->expire_date),'Y/m/d');?>" >
                 <!--#add datepicker-->
                 <script type="text/javascript">
-                    $('.date').datepicker({  
+                    $('.date').datepicker({
                     format: 'yyyy/mm/dd'
-                    });  
-                </script> 
+                    });
+                </script>
                 <!--#daetpicker end-->
             </div>
         </div>
@@ -46,7 +46,7 @@
             <div class="form-group col-md-1">
                 <label for="khachang">Khách hàng :</label>
             </div>
-            <div class="form-group col-md-5">                
+            <div class="form-group col-md-5">
                 <select class="form-control customer-option" id="select-state" name="khachhang" placeholder="Chọn khách hàng..." required oninvalid="this.setCustomValidity('Xin vui lòng chọn khách hàng')" oninput="this.setCustomValidity('')">
                     @foreach($customers as $c)
                         @if ($customerInvoice->customer_id == $c->id)
@@ -54,14 +54,14 @@
                         @else
                             <option value="{{$c->id}}" >{{$c->name}}</option>
                         @endif
-                    @endforeach   
-                </select>           
+                    @endforeach
+                </select>
             </div>
             <div class="form-group col-md-1">
                 <label for="sdt">Điện thoại :</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="date form-control" type="text" value="{{$customerInvoice->customer_phone}}" id="sdt" name="txtsdt" disabled>             
+                <input class="date form-control" type="text" value="{{$customerInvoice->customer_phone}}" id="sdt" name="txtsdt" disabled>
             </div>
         </div>
         <!--row address, fax customwr-->
@@ -70,19 +70,19 @@
                  <label for="diachi">Địa chỉ :</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="form-control" value="{{$customerInvoice->customer_address}}" type="text" id="diachi" disabled>                          
+                <input class="form-control" value="{{$customerInvoice->customer_address}}" type="text" id="diachi" disabled>
             </div>
             <div class="form-group col-md-1">
                 <label for="fax">Fax:</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="form-control" type="text" value="{{$customerInvoice->customer_fax}}" id="fax" disabled >             
+                <input class="form-control" type="text" value="{{$customerInvoice->customer_fax}}" id="fax" disabled >
             </div>
         </div>
         <!--row estimate id, project name-->
         <div class="form-row">
             <div class="form-group col-md-1">
-                <label for="project">Project :</label>     
+                <label for="project">Project :</label>
             </div>
             <div class="form-group col-md-5">
                 <select class="form-control" id="project" name="project" disabled required oninvalid="this.setCustomValidity('Xin vui lòng chọn project')" oninput="this.setCustomValidity('')">
@@ -91,23 +91,23 @@
                             <option value="{{$invoiceCart[0]->project_id}}" selected>{{$invoiceCart[0]->project_name}}</option>
                         @else
                             <option value="{{$p->id}}">{{$p->name}}</option>
-                        @endif       
-                    @endforeach   
-                </select>                   
+                        @endif
+                    @endforeach
+                </select>
             </div>
             <div class="form-group col-md-1">
-                <label for="estimate">Estimate :</label>     
+                <label for="estimate">Estimate :</label>
             </div>
             <div class="form-group col-md-5">
-                <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">        
+                <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
                     @foreach($estimates as $e)
                         @if ($customerInvoice->estimate_id == $e->id)
                             <option value="{{$customerInvoice->estimate_id}}" selected>{{$customerInvoice->estimate_id}}</option>
                         @else
                             <option value="{{$e->id}}">{{$e->id}}</option>
-                        @endif                          
-                    @endforeach   
-                </select>                   
+                        @endif
+                    @endforeach
+                </select>
             </div>
         </div>
         <!--table show item-->
@@ -122,24 +122,24 @@
                     </tr>
                 </thead>
                 <tbody id="table_tr">
-                    <?php 
+                    <?php
                         $sub_total = 0;
                         $tax = config('global.tax'); //take tax in file global
                     ?>
                     @for ($i = 0; $i < $invoiceCart->count();$i++)
-                        <?php $sub_total += $invoiceCart[$i]->amount; ?>                    
+                        <?php $sub_total += $invoiceCart[$i]->amount; ?>
                         <tr>
                             <input type="hidden" name="id[]" value="{{ $invoiceCart[$i]->item_id }}">
-                            <td class="text-left">{{ $invoiceCart[$i]->item_name }}</td>           
+                            <td class="text-left">{{ $invoiceCart[$i]->item_name }}</td>
                             <td><input type="text" name="price[]" class="form-control price number-right" value="<?php echo number_format($invoiceCart[$i]->price); ?>" readonly/></td>
                             <td><input type="number" id="" name="qty[]" value="{{ $invoiceCart[$i]->quantity }}" class="form-control qty number-right" min="0" max="500"/></td>
                             <td><input type="text" name="total[]" value="<?php echo number_format($invoiceCart[$i]->price); ?>" id="" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>
                         </tr>
                     @endfor
                 </tbody>
-                <tbody>                  
+                <tbody>
                     <tr>
-                        <td></td>                
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td>
@@ -147,21 +147,21 @@
                                 <tbody>
                                     <tr>
                                         <th class="number-right">Tổng phụ :</th>
-                                        <td><input type="text" name='sub_total' value="<?php echo number_format($sub_total); ?>" placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
+                                        <td><input type="text" name='sub_total' value="{{ number_format($sub_total) }}" placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
                                     </tr>
                                     <tr>
                                         <th class="number-right">Thuế (%) :</th>
                                         <td>
-                                            <input type="text" readonly class="form-control number-right" id="tax" value=<?php echo config('global.tax');?>>
+                                            <input type="text" name="tax_rate" class="form-control number-right" id="tax" value="{{ $customerInvoice->tax_rate }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="number-right">Tổng thuế :</th>
-                                        <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' value="<?php echo number_format($sub_total*$tax/100);?>" class="form-control number-right" readonly/></td>
+                                        <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' value="{{ number_format($sub_total*$tax/100) }}" class="form-control number-right" readonly/></td>
                                     </tr>
                                     <tr>
                                         <th class="number-right">Tổng cộng :</th>
-                                        <td><input type="text" name='total_amount' id="total_amount" value="<?php echo number_format($sub_total+($sub_total*$tax/100));?>" placeholder='0' class="form-control cart_total number-right" readonly/></td>
+                                        <td><input type="text" name='total_amount' id="total_amount" value="{{ number_format($sub_total+($sub_total*$tax/100)) }}" placeholder='0' class="form-control cart_total number-right" readonly/></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -169,9 +169,9 @@
                     </tr>
                 </tbody>
             </table>
-        </div>    
+        </div>
         <!--table show tax and total-->
-     
+
         <!--row button sumit add invoice-->
         <div class="form-row">
             <div class="form-group col-md-8"></div>
@@ -196,8 +196,8 @@ function validateForm() {
     let create_at = document.forms["form_edit_invoice"]["ngaytao"].value; //get datepicker create day
     let expire_at = document.forms["form_edit_invoice"]["hantt"].value; //get datepicker expire
     var current_day = new Date(getCurrentDay());
-    var create_day = new Date(create_at); 
-    var expire_day = new Date(expire_at); 
+    var create_day = new Date(create_at);
+    var expire_day = new Date(expire_at);
     if(compareDate(current_day,create_day) == 1){ //if current day> create day
         alert("Ngày tạo nhỏ hơn ngày hiện tại");
         return false;
@@ -223,7 +223,7 @@ function compareDate(date1, date2) {
 function getCurrentDay(){
     var today = new Date();
     var d = String(today.getDate()).padStart(2, '0');
-    var m = String(today.getMonth() + 1).padStart(2, '0'); 
+    var m = String(today.getMonth() + 1).padStart(2, '0');
     var y = today.getFullYear();
     today = y + '/' + m + '/' + d;
     return today;

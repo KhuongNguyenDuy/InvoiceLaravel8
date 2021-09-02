@@ -15,8 +15,17 @@ class CreateEstimatesTable extends Migration
     {
         Schema::create('estimates', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',100);
-            $table->string('path',255);
+            // $table->string('no', 20);
+            $table->string('name', 100);
+            $table->string('path', 255);
+            $table->timestamps();
+        });
+
+        Schema::create('orders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('no', 20);
+            $table->string('name', 100);
+            $table->string('path', 255);
             $table->timestamps();
         });
     }
@@ -29,5 +38,6 @@ class CreateEstimatesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('estimates');
+        Schema::dropIfExists('orders');
     }
 }
