@@ -40,5 +40,6 @@
             @endif
             <h1>Nội dung trang chủ</h1>
         </div>
+        {{-- phpinfo(); --}}
     </body>
 </html>
