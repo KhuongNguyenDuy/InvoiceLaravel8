@@ -14,8 +14,10 @@ class Estimate extends Model
      * @var array
      */
     protected $fillable = [
+        'no',
         'name',
         'path',
+        'project_id'
     ];
     protected $table = 'estimates';
 
@@ -26,7 +28,11 @@ class Estimate extends Model
     }
     //show all estimate
     public static function showAllEstimate(){
-        $estimates = DB::table('estimates')->Paginate(20);;
+        $estimates = DB::table('estimates')
+        ->join('projects', 'estimates.project_id', '=', 'projects.id')
+        ->select('estimates.*','projects.name as project_name')
+        ->orderBy('estimates.id', 'DESC')
+        ->Paginate(20);
         return $estimates;
     }
 
@@ -34,7 +40,6 @@ class Estimate extends Model
     public static function insert($estimate){
         DB::table('estimates')->insert($estimate);
     }
-
     /**
      * update estimate
      */
@@ -47,5 +52,9 @@ class Estimate extends Model
     public static function deleteEstimate($id){
         DB::table('estimates')->where('id', '=', $id)->delete();
     }
+
+
+
+    
 
 }

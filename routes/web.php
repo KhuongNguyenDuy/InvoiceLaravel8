@@ -6,6 +6,7 @@ use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LoginAuthController;
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,7 @@ Route::post('/edit-estimate', [EstimateController::class, 'editEstimate'])->midd
 
 Route::get('/delete-estimate/{id}', [EstimateController::class, 'deleteEstimate'])->middleware('auth'); //delete estimate by id
 
+
 /*
 |--------------------------------------------------------------------------
 | Admin CUSTOMER
@@ -102,7 +104,7 @@ Route::post('/add-invoice', [InvoiceController::class, 'addInvoice'])->middlewar
 
 //Route::get('/get-project', [InvoiceController::class, 'getProject'])->middleware('auth');// show all project
 
-Route::get('/get-customer', [InvoiceController::class, 'getCustomer'])->middleware('auth');//show customer info by ajax
+Route::get('/get-info-customer', [InvoiceController::class, 'getInfoCustomer'])->middleware('auth');//show customer info by ajax
 
 Route::get('/export-invoice/{id}={type}', [InvoiceController::class, 'exportInvoice'])->middleware('auth');//export excel
 
@@ -136,3 +138,10 @@ Route::post('/edit-item', [ItemController::class, 'editItem'])->middleware('auth
 
 Route::get('/delete-item/{id}', [ItemController::class, 'deleteItem'])->middleware('auth'); //delete item by id
 
+
+/*
+|--------------------------------------------------------------------------
+| Admin ORDER
+|--------------------------------------------------------------------------
+*/
+Route::post('/add-order', [OrderController::class, 'addOrder'])->middleware('auth'); // add estimate and upload file

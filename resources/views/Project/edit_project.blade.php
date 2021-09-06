@@ -9,7 +9,23 @@
     <!--form submit request add invoice-->
     <form action='/edit-project' method="post" name="form_edit_project" onsubmit="return validateForm()">
          @csrf
-         <!--row ten project name-->
+         <div class="form-row">
+              <div class="form-group col-md-2">
+                  <b><label for="project_name" >Khách hàng : (*)</label></b>
+              </div>
+              <div class="form-group col-md-10">
+                <select class="form-control" id="customer" name="customer" placeholder="Chọn khách hàng..." required oninvalid="this.setCustomValidity('Xin vui lòng chọn khách hàng')" oninput="this.setCustomValidity('')">
+                    @foreach($customers as $c)
+                        @if ($projects->customer_id == $c->id)
+                            <option value="{{$c->id}}" selected>{{$c->name}}</option>
+                        @else
+                            <option value="{{$c->id}}" >{{$c->name}}</option>
+                        @endif
+                    @endforeach
+                </select>                      
+              </div>
+        </div>
+        <!--row ten project name-->
         <div class="form-row">
             <div class="form-group col-md-2">
                 <b><label for="project_name" >Tên dự án : (*)</label></b>

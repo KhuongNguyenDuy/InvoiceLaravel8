@@ -15,9 +15,11 @@ class CreateEstimatesTable extends Migration
     {
         Schema::create('estimates', function (Blueprint $table) {
             $table->increments('id');
-            // $table->string('no', 20);
+            $table->string('no', 20);
             $table->string('name', 100);
             $table->string('path', 255);
+            $table->integer('project_id')->unsigned();
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -26,6 +28,8 @@ class CreateEstimatesTable extends Migration
             $table->string('no', 20);
             $table->string('name', 100);
             $table->string('path', 255);
+            $table->integer('project_id')->unsigned();
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->timestamps();
         });
     }

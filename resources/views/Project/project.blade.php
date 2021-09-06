@@ -12,17 +12,19 @@
 	<table class="table table-hover table-bordered table-border-margin"> 
 		<thead>
 			<tr style="background-color: black;">
-				<th class="col-sm-1 display-text" >STT</th>
-				<th class="col-sm-9 display-text">Project Name</th>
-				<th class="col-sm-1 display-text">Edit</th>
-				<th class="col-sm-1 display-text">Delete</th>
+				<th class="display-text" >STT</th>
+				<th class="display-text">Project Name</th>
+				<th class="display-text">Customer</th>
+				<th class="display-text">Edit</th>
+				<th class="display-text">Delete</th>
 			</tr>
 		</thead>
 		<tbody>	
 		@foreach($projects as $project)
 			<tr>
-				<td class="col-sm-1 display-text">{{($projects->currentPage()-1) * $projects->perPage() + $loop->index + 1 }}</td>
-				<td class="col-sm-9">{{$project->name}}</td>
+				<td class="display-text">{{($projects->currentPage()-1) * $projects->perPage() + $loop->index + 1 }}</td>
+				<td>{{$project->name}}</td>
+				<td>{{$project->customer_name}}</td>
 				<td class="display-text"><a href="{{'/form-edit-project/'.$project->id}}" class="fas fa-edit" style="color:seagreen;font-size:16px;"></a></td>
 				<td class="display-text"><a href="{{'/delete-project/'.$project->id}}" class="fas fa-trash delete_project" style="color:red;font-size:16px;"></a></td>
 			</tr>

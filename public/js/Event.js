@@ -6,13 +6,17 @@ $(document).ready(function(){
         var idc = $(this).val();                            
         $.ajax({
                 type:'get',
-                 url:'/get-customer',
+                url:'/get-info-customer',
                 data:{id:idc},
                 success:function(data){
                     if(data.success == true){
-                        $('#sdt').val(data.info.phone);
-                        $('#diachi').val(data.info.address);
-                        $('#fax').val(data.info.fax);
+                        //$('#sdt').val(data.info.phone);
+                        //$('#diachi').val(data.info.address);
+                        //$('#fax').val(data.info.fax);
+						$('#project').empty();
+						for (let i = 0; i < data.projects.length; i++) {
+							$('#project').append($('<option>').val(data.projects[i].id).text(data.projects[i].name));			
+						}
                      }                                                                                
                     else{
                         alert("Fail");
@@ -44,9 +48,9 @@ $(document).ready(function(){
 	/**
 	 * js keyup change add to cart
 	 */
-	$('select').selectize({
-		sortField: 'text'
-	});
+	// $('select').selectize({
+	// 	sortField: 'text'
+	// });
 
 
 	$('#tab_logic tbody').on('keyup change',function(){

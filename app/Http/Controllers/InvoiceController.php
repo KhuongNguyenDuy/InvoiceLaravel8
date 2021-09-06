@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Project;
 use App\Models\Estimate;
 use App\Models\Item;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -50,10 +51,12 @@ class InvoiceController extends Controller
          $customers = Customer::showAllCustomer();
          $projects = Project::getAllProject();
          $estimates = Estimate::showAllEstimate();
+         $orders = Order::showAllOrder();
 
          return view('Invoice.add_invoice',[
             'customers' => $customers,
             'projects' => $projects,
+            'orders' => $orders,
             'estimates' => $estimates
         ]);
      }
@@ -118,12 +121,21 @@ class InvoiceController extends Controller
     //     return view('admin.add_invoice', ['items' => $items]);
     //  }
     /**
-     * find customer info by id customer
+     * find customer info by id customer->useless because spec change
      */
-    public function getCustomer(Request $request){
-        $customers = Customer::showCustomerById($request->id);
-        return response()->json(['success'=>true,'info' => $customers]);
-     }
+    // public function getCustomer(Request $request){
+    //     $customers = Customer::showCustomerById($request->id);
+    //     return response()->json(['success'=>true,'info' => $customers]);
+    // }
+    public function getInfoCustomer(Request $request){
+        //$customers = Customer::showCustomerById($request->id);
+        $projects = Project::getProjectByCustomerId($request->id);
+        // $estimates = Estimate::getEstimateByProject($projects);
+        // $orders = Order::getOrderByProject($projects);
+        $kq1 = 'kq1';
+        $kq2 = 'kq2';
+        return response()->json(['success'=>true,'projects' => $projects,'info2' => $kq2]);
+    }
 
      /**
       * update status invoice

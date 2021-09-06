@@ -105,7 +105,7 @@ class Invoice extends Model
         $invoices = DB::table('invoices')
               ->join('customers', 'invoices.customer_id', '=', 'customers.id')
               ->join('estimates', 'invoices.estimate_id', '=', 'estimates.id')
-              ->select('invoices.*','estimates.name as estimate_name','customers.name as customer_name','customers.address as customer_address','customers.phone as customer_phone')
+              ->select('invoices.*','estimates.no as estimate_no','customers.name as customer_name','customers.address as customer_address','customers.phone as customer_phone')
               ->orderBy('invoices.id', 'DESC')
               ->Paginate(20);
         return $invoices;

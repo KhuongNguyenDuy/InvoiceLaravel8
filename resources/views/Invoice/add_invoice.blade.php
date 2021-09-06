@@ -54,14 +54,25 @@
                 </select>
             </div>
             <div class="form-group col-md-1">
+                <label for="sdt">Order :</label>
+            </div>
+            <div class="form-group col-md-5">
+                <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
+                    <option value="" selected disabled>Chọn order..</option>
+                    @foreach($orders as $o)
+                        <option value="{{$o->id}}">{{$o->no}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <!-- <div class="form-group col-md-1">
                 <label for="sdt">Điện thoại :</label>
             </div>
             <div class="form-group col-md-5">
                 <input class="date form-control" type="text" value="" id="sdt" name="txtsdt" disabled>
-            </div>
+            </div> -->
         </div>
         <!--row address, fax customwr-->
-        <div class="form-row">
+        <!-- <div class="form-row">
              <div class="form-group col-md-1">
                  <label for="diachi">Địa chỉ :</label>
             </div>
@@ -74,18 +85,11 @@
             <div class="form-group col-md-5">
                 <input class="form-control" type="text" value="" id="fax" disabled >
             </div>
-        </div>
+        </div> -->
         <!--row estimate id, project name-->
         <div class="form-row">
-            <!-- <div class="form-group col-md-1">
-                <label for="project">Project :</label>
-            </div>
-            <div class="form-group col-md-5">
-                <input type="text" class="form-control" value="" disabled>
-                <input type="hidden" id="projectId" name="projectId" value="">
-            </div> -->
             <div class="form-group col-md-1">
-                <label for="project">Project :</label>
+                <label for="project" id="test">Project :</label>
             </div>
             <div class="form-group col-md-5">
                 <select class="form-control" id="project" name="project" required oninvalid="this.setCustomValidity('Xin vui lòng chọn project')" oninput="this.setCustomValidity('')">
@@ -102,7 +106,7 @@
                 <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
                 <option value="" selected disabled>Chọn estimate..</option>
                     @foreach($estimates as $e)
-                        <option value="{{$e->id}}">{{$e->id}}</option>
+                        <option value="{{$e->id}}">{{$e->no}}</option>
                     @endforeach
                 </select>
             </div>
