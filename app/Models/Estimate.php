@@ -26,6 +26,11 @@ class Estimate extends Model
         $estimate = DB::table('estimates')->where('id',$id)->first();
         return $estimate;
     }
+    //show estimate by project id
+    public static function getEstimateByProjectId($id){
+        $estimate = DB::table('estimates')->where('project_id',$id)->get();
+        return $estimate;
+    }
     //show all estimate
     public static function showAllEstimate(){
         $estimates = DB::table('estimates')
@@ -34,8 +39,7 @@ class Estimate extends Model
         ->orderBy('estimates.id', 'DESC')
         ->Paginate(20);
         return $estimates;
-    }
-
+    }    
      //add estimate
     public static function insert($estimate){
         DB::table('estimates')->insert($estimate);

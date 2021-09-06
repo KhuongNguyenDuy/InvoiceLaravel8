@@ -38,6 +38,12 @@ class Order extends Model
         return $orders;
     }
 
+    //show order by project id
+    public static function getOrderByProjectId($id){
+        $estimate = DB::table('orders')->where('project_id',$id)->get();
+        return $estimate;
+    }
+
 
 }
 

@@ -49,15 +49,15 @@ class InvoiceController extends Controller
      */
      public function formAddInvoice(Request $request){
          $customers = Customer::showAllCustomer();
-         $projects = Project::getAllProject();
-         $estimates = Estimate::showAllEstimate();
-         $orders = Order::showAllOrder();
+         //$projects = Project::getAllProject();
+         //$estimates = Estimate::showAllEstimate();
+         //$orders = Order::showAllOrder();
 
          return view('Invoice.add_invoice',[
-            'customers' => $customers,
-            'projects' => $projects,
-            'orders' => $orders,
-            'estimates' => $estimates
+            'customers' => $customers
+            //'projects' => $projects,
+            //'orders' => $orders,
+            //'estimates' => $estimates
         ]);
      }
      /**
@@ -129,12 +129,11 @@ class InvoiceController extends Controller
     // }
     public function getInfoCustomer(Request $request){
         //$customers = Customer::showCustomerById($request->id);
-        $projects = Project::getProjectByCustomerId($request->id);
-        // $estimates = Estimate::getEstimateByProject($projects);
-        // $orders = Order::getOrderByProject($projects);
-        $kq1 = 'kq1';
-        $kq2 = 'kq2';
-        return response()->json(['success'=>true,'projects' => $projects,'info2' => $kq2]);
+        $projects = Project::getProjectByCustomerId($request->id);       
+        return response()->json([
+            'success'=>true,
+            'projects' => $projects
+        ]);
     }
 
      /**
@@ -325,11 +324,18 @@ class InvoiceController extends Controller
                 $data.='<input type="hidden" name="id[]" value="'.$item->id.'">';
                 $data.='<td class="text-left">'.$item->name.'</td>';
                 $data.= '<td><input type="text" name="price[]" class="form-control price number-right" value="'.$price_item.'" readonly/></td>';
-                $data.= '<td><input type="number" id="" name="qty[]"  class="form-control qty number-right" min="0" max="500"/></td>';
-                $data.='<td><input type="text" name="total[]"  id="" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>';
+                $data.= '<td><input type="number" id="" name="qty[]" value="1" class="form-control qty number-right" min="0" max="500"/></td>';
+                $data.='<td><input type="text" name="total[]"  id="" value="'.$price_item.'" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>';
             $data.='</tr>';
         }
-        echo $data;
+              
+        $estimates = Estimate::getEstimateByProjectId($project_id);
+        $orders = Order::getOrderByProjectId($project_id);
+        return response()->json([
+            'data' => $data,
+            'estimates' => $estimates,
+            'orders' => $orders
+        ]);
     }
 
 }

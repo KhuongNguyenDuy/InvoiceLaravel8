@@ -1,6 +1,4 @@
 $(document).ready(function(){
-
-
 	//get phone, name customer
 	$('.customer-option').change(function(){
         var idc = $(this).val();                            
@@ -14,29 +12,48 @@ $(document).ready(function(){
                         //$('#diachi').val(data.info.address);
                         //$('#fax').val(data.info.fax);
 						$('#project').empty();
+						$('#estimate').empty();
+						$('#order').empty();												
+						$('#project').append($('<option>').val("").text("Chọn project...").attr("selected","selected").attr("disabled","disabled"));
+						$('#estimate').append($('<option>').val("").text("Chọn estimate...").attr("selected","selected").attr("disabled","disabled"));
+						$('#order').append($('<option>').val("").text("Chọn order...").attr("selected","selected").attr("disabled","disabled"));
+						$('#table_tr').html("");
+						$('#sub_total').val(0);
+						$('#tax_amount').val(0);
+						$('#tax').val(10);
+						$('#total_amount').val(0); 
 						for (let i = 0; i < data.projects.length; i++) {
 							$('#project').append($('<option>').val(data.projects[i].id).text(data.projects[i].name));			
 						}
                      }                                                                                
                     else{
                         alert("Fail");
-                     }
-                                        
+                     }                                        
                 }
             });
     });
 	//get item when change project
-	 $('#project').change(function(){
-	 	var projectid = $(this).val();                         
+	$('#project').change(function(){
+	 	var projectid = $(this).val();                       
 	 	$.ajax({
 	 		type:'get',
 	 		url:'/ajax-get-item',
 	 		data:{id:projectid},
 	 		success:function(data){			
-	 			$('#table_tr').html(data);              
+	 			$('#table_tr').html(data.data);
+				$('#estimate').empty();
+				$('#order').empty();
+				$('#estimate').append($('<option>').val("").text("Chọn estimate...").attr("selected","selected").attr("disabled","disabled"));
+				$('#order').append($('<option>').val("").text("Chọn order...").attr("selected","selected").attr("disabled","disabled"));
+				for (let i = 0; i < data.estimates.length; i++) {
+					$('#estimate').append($('<option>').val(data.estimates[i].id).text(data.estimates[i].name));			
+				} 
+				for (let i = 0; i < data.orders.length; i++) {
+					$('#order').append($('<option>').val(data.orders[i].id).text(data.orders[i].name));			
+				}             
 	 		}
 	 	});
-	 });
+	});
 
 	/**
 	 * change project -> load item of project
@@ -51,8 +68,19 @@ $(document).ready(function(){
 	// $('select').selectize({
 	// 	sortField: 'text'
 	// });
-
-
+	//event when DO
+	$("#table_tr").bind("DOMSubtreeModified", function() {
+		$('#tab_logic tbody tr').each(function(i, element) {
+			var html = $(this).html();
+			if(html!=''){
+				var qty = $(this).find('.qty').val();
+				var price = parseInt($(this).find('.price').val().replace(new RegExp(',', 'g'),""));
+				var total_item = qty*price;
+				$(this).find('.total').val(number_format(total_item,0,"",","));
+				calc_total();
+			}
+		});
+	});
 	$('#tab_logic tbody').on('keyup change',function(){
 		$('#tab_logic tbody tr').each(function(i, element) {
 			var html = $(this).html();
