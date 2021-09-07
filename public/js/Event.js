@@ -18,10 +18,7 @@ $(document).ready(function(){
 						$('#estimate').append($('<option>').val("").text("Chọn estimate...").attr("selected","selected").attr("disabled","disabled"));
 						$('#order').append($('<option>').val("").text("Chọn order...").attr("selected","selected").attr("disabled","disabled"));
 						$('#table_tr').html("");
-						$('#sub_total').val(0);
-						$('#tax_amount').val(0);
-						$('#tax').val(10);
-						$('#total_amount').val(0); 
+						reset_total();
 						for (let i = 0; i < data.projects.length; i++) {
 							$('#project').append($('<option>').val(data.projects[i].id).text(data.projects[i].name));			
 						}
@@ -39,7 +36,10 @@ $(document).ready(function(){
 	 		type:'get',
 	 		url:'/ajax-get-item',
 	 		data:{id:projectid},
-	 		success:function(data){			
+	 		success:function(data){
+				if(data.data == ""){
+					reset_total();
+				}			
 	 			$('#table_tr').html(data.data);
 				$('#estimate').empty();
 				$('#order').empty();
@@ -94,6 +94,15 @@ $(document).ready(function(){
 		});
 	});
 
+	/**
+	 * reset total
+	 */
+	function reset_total(){
+		$('#sub_total').val(0);
+		$('#tax_amount').val(0);
+		$('#tax').val(10);
+		$('#total_amount').val(0);
+	}
 	/**
 	 * function get total invoice
 	 */

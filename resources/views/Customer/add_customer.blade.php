@@ -1,15 +1,17 @@
 @extends('layout')
 @section('title-detail', 'Thêm khách hàng')
 @section('library')
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 @endsection
 
 @section('content')
 <div style="font-size:0.9rem; margin: auto; width:80%;border: solid 1px gray;padding:15px;">
     <!--form submit request add customer-->
-    <form action='/add-customer' method="post" name="form_add_customer" onsubmit="return validateForm()">
+    <form action="{{URL::to('add-customer')}}" method="post" name="form_add_customer" onsubmit="return validateForm()">
          @csrf
-         <!--row ten customer name-->
+         <!--row customer name-->
         <div class="form-row">
             <div class="form-group col-md-2">
                 <b><label for="customer_name" >Tên công ty : (*)</label></b>
@@ -19,7 +21,7 @@
                 <p class="help-block" id="mess_name"><i>Tên công ty không quá 225 ký tự</i></p>                        
             </div>
         </div>
-        <!--row ten customer abbreviate name-->
+        <!--row customer abbreviate name-->
         <div class="form-row">
             <div class="form-group col-md-2">
                 <b><label for="abbreviate_name" >Tên viết tắt : (*)</label></b>
@@ -29,7 +31,7 @@
                 <p class="help-block" id="mess_abbreviate_name"><i>Tên viết tắt không quá 50 ký tự</i></p>                        
             </div>
         </div>
-         <!--row ten customer address-->
+         <!--row customer address-->
         <div class="form-row">
             <div class="form-group col-md-2">
                 <b><label for="address">Địa chỉ : (*)</label></b>
@@ -39,24 +41,68 @@
                 <p class="help-block" id="mess_address"><i>Địa chỉ không quá 255 ký tự</i></p>                        
             </div>
         </div>
-         <!--row ten customer phone-->
+         <!--row customer phone-->
         <div class="form-row">
             <div class="form-group col-md-2">
                 <b><label for="phone_number">Số điện thoại : (*)</label></b>
             </div>
             <div class="form-group col-md-5">
                 <input type="text" id="phone_number" name="phone_number" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập số điện thoại')" oninput="this.setCustomValidity('')">
-                <p class="help-block" id="mess_phone"><i>Không quá 11 chữ số</i></p>                        
+                <p class="help-block" id="mess_phone"><i>Không quá 15 ký tự</i></p>                        
             </div>
         </div>
-         <!--row ten customer fax-->
+         <!--row customer fax-->
         <div class="form-row">
             <div class="form-group col-md-2">
-                <b><label for="fax_number">Số Fax : (*)</label></b>
+                <b><label for="fax_number">Số Fax : </label></b>
             </div>
             <div class="form-group col-md-5">
-                <input type="text" id="fax_number" name="fax_number" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập số Fax')" oninput="this.setCustomValidity('')">
-                <p class="help-block" id="mess_fax"><i>Không quá 11 chữ số</i></p>                        
+                <input type="text" id="fax_number" name="fax_number" class="input-xlarge form-control">
+                <p class="help-block" id="mess_fax"><i>Không quá 15 ký tự</i></p>                        
+            </div>
+        </div>
+        <!--row Director-->
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <b><label for="director_name">Director : </label></b>
+            </div>
+            <div class="form-group col-md-10">
+                <input type="text" id="director_name" name="director_name" class="input-xlarge form-control">
+                <p class="help-block" id="mess_director_name"><i>Không quá 255 ký tự</i></p>                        
+            </div>
+        </div>
+        <!--row Establish-->
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <b><label for="establish_date">Establish : </label></b>
+            </div>
+            <div class="form-group col-md-5">             
+                <input class="estadate form-control" name="establish_date" id="establish_date" value="<?php echo date("Y/m/d"); ?>" type="text" >                                      
+                <!--#add datepicker-->
+                <script type="text/javascript">
+                    $('.estadate').datepicker({
+                        format: 'yyyy/mm/dd'
+                    });
+                </script>
+                <!--#daetpicker end-->
+            </div>
+        </div>
+        <!--row Capital-->
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <b><label for="capital">Capital : </label></b>
+            </div>
+            <div class="form-group col-md-5">
+                <input type="number" id="capital" name="capital" class="input-xlarge form-control"  min="0">                                              
+            </div>
+        </div>
+        <!--row Employee Number-->
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <b><label for="employee_num">Employee Number : </label></b>
+            </div>
+            <div class="form-group col-md-5">
+                <input type="number" id="employee_num" name="employee_num" class="input-xlarge form-control"  min="0">                     
             </div>
         </div>
 
@@ -96,13 +142,13 @@ function validateForm() {
     }else{
         document.getElementById("mess_address").style.color = "#858796";
     }
-    if(phone.length > 11){
+    if(phone.length > 15){
         document.getElementById("mess_phone").style.color = "red";
         flag = 1;
     }else{
         document.getElementById("mess_phone").style.color = "#858796";
     }
-    if(fax.length > 11){
+    if(fax.length > 15){
         document.getElementById("mess_fax").style.color = "red";
         flag = 1;
     }else{

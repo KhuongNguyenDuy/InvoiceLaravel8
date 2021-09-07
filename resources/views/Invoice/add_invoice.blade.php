@@ -16,9 +16,9 @@
 ?>
 <div style="font-size: 0.8rem; margin:20px;">
     <!--form submit request add invoice-->
-    <form action="{{URL::to('/add-invoice')}}" method="post" name="form_add_invoice" onsubmit="return validateForm()">
-         @csrf
-         <!--row create_at invoice -->
+    <form action="{{URL::to('add-invoice')}}" method="post" name="form_add_invoice" onsubmit="return validateForm()">
+        @csrf
+        <!--row create_at invoice -->
         <div class="form-row">
             <div class="form-group col-md-1">
                 <label for="ngaytao">Ngày tạo :</label>
@@ -34,7 +34,7 @@
                 <!--#add datepicker-->
                 <script type="text/javascript">
                     $('.date').datepicker({
-                    format: 'yyyy/mm/dd'
+                        format: 'yyyy/mm/dd'
                     });
                 </script>
                 <!--#daetpicker end-->
@@ -57,7 +57,7 @@
                 <label for="sdt">Order :</label>
             </div>
             <div class="form-group col-md-5">
-                <select class="form-control" id="order" name="order" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
+                <select class="form-control" id="order" name="order" oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
                     <option value="" selected disabled>Chọn order..</option>
                    
                 </select>

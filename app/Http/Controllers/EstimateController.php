@@ -78,7 +78,6 @@ class EstimateController extends Controller
        return redirect('/estimates')->with('success', 'Thêm Estimate thành công');
     }
 
-
       /**
      * show form edit estimate
      */
