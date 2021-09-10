@@ -160,7 +160,7 @@ class InvoiceController extends Controller
      /**
       * export file excel: import exist file excel-> map data
       */
-     public function exportInvoice($invoice_id,$type){
+     public function exportInvoice($invoice_id){
 
         $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
         $cart = Invoice::showInvoiceCart($invoice_id);

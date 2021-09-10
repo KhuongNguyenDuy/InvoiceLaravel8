@@ -21,12 +21,6 @@ class Order extends Model
     ];
     protected $table = 'orders';
 
-    /**
-     * add order
-     */
-    public static function insertOrder($order){
-        DB::table('orders')->insert($order);
-    }
 
     //show all order
     public static function showAllOrder(){
@@ -40,8 +34,38 @@ class Order extends Model
 
     //show order by project id
     public static function getOrderByProjectId($id){
-        $estimate = DB::table('orders')->where('project_id',$id)->get();
-        return $estimate;
+        $orders = DB::table('orders')->where('project_id',$id)->get();
+        return $orders;
+    }
+
+    //show order by id
+    public static function showOrderById($id){
+        $order = DB::table('orders')->where('id',$id)->first();
+        return $order;
+    }
+
+     //add order
+    public static function insertOrder($order){
+        DB::table('orders')->insert($order);
+    }
+    /**
+     * update order
+     */
+    public static function editOrder($id,$order){
+        DB::table('orders')->where('id',$id)->update($order);
+    }
+    /**
+     * delete order
+     */
+    public static function deleteOrder($id){
+        DB::table('orders')->where('id', '=', $id)->delete();
+    }
+    /**
+     * check file order exist
+     */
+    public static function checkFileExist($fileName){
+        $result = DB::table('orders')->where('name', '=', $fileName)->first();
+        return $result;
     }
 
 

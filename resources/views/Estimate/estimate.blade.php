@@ -9,6 +9,11 @@
     <strong>{{ $message }}</strong>
 </div>
 @endif
+@if ($message = Session::get('fail'))
+<div class="alert alert-danger" style="color:red;">
+    <strong>{{ $message }}</strong>
+</div>
+@endif
 	<table class="table table-hover table-bordered table-border-margin"> 
 		<thead>
 			<tr style="background-color: black;">

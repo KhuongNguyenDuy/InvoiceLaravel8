@@ -106,7 +106,7 @@ Route::post('/add-invoice', [InvoiceController::class, 'addInvoice'])->middlewar
 
 Route::get('/get-info-customer', [InvoiceController::class, 'getInfoCustomer'])->middleware('auth');//show customer info by ajax
 
-Route::get('/export-invoice/{id}={type}', [InvoiceController::class, 'exportInvoice'])->middleware('auth');//export excel
+Route::get('/export-invoice/{id}', [InvoiceController::class, 'exportInvoice'])->middleware('auth');//export excel
 
 Route::post('/update-status', [InvoiceController::class, 'updateStatus'])->middleware('auth'); //update status invoice
 
@@ -144,4 +144,16 @@ Route::get('/delete-item/{id}', [ItemController::class, 'deleteItem'])->middlewa
 | Admin ORDER
 |--------------------------------------------------------------------------
 */
-Route::post('/add-order', [OrderController::class, 'addOrder'])->middleware('auth'); // add estimate and upload file
+Route::get('/orders', [OrderController::class, 'index'])->middleware('auth'); // show list order
+
+Route::post('/add-order', [OrderController::class, 'addOrder'])->middleware('auth'); // add order and upload file
+
+Route::get('/form-add-order', [EstimateController::class, 'formAddEstimate'])->middleware('auth'); //show form add order
+
+Route::get('/download-order/{id}', [OrderController::class, 'downloadOrder'])->middleware('auth'); //download file
+
+Route::get('/form-edit-order/{id}', [OrderController::class, 'formEditOrder'])->middleware('auth'); //show form edit estimate
+
+Route::post('/edit-order', [OrderController::class, 'editOrder'])->middleware('auth'); // edit estimate 
+
+Route::get('/delete-order/{id}', [OrderController::class, 'deleteOrder'])->middleware('auth'); //delete estimate by id

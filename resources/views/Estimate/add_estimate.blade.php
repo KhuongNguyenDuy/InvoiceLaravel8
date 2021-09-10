@@ -62,7 +62,8 @@
                     </div>
                 </div>
             </form><!--#end form submit add estimate-->
-        </div>    
+        </div>
+        <!--FORM ORDER-->    
         <div class="form-group col-md-6" style="border: solid 1px gray;padding:15px;margin-left:10px;">
             <h4 style="text-align:center"><b>ORDER</b></h4>
             <p></p>

@@ -41,7 +41,7 @@ class Estimate extends Model
         return $estimates;
     }    
      //add estimate
-    public static function insert($estimate){
+    public static function insertEstimate($estimate){
         DB::table('estimates')->insert($estimate);
     }
     /**
@@ -56,6 +56,15 @@ class Estimate extends Model
     public static function deleteEstimate($id){
         DB::table('estimates')->where('id', '=', $id)->delete();
     }
+    /**
+     * check file estimate exist
+     */
+    public static function checkFileExist($fileName){
+        $result = DB::table('estimates')->where('name', '=', $fileName)->first();
+        return $result;
+    }
+
+
 
 
 

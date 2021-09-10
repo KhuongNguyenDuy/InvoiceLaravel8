@@ -64,16 +64,26 @@
                         </li>
 
                         <hr class="sidebar-divider">
-                        <!-- Nav Item - Tables -->
+                        <!-- Nav Customer - Tables -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/customers')}}">
-                                <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý Khách Hàng</span></a>
+                                <i class="fas fa-chalkboard-teacher" style='font-size:20px;'></i>
+                                <span class="font_weight">Quản lý Khách Hàng</span>
+                            </a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
 
-                        <!-- Nav Item - Tables -->
+                        <!-- Nav Project - Tables -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{URL::to('/projects')}}">
+                                <i class="fas fa-fw fa-table"></i>
+                                <span class="font_weight">Quản lý Project</span></a>
+                        </li>                        
+                        <!-- Divider -->
+                        <hr class="sidebar-divider">
+
+                        <!-- Nav Estimate - Tables -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/estimates')}}">
                                 <i class="fas fa-fw fa-table"></i>
@@ -82,25 +92,16 @@
                         <!-- Divider -->
                         <hr class="sidebar-divider">
 
-                        <!-- Nav Item - Tables -->
+                        <!-- Nav Order - Tables -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{URL::to('/projects')}}">
+                            <a class="nav-link" href="{{URL::to('/orders')}}">
                                 <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý Project</span></a>
+                                <span class="font_weight">Quản lý Order</span></a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
 
-                        <!-- Nav Item - Tables -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{URL::to('/items')}}">
-                                <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý Item</span></a>
-                        </li>
-                        <!-- Divider -->
-                        <hr class="sidebar-divider">
-
-                        <!-- Nav Item - Tables -->
+                        <!-- Nav Invoice - Tables -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/invoices')}}">
                                 <i class="fas fa-fw fa-table"></i>
