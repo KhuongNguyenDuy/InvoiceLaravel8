@@ -59,7 +59,7 @@
                         <!-- Nav Item - Dashboard -->
                         <li class="nav-item active">
                             <a class="nav-link" href="#">
-                                <i class="fas fa-fw fa-tachometer-alt"></i>
+                                <i class="fas fa-fw fa-tachometer-alt" style='font-size:20px;'></i>
                                 <span>Dashboard</span></a>
                         </li>
 
@@ -67,7 +67,7 @@
                         <!-- Nav Customer - Tables -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/customers')}}">
-                                <i class="fas fa-chalkboard-teacher" style='font-size:20px;'></i>
+                                <i class="fas fa-users" style='font-size:18px;'></i>
                                 <span class="font_weight">Quản lý Khách Hàng</span>
                             </a>
                         </li>
@@ -76,9 +76,10 @@
 
                         <!-- Nav Project - Tables -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{URL::to('/projects')}}">
-                                <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý Project</span></a>
+                            <a class="nav-link" href="{{URL::to('/projects')}}">                                
+                                <i class="fas fa-project-diagram" style='font-size:18px;'></i>
+                                <span class="font_weight">Quản lý Project</span>
+                            </a>
                         </li>                        
                         <!-- Divider -->
                         <hr class="sidebar-divider">
@@ -86,8 +87,9 @@
                         <!-- Nav Estimate - Tables -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/estimates')}}">
-                                <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý Estimate</span></a>
+                                <i class="fas fa-fw fa-table" style='font-size:18px;'></i>
+                                <span class="font_weight">Quản lý Estimate</span>
+                            </a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
@@ -95,17 +97,19 @@
                         <!-- Nav Order - Tables -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{URL::to('/orders')}}">
-                                <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý Order</span></a>
+                                <i class="fas fa-fw fa-table" style='font-size:18px;'></i>
+                                <span class="font_weight">Quản lý Order</span>
+                            </a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider">
 
                         <!-- Nav Invoice - Tables -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{URL::to('/invoices')}}">
-                                <i class="fas fa-fw fa-table"></i>
-                                <span class="font_weight">Quản lý Invoice</span></a>
+                            <a class="nav-link" href="{{URL::to('/invoices')}}">                                
+                                <i class="fas fa-file-invoice-dollar" style='font-size:18px;'></i>
+                                <span class="font_weight">Quản lý Invoice</span>
+                            </a>
                         </li>
                         <!-- Divider -->
                         <hr class="sidebar-divider d-none d-md-block">

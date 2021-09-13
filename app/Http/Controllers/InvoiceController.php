@@ -64,57 +64,68 @@ class InvoiceController extends Controller
       * get table customer, project, estimate, item
       * show in to form add invoice
      */
-     public function addInvoice(Request $request){
-          $invoiceID = 0; // 0: insert fail. >0: insert success
-          DB::beginTransaction();
-          try {
-             $invoice = array(
-                 'create_date' => $request->ngaytao,
-                 'status' => false,
-                 'total' => (float)str_replace(",", "", $request->total_amount),
-                 'expire_date' => $request->hantt,
-                 'estimate_id' => $request->estimate,
-                //  'order_id' => 1,
-                 'customer_id' => $request->khachhang,
-                 'tax_rate' => $request->tax_rate
-                );
-             //get id of invoice inserted
-             $invoiceID = Invoice::insertInvoice($invoice);
-
-             if($invoiceID > 0){ //if insert success -> insert invoice detail
-                 $array_price = $request->price;
-                 $array_qty = $request->qty;
-                 $array_id = $request->id;
-                 $array_total = $request->total;
-                 foreach ($array_id as $id => $key) { //convert to array with key and value
-                     $result[$key] = array(
-                         'price'  => (float)str_replace(",", "", $array_price[$id]),
-                         'qty' => $array_qty[$id],
-                         'total'  => (float)str_replace(",", "", $array_total[$id])
-                     );
-                 }
-                 foreach($result as $key => $value){
-                     if($value['qty'] > 0){
-                         $invoiceDetail = array(
-                             'invoice_id' => $invoiceID,
-                             'item_id' => $key,
-                             'quantity' => $value['qty'],
-                             'price' => $value['price'],
-                             'amount' => $value['total']
-                         );
-
-                         InvoiceItem::insertInvoiceItem($invoiceDetail);
-                        }
-                    }
+    public function addInvoice(Request $request){
+        $invoiceID = 0; // 0: insert fail. >0: insert success
+        DB::beginTransaction();
+        try {
+           $invoice = array(
+               'create_date' => $request->ngaytao,
+               'status' => false,
+               'total' => (float)str_replace(",", "", $request->total_amount),
+               'expire_date' => $request->hantt,
+               'estimate_id' => $request->estimate,
+               'order_id' => $request->order,
+               'customer_id' => $request->khachhang,
+               'tax_rate' => $request->tax_rate
+              );
+            //get id of invoice inserted
+            $invoiceID = Invoice::insertInvoice($invoice);
+            if($invoiceID > 0){ //if insert success -> insert invoice detail
+                $arrayPrice = $request->price;
+                $arrayQty = $request->qty;
+                $arrayProduct= $request->product;
+                $arrayTotal = $request->total;
+                $count = count($arrayPrice);
+                $arrayItemId = array();
+                for ($i = 0; $i < $count; $i++) {
+                    $item = array(                   
+                        'name'  =>  $arrayProduct[$i],
+                        'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
+                        'project_id'  => $request->project
+                       );                                         
+                    $itemId = Item::insertItem($item);
+                    array_push($arrayItemId,$itemId);
                 }
-                DB::commit();
-            }catch (Exception $e) {
-                DB::rollback();
-                return redirect()->back()->withErrors(['success' => $e->getMessage()]);
+          
+            
+               
+                // foreach ($array_id as $id => $key) { //convert to array with key and value
+                //     $result[$key] = array(
+                //         'price'  => (float)str_replace(",", "", $array_price[$id]),
+                //         'qty' => $array_qty[$id],
+                //         'total'  => (float)str_replace(",", "", $array_total[$id])
+                //     );
+                // }
+                // foreach($result as $key => $value){
+                //     if($value['qty'] > 0){
+                //         $invoiceDetail = array(
+                //             'invoice_id' => $invoiceID,
+                //             'item_id' => $key,
+                //             'quantity' => $value['qty'],
+                //             'price' => $value['price'],
+                //             'amount' => $value['total']
+                //         );
+                //         InvoiceItem::insertInvoiceItem($invoiceDetail);
+                //     }
+                // }
             }
-
-            return redirect('invoices')->with('success', 'Thêm hoá đơn thành công!');
+            DB::commit();
+        }catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors(['success' => $e->getMessage()]);
         }
+        return redirect('invoices')->with('success', 'Thêm hoá đơn thành công!');
+    }
 
     //  public function getItemByProjectId($id){
     //     $items = Item::showItemByProjectId($id);
@@ -316,23 +327,23 @@ class InvoiceController extends Controller
      */
     public function getItem(Request $request){
         $project_id = $request->id;
-        $items = Item::showItemByProjectId($project_id);
-        $data = '';
-        foreach($items as $item){
-            $price_item = number_format($item->price);
-            $data.='<tr>';
-                $data.='<input type="hidden" name="id[]" value="'.$item->id.'">';
-                $data.='<td class="text-left">'.$item->name.'</td>';
-                $data.= '<td><input type="text" name="price[]" class="form-control price number-right" value="'.$price_item.'" readonly/></td>';
-                $data.= '<td><input type="number" id="" name="qty[]" value="1" class="form-control qty number-right" min="0" max="500"/></td>';
-                $data.='<td><input type="text" name="total[]"  id="" value="'.$price_item.'" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>';
-            $data.='</tr>';
-        }
+        // $items = Item::showItemByProjectId($project_id);
+        // $data = '';
+        // foreach($items as $item){
+        //     $price_item = number_format($item->price);
+        //     $data.='<tr>';
+        //         $data.='<input type="hidden" name="id[]" value="'.$item->id.'">';
+        //         $data.='<td class="text-left">'.$item->name.'</td>';
+        //         $data.= '<td><input type="text" name="price[]" class="form-control price number-right" value="'.$price_item.'" readonly/></td>';
+        //         $data.= '<td><input type="number" id="" name="qty[]" value="1" class="form-control qty number-right" min="0" max="500"/></td>';
+        //         $data.='<td><input type="text" name="total[]"  id="" value="'.$price_item.'" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>';
+        //     $data.='</tr>';
+        // }
               
         $estimates = Estimate::getEstimateByProjectId($project_id);
         $orders = Order::getOrderByProjectId($project_id);
         return response()->json([
-            'data' => $data,
+            //'data' => $data,
             'estimates' => $estimates,
             'orders' => $orders
         ]);

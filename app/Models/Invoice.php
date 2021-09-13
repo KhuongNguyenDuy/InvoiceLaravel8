@@ -19,6 +19,7 @@ class Invoice extends Model
         'total',
         'expire_date',
         'estimate_id',
+        'order_id',
         'customer_id',
         'tax_rate'
     ];

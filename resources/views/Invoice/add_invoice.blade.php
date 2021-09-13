@@ -40,7 +40,7 @@
                 <!--#daetpicker end-->
             </div>
         </div>
-        <!--row info phone customer-->
+        <!--row info customer-->
         <div class="form-row">
             <div class="form-group col-md-1">
                 <label for="khachang">Khách hàng :</label>
@@ -54,37 +54,15 @@
                 </select>
             </div>
             <div class="form-group col-md-1">
-                <label for="sdt">Order :</label>
+                <label for="order">Order :</label>
             </div>
             <div class="form-group col-md-5">
-                <select class="form-control" id="order" name="order" oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
-                    <option value="" selected disabled>Chọn order..</option>
-                   
+                <select class="form-control" id="order" name="order">
+                    <option value="" selected disabled>Chọn order..</option>                   
                 </select>
             </div>
-            <!-- <div class="form-group col-md-1">
-                <label for="sdt">Điện thoại :</label>
-            </div>
-            <div class="form-group col-md-5">
-                <input class="date form-control" type="text" value="" id="sdt" name="txtsdt" disabled>
-            </div> -->
         </div>
-        <!--row address, fax customwr-->
-        <!-- <div class="form-row">
-             <div class="form-group col-md-1">
-                 <label for="diachi">Địa chỉ :</label>
-            </div>
-            <div class="form-group col-md-5">
-                <input class="form-control" value="" type="text" id="diachi" disabled>
-            </div>
-            <div class="form-group col-md-1">
-                <label for="fax">Fax:</label>
-            </div>
-            <div class="form-group col-md-5">
-                <input class="form-control" type="text" value="" id="fax" disabled >
-            </div>
-        </div> -->
-        <!--row estimate id, project name-->
+        <!--row estimate, project name-->
         <div class="form-row">
             <div class="form-group col-md-1">
                 <label for="project" id="test">Project :</label>
@@ -100,13 +78,74 @@
             </div>
             <div class="form-group col-md-5">
                 <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
-                <option value="" selected disabled>Chọn estimate..</option>
-                   
+                    <option value="" selected disabled>Chọn estimate..</option>                   
                 </select>
             </div>
         </div>
-        <!--table show item-->
-        <div style="width:85%; margin:auto;" >
+        <!--###-->
+        <div style="width:95%;" >
+            <div class="row clearfix">
+                <div class="col-md-1">           
+                    <a id="add_row" class="btn btn-success" style="color:white; margin-top:10px;"><b style="padding:10px;"> + </b></a>
+                    <a id='delete_row' class="btn btn-danger" style="color:white;margin-top:10px;"><b style="padding:10px;"> - </b></a>
+                </div>
+                <div class="col-md-11">
+                    <table class="table table-bordered table-hover" id="tab_logic">
+                        <thead>
+                        <tr>
+                            <th class="text-center"> STT </th>
+                            <th class="text-center">Tên sản phẩm</th>
+                            <th class="text-center">Đơn giá</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Thành tiền</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr id='addr0'>
+                                <td>1</td>                                              
+                                <td><input type="text" name='product[]'  placeholder='Nhập tên' class="form-control" required style="width: 95%"/></td>
+                                <td><input type="text" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="price[]" class="form-control price number-right"  placeholder='Nhập giá' value="" min="1" size="20" required style="width: 95%"/></td>
+                                <td><input type="number" id="" name="qty[]" value="1" class="form-control qty number-right" min="1" required style="width: 90%"/></td>
+                                <td><input type="text" name="total[]"  id="" value="0" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>                
+                            </tr>
+                            <tr id='addr1'></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+       
+            <div class="row clearfix" style="margin-top:20px;">
+                <div class="col-md-7">                
+                </div>
+                <div class="col-md-5">
+                    <table class="table table-bordered table-hover" id="tab_logic_total">
+                        <tbody>
+                        <tr>
+                            <th class="number-right">Tổng phụ :</th>                            
+                            <td><input type="text" name='sub_total' placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
+                        </tr>
+                        <tr>
+                            <th class="number-right">Thuế (%) :</th>
+                            <td class="text-center">                            
+                                <input type="text" name="tax_rate" class="form-control number-right" id="tax" value=<?php echo config('global.tax');?>>                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="number-right">Tổng thuế :</th>
+                            <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' class="form-control number-right" readonly/></td>                            
+                        </tr>
+                        <tr>
+                            <th class="number-right">Tổng cộng :</th>
+                            <td><input type="text" name='total_amount' id="total_amount" value="0" placeholder='0' class="form-control cart_total number-right" readonly/></td>                           
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--###--->
+        <!--table show item-->        
+        <!-- <div style="width:85%; margin:auto;" >
             <table class="table table-striped table-bordered" id="tab_logic">
                 <thead>
                     <tr>
@@ -149,7 +188,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> -->
         <!--table show tax and total-->
 
         <!--row button sumit add invoice-->

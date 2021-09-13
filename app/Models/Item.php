@@ -62,7 +62,8 @@ class Item extends Model
      * insert item 
      */
     public static function insertItem($item){
-        DB::table('items')->insert($item);
+        $itemId = DB::table('items')->insertGetId($item);
+        return $itemId;
     }
 
     /**
