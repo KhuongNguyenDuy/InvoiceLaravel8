@@ -94,11 +94,20 @@ class InvoiceController extends Controller
                         'project_id'  => $request->project
                        );                                         
                     $itemId = Item::insertItem($item);
-                    array_push($arrayItemId,$itemId);
+                    if( $itemId > 0){
+                        array_push($arrayItemId,$itemId);
+                    }                   
                 }
-          
-            
-               
+                for ($index = 0; $index < count($arrayItemId); $index++) {
+                    $invoiceDetail = array(
+                        'invoice_id' => $invoiceID,
+                        'item_id' => $arrayItemId[$index],
+                        'quantity' => $arrayQty[$index],
+                        'price' => (float)str_replace(",", "", $arrayPrice[$index]),
+                        'amount' => (float)str_replace(",", "", $arrayTotal[$index])
+                    );
+                    InvoiceItem::insertInvoiceItem($invoiceDetail);
+                }
                 // foreach ($array_id as $id => $key) { //convert to array with key and value
                 //     $result[$key] = array(
                 //         'price'  => (float)str_replace(",", "", $array_price[$id]),
@@ -126,7 +135,6 @@ class InvoiceController extends Controller
         }
         return redirect('invoices')->with('success', 'Thêm hoá đơn thành công!');
     }
-
     //  public function getItemByProjectId($id){
     //     $items = Item::showItemByProjectId($id);
     //     return view('admin.add_invoice', ['items' => $items]);
