@@ -34,10 +34,10 @@
                 </div> 
                 <div class="row" style="margin-left:-25px;">
                     <div class="col-md-7">
-                        <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_id}}</span></div>
+                        <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_no}}</span></div>
                     </div>
                     <div class="col-md-5">
-                        <div class="billed"><span class="font-weight-bold text-uppercase">Order No :</span><span class="ml-1"> {{$customerInvoice->customer_fax}}</span></div>
+                        <div class="billed"><span class="font-weight-bold text-uppercase">Order No :</span><span class="ml-1"> {{$orderNo}}</span></div>
                     </div>
                 </div> 
                 <div class="row">

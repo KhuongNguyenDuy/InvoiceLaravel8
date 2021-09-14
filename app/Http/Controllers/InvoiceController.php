@@ -37,10 +37,16 @@ class InvoiceController extends Controller
      public function invoiceDetail($invoice_id){
         $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
         $invoiceCart = Invoice::showInvoiceCart($invoice_id);
+        $orderNo = '';
+        if($customerInvoice->order_id != null){
+            $ord = Order::showOrderById($customerInvoice->order_id);
+            $orderNo = $ord->no;
+        }       
         return view('Invoice.invoice_detail',
         [
             'customerInvoice' => $customerInvoice,
-            'invoiceCart' => $invoiceCart
+            'invoiceCart' => $invoiceCart,
+            'orderNo' => $orderNo
         ]);
      }
      /**
@@ -183,6 +189,11 @@ class InvoiceController extends Controller
 
         $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
         $cart = Invoice::showInvoiceCart($invoice_id);
+        $orderNo = '';
+        if($customerInvoice->order_id != null){
+            $ord = Order::showOrderById($customerInvoice->order_id);
+            $orderNo = $ord->no;
+        }    
 
         $templateFile = resource_path('assets/templates/invoice.xlsx');
 
@@ -202,8 +213,10 @@ class InvoiceController extends Controller
         $worksheet->getCell('E11')->setValue($customerInvoice->customer_address);
         $worksheet->getCell('E12')->setValue($customerInvoice->customer_phone);
         $worksheet->getCell('H12')->setValue($customerInvoice->customer_fax);
-        $worksheet->setCellValueExplicit('E13',$customerInvoice->estimate_id, DataType::TYPE_STRING);
+        $worksheet->setCellValueExplicit('E13',$customerInvoice->estimate_no, DataType::TYPE_STRING);
         $worksheet->getStyle('E13')->getNumberFormat()->setFormatCode("00000000000");
+        $worksheet->setCellValueExplicit('H13',$orderNo, DataType::TYPE_STRING);
+        $worksheet->getStyle('H13')->getNumberFormat()->setFormatCode("00000000000");
         $worksheet->getCell('E15')->setValue($projectName);
 
         //table content list item
