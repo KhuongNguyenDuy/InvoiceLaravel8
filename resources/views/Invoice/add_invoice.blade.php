@@ -69,8 +69,7 @@
             </div>
             <div class="form-group col-md-5">
                 <select class="form-control" id="project" name="project" required oninvalid="this.setCustomValidity('Xin vui lòng chọn project')" oninput="this.setCustomValidity('')">
-                <option value="" selected disabled>Chọn project..</option>
-                   
+                    <option value="" selected disabled>Chọn project..</option>                   
                 </select>
             </div>
             <div class="form-group col-md-1">
@@ -82,7 +81,7 @@
                 </select>
             </div>
         </div>
-        <!--###-->
+        <!--### table cart info-->
         <div style="width:95%;" >
             <div class="row clearfix">
                 <div class="col-md-1">           
@@ -143,7 +142,7 @@
                 </div>
             </div>
         </div>
-        <!--###--->
+        <!--### end table cart info--->
         <!--table show item-->        
         <!-- <div style="width:85%; margin:auto;" >
             <table class="table table-striped table-bordered" id="tab_logic">

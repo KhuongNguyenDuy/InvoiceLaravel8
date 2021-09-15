@@ -17,9 +17,9 @@
 <div style="font-size: 0.8rem; margin:20px;">
     <!--form submit request add invoice-->
     <form action="{{URL::to('/edit-invoice')}}" method="post" name="form_edit_invoice" onsubmit="return validateForm()">
-         @csrf
-         <input type="hidden" name="invoice_id" value="{{ $customerInvoice->id }}">
-         <!--row create_at invoice -->
+        @csrf
+        <input type="hidden" name="invoice_id" value="{{ $customerInvoice->id }}">
+        <!--row create_at invoice -->
         <div class="form-row">
             <div class="form-group col-md-1">
                 <label for="ngaytao">Ngày tạo :</label>
@@ -58,25 +58,25 @@
                 </select>
             </div>
             <div class="form-group col-md-1">
-                <label for="sdt">Điện thoại :</label>
+                <label for="order">Order :</label>
             </div>
             <div class="form-group col-md-5">
-                <input class="date form-control" type="text" value="{{$customerInvoice->customer_phone}}" id="sdt" name="txtsdt" disabled>
-            </div>
-        </div>
-        <!--row address, fax customwr-->
-        <div class="form-row">
-             <div class="form-group col-md-1">
-                 <label for="diachi">Địa chỉ :</label>
-            </div>
-            <div class="form-group col-md-5">
-                <input class="form-control" value="{{$customerInvoice->customer_address}}" type="text" id="diachi" disabled>
-            </div>
-            <div class="form-group col-md-1">
-                <label for="fax">Fax:</label>
-            </div>
-            <div class="form-group col-md-5">
-                <input class="form-control" type="text" value="{{$customerInvoice->customer_fax}}" id="fax" disabled >
+                <select class="form-control" id="order" name="order">
+                    @if ($customerInvoice->order_id == null)
+                        <option value="" selected disabled>Chọn order...</option>   
+                        @foreach($orders as $od)                    
+                            <option value="{{$od->id}}">{{$od->no}}</option>
+                        @endforeach -->
+                    @else
+                        @foreach($orders as $od)                    
+                            @if ($customerInvoice->order_id == $od->id)
+                                <option value="{{$od->id}}" selected>{{$od->no}}</option>
+                            @else
+                                <option value="{{$od->id}}">{{$od->no}}</option>
+                            @endif
+                        @endforeach -->
+                    @endif                    
+                </select>
             </div>
         </div>
         <!--row estimate id, project name-->
@@ -85,7 +85,7 @@
                 <label for="project">Project :</label>
             </div>
             <div class="form-group col-md-5">
-                <select class="form-control" id="project" name="project" disabled required oninvalid="this.setCustomValidity('Xin vui lòng chọn project')" oninput="this.setCustomValidity('')">
+                <select class="form-control" id="project" name="project" required oninvalid="this.setCustomValidity('Xin vui lòng chọn project')" oninput="this.setCustomValidity('')">
                     @foreach($projects as $p)
                         @if ($invoiceCart[0]->project_id == $p->id)
                             <option value="{{$invoiceCart[0]->project_id}}" selected>{{$invoiceCart[0]->project_name}}</option>
@@ -102,73 +102,74 @@
                 <select class="form-control" id="estimate" name="estimate" required oninvalid="this.setCustomValidity('Xin vui lòng chọn estimate')" oninput="this.setCustomValidity('')">
                     @foreach($estimates as $e)
                         @if ($customerInvoice->estimate_id == $e->id)
-                            <option value="{{$customerInvoice->estimate_id}}" selected>{{$customerInvoice->estimate_id}}</option>
+                            <option value="{{$customerInvoice->estimate_id}}" selected>{{$customerInvoice->estimate_no}}</option>
                         @else
-                            <option value="{{$e->id}}">{{$e->id}}</option>
+                            <option value="{{$e->id}}">{{$e->no}}</option>
                         @endif
                     @endforeach
                 </select>
             </div>
         </div>
-        <!--table show item-->
-        <div style="width:85%; margin:auto;" >
-            <table class="table table-striped table-bordered" id="tab_logic">
-                <thead>
-                    <tr>
-                        <th class="text-center">Tên sản phẩm</th>
-                        <th class="text-center">Đơn giá</th>
-                        <th class="text-center">Số lượng</th>
-                        <th class="text-center">Thành tiền</th>
-                    </tr>
-                </thead>
-                <tbody id="table_tr">
-                    <?php
-                        $sub_total = 0;
-                        $tax = config('global.tax'); //take tax in file global
-                    ?>
-                    @for ($i = 0; $i < $invoiceCart->count();$i++)
-                        <?php $sub_total += $invoiceCart[$i]->amount; ?>
+        <!--table show item-->       
+        <div style="width:95%;" >
+            <div class="row clearfix">
+                <div class="col-md-1">           
+                    <a id="add_row" class="btn btn-success" style="color:white; margin-top:10px;"><b style="padding:10px;"> + </b></a>
+                    <a id='delete_row' class="btn btn-danger" style="color:white;margin-top:10px;"><b style="padding:10px;"> - </b></a>
+                </div>
+                <div class="col-md-11">
+                    <table class="table table-bordered table-hover" id="tab_logic">
+                        <thead>
                         <tr>
-                            <input type="hidden" name="id[]" value="{{ $invoiceCart[$i]->item_id }}">
-                            <td class="text-left">{{ $invoiceCart[$i]->item_name }}</td>
-                            <td><input type="text" name="price[]" class="form-control price number-right" value="<?php echo number_format($invoiceCart[$i]->price); ?>" readonly/></td>
-                            <td><input type="number" id="" name="qty[]" value="{{ $invoiceCart[$i]->quantity }}" class="form-control qty number-right" min="0" max="500"/></td>
-                            <td><input type="text" name="total[]" value="<?php echo number_format($invoiceCart[$i]->price); ?>" id="" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>
+                            <th class="text-center"> STT </th>
+                            <th class="text-center">Tên sản phẩm</th>
+                            <th class="text-center">Đơn giá</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Thành tiền</th>
                         </tr>
-                    @endfor
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <table class="table table-bordered table-hover" id="tab_logic_total">
-                                <tbody>
-                                    <tr>
-                                        <th class="number-right">Tổng phụ :</th>
-                                        <td><input type="text" name='sub_total' value="{{ number_format($sub_total) }}" placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="number-right">Thuế (%) :</th>
-                                        <td>
-                                            <input type="text" name="tax_rate" class="form-control number-right" id="tax" value="{{ $customerInvoice->tax_rate }}">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="number-right">Tổng thuế :</th>
-                                        <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' value="{{ number_format($sub_total*$tax/100) }}" class="form-control number-right" readonly/></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="number-right">Tổng cộng :</th>
-                                        <td><input type="text" name='total_amount' id="total_amount" value="{{ number_format($sub_total+($sub_total*$tax/100)) }}" placeholder='0' class="form-control cart_total number-right" readonly/></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            <tr id='addr0'>
+                                <td>1</td>                                              
+                                <td><input type="text" name='product[]'  placeholder='Nhập tên' class="form-control" required style="width: 95%"/></td>
+                                <td><input type="text" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="price[]" class="form-control price number-right"  placeholder='Nhập giá' value="" min="1" size="20" required style="width: 95%"/></td>
+                                <td><input type="number" id="" name="qty[]" value="1" class="form-control qty number-right" min="1" required style="width: 90%"/></td>
+                                <td><input type="text" name="total[]"  id="" value="0" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>                
+                            </tr>
+                            <tr id='addr1'></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+       
+            <div class="row clearfix" style="margin-top:20px;">
+                <div class="col-md-7">                
+                </div>
+                <div class="col-md-5">
+                    <table class="table table-bordered table-hover" id="tab_logic_total">
+                        <tbody>
+                        <tr>
+                            <th class="number-right">Tổng phụ :</th>                            
+                            <td><input type="text" name='sub_total' placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
+                        </tr>
+                        <tr>
+                            <th class="number-right">Thuế (%) :</th>
+                            <td class="text-center">                            
+                                <input type="text" name="tax_rate" class="form-control number-right" id="tax" value=<?php echo config('global.tax');?>>                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="number-right">Tổng thuế :</th>
+                            <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' class="form-control number-right" readonly/></td>                            
+                        </tr>
+                        <tr>
+                            <th class="number-right">Tổng cộng :</th>
+                            <td><input type="text" name='total_amount' id="total_amount" value="0" placeholder='0' class="form-control cart_total number-right" readonly/></td>                           
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <!--table show tax and total-->
 

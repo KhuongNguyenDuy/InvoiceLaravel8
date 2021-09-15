@@ -265,14 +265,16 @@ class InvoiceController extends Controller
         $invoiceCart = Invoice::showInvoiceCart($invoice_id);
 
         $customers = Customer::showAllCustomer();
-        $projects = Project::getAllProject();
-        $estimates = Estimate::showAllEstimate();
+        $projects = Project::getProjectByCustomerId($customerInvoice->customer_id);
+        $estimates = Estimate::getEstimateByProjectId($invoiceCart[0]->project_id);
+        $orders = Order::getOrderByProjectId($invoiceCart[0]->project_id);
         $items = Item::showItemByProjectId($invoiceCart[0]->project_id);
 
         return view('Invoice.edit_invoice',[
            'customers' => $customers,
            'projects' => $projects,
            'estimates' => $estimates,
+           'orders' => $orders,
            'items' => $items,
            'customerInvoice' => $customerInvoice,
            'invoiceCart' => $invoiceCart
@@ -328,16 +330,13 @@ class InvoiceController extends Controller
      * Delete invoice
      */
     public function deleteInvoice($id){
-
         DB::beginTransaction();
-
         try {
             Invoice::deleteInvoice($id);
             InvoiceItem::deleteInvoiceItem($id);
             DB::commit();
         }
         catch (Exception $e) {
-
             DB::rollback();
             return redirect()->back()->withErrors(['success' => $e->getMessage()]);
         }
