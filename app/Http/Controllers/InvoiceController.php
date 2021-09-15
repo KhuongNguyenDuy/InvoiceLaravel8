@@ -283,8 +283,7 @@ class InvoiceController extends Controller
     /**
      * Update info invoice
      */
-    public function editInvoice(Request $request){
-        $res = 0; //if == 0 -> update fail
+    public function editInvoice(Request $request){      
         DB::beginTransaction();
         try {
             $invoice = array(
@@ -292,32 +291,34 @@ class InvoiceController extends Controller
                 'total' => (float)str_replace(",", "", $request->total_amount),
                 'expire_date' => $request->hantt,
                 'estimate_id' => $request->estimate,
-                'customer_id' => $request->khachhang
+                'order_id' => $request->order,
+                'customer_id' => $request->khachhang,
+                'tax_rate' => $request->tax_rate
             );
-            $res = Invoice::updateInvoice($request->invoice_id, $invoice);
-            if($res > 0){
-                $array_price = $request->price;
-                $array_qty = $request->qty;
-                $array_id = $request->id;
-                $array_total = $request->total;
-                foreach ($array_id as $id => $key) { //convert to array with key and value
-                    $result[$key] = array(
-                        'price'  => (float)str_replace(",", "", $array_price[$id]),
-                        'qty' => $array_qty[$id],
-                        'total'  => (float)str_replace(",", "", $array_total[$id])
-                    );
-                }
-                foreach($result as $key => $value){
-                    if($value['qty'] > 0){
-                        $content = array(
-                            'quantity' => $value['qty'],
-                            'price' => $value['price'],
-                            'amount' => $value['total']
-                        );
-                        InvoiceItem::updateInvoiceItem($request->invoice_id,$key,$content);
-                    }
-                }
+            Invoice::updateInvoice($request->invoice_id, $invoice);//update invoice
+
+            $arrayPrice = $request->price;
+            $arrayQty = $request->qty;
+            $arrayItemId = $request->id;
+            $arrayProduct= $request->product;
+            $arrayTotal = $request->total;
+            $count = count($arrayPrice);
+            for ($i = 0; $i < $count; $i++) {
+                $item = array(                   
+                    'name'  =>  $arrayProduct[$i],
+                    'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
+                    'project_id'  => $request->project
+                );                    
+                Item::editItem($arrayItemId[$i],$item);//update item
             }
+            for ($index = 0; $index < count($arrayItemId); $index++) {
+                $invoiceDetail = array(                                              
+                    'quantity' => $arrayQty[$index],
+                    'price' => (float)str_replace(",", "", $arrayPrice[$index]),
+                    'amount' => (float)str_replace(",", "", $arrayTotal[$index])
+                );
+                InvoiceItem::updateInvoiceItem($request->invoice_id,$arrayItemId[$index],$invoiceDetail);//update invoice item
+            }         
             DB::commit();
         }
         catch (Exception $e) {

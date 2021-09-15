@@ -110,14 +110,11 @@
                 </select>
             </div>
         </div>
-        <!--table show item-->       
-        <div style="width:95%;" >
+        <!--table show item-->
+ 
+        <div style="width:90%; margin:auto;" >
             <div class="row clearfix">
-                <div class="col-md-1">           
-                    <a id="add_row" class="btn btn-success" style="color:white; margin-top:10px;"><b style="padding:10px;"> + </b></a>
-                    <a id='delete_row' class="btn btn-danger" style="color:white;margin-top:10px;"><b style="padding:10px;"> - </b></a>
-                </div>
-                <div class="col-md-11">
+                <div class="col-md-12">
                     <table class="table table-bordered table-hover" id="tab_logic">
                         <thead>
                         <tr>
@@ -129,14 +126,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr id='addr0'>
-                                <td>1</td>                                              
-                                <td><input type="text" name='product[]'  placeholder='Nhập tên' class="form-control" required style="width: 95%"/></td>
-                                <td><input type="text" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="price[]" class="form-control price number-right"  placeholder='Nhập giá' value="" min="1" size="20" required style="width: 95%"/></td>
-                                <td><input type="number" id="" name="qty[]" value="1" class="form-control qty number-right" min="1" required style="width: 90%"/></td>
-                                <td><input type="text" name="total[]"  id="" value="0" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>                
-                            </tr>
-                            <tr id='addr1'></tr>
+                            <?php
+                                $sub_total = 0;
+                                $tax = $customerInvoice->tax_rate;
+                            ?>
+                            @for ($i = 0; $i < $invoiceCart->count();$i++)
+                                <?php $sub_total += $invoiceCart[$i]->amount; ?>
+                                <tr>
+                                    <input type="hidden" name="id[]" value="{{ $invoiceCart[$i]->item_id }}">
+                                    <td>{{ $i+1 }}</td>                                              
+                                    <td><input type="text" name='product[]' value="{{ $invoiceCart[$i]->item_name }}" class="form-control" required style="width: 95%"/></td>
+                                    <td><input type="text" value="<?php echo number_format($invoiceCart[$i]->price); ?>" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="price[]" class="form-control price number-right" min="1" size="20" required style="width: 95%"/></td>
+                                    <td><input type="number" id="" name="qty[]" value="{{ $invoiceCart[$i]->quantity }}" class="form-control qty number-right" min="1" required style="width: 90%"/></td>
+                                    <td><input type="text" name="total[]"  id="" value="<?php echo number_format($invoiceCart[$i]->amount); ?>" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>                
+                                </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>
@@ -146,25 +150,26 @@
                 <div class="col-md-7">                
                 </div>
                 <div class="col-md-5">
+                    
                     <table class="table table-bordered table-hover" id="tab_logic_total">
                         <tbody>
                         <tr>
                             <th class="number-right">Tổng phụ :</th>                            
-                            <td><input type="text" name='sub_total' placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
+                            <td><input type="text" name='sub_total' value="{{ number_format($sub_total) }}" class="form-control number-right" id="sub_total" readonly/></td>
                         </tr>
                         <tr>
                             <th class="number-right">Thuế (%) :</th>
                             <td class="text-center">                            
-                                <input type="text" name="tax_rate" class="form-control number-right" id="tax" value=<?php echo config('global.tax');?>>                                
+                                <input type="text" name="tax_rate" class="form-control number-right" id="tax" value="{{ $customerInvoice->tax_rate }}">                                
                             </td>
                         </tr>
                         <tr>
                             <th class="number-right">Tổng thuế :</th>
-                            <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' class="form-control number-right" readonly/></td>                            
+                            <td><input type="text" name='tax_amount' id="tax_amount" value="{{ number_format($sub_total*$tax/100) }}" class="form-control number-right" readonly/></td>                            
                         </tr>
                         <tr>
                             <th class="number-right">Tổng cộng :</th>
-                            <td><input type="text" name='total_amount' id="total_amount" value="0" placeholder='0' class="form-control cart_total number-right" readonly/></td>                           
+                            <td><input type="text" name='total_amount' id="total_amount" value="{{ number_format($sub_total+($sub_total*$tax/100)) }}" class="form-control cart_total number-right" readonly/></td>                           
                         </tr>
                         </tbody>
                     </table>
@@ -199,10 +204,6 @@ function validateForm() {
     var current_day = new Date(getCurrentDay());
     var create_day = new Date(create_at);
     var expire_day = new Date(expire_at);
-    if(compareDate(current_day,create_day) == 1){ //if current day> create day
-        alert("Ngày tạo nhỏ hơn ngày hiện tại");
-        return false;
-    }
     if(compareDate(create_day,expire_day) == 1){ //if create day > expire day
         alert("Ngày tạo lớn hơn hạn thanh toán");
         return false;
