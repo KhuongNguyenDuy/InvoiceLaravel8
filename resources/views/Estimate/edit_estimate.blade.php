@@ -3,7 +3,7 @@
 @section('content')
 
 <div style="font-size:0.9rem; margin: auto; width:95%;">
-    <div class="form-row">        
+    <div class="form-row">
         <div class="form-group col-md-10" style="border: solid 1px gray;padding:15px;margin:auto;">
             <h4 style="text-align:center"><b>ESTIMATE</b></h4>
             <p></p>
@@ -22,9 +22,9 @@
                               <option value="{{$estimate->project_id}}" selected>{{$p->name}}</option>
                             @else
                               <option value="{{$p->id}}">{{$p->name}}</option>
-                            @endif       
-                          @endforeach                          
-                        </select>                       
+                            @endif
+                          @endforeach
+                        </select>
                     </div>
                 </div>
                 <!--row Estimate No-->
@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group col-md-7">
                         <input type="text" value="{{ $estimate->no }}" id="est_no" name="est_no" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập estimate')" oninput="this.setCustomValidity('')">
-                        <p class="help-block" id="mess_est_no"><i>Estimate không quá 20 ký tự</i></p>                        
+                        <p class="help-block" id="mess_est_no"><i>Estimate không quá 20 ký tự</i></p>
                     </div>
                 </div>
                 <!--row File-->
@@ -55,9 +55,9 @@
                         <input type="hidden" name="estimate_id" value="{{$estimate->id}}">
                         <input type="hidden" name="estimate_name" value="{{$estimate->name}}">
                         <input type="file" name="estFile" class="custom-file-input" id="chooseFile" >
-                        <label class="custom-file-label" for="chooseFile">{{ $estimate->name }}</label>                  
+                        <label class="custom-file-label" for="chooseFile">{{ $estimate->name }}</label>
                     </div>
-                </div>  
+                </div>
                 <!--row button add submit-->
                 <div class="form-row">
                     <div class="form-group col-md-2"></div>
@@ -76,13 +76,13 @@
  })
  function validateFormEstimate() {
     let estNo = document.forms["form_edit_estimate"]["est_no"].value;
-    var flag = 0;    
+    var flag = 0;
     if(estNo.length > 20){
         document.getElementById("mess_est_no").style.color = "red";
         flag = 1;
     }else{
         document.getElementById("mess_est_no").style.color = "#858796";
-    }        
+    }
     if(flag == 1){
         return false;
     }

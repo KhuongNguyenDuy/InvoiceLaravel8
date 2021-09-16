@@ -28,6 +28,7 @@ class CreateEstimatesTable extends Migration
             $table->string('no', 20);
             $table->string('name', 100);
             $table->string('path', 255);
+            $table->integer('amount');
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->timestamps();
