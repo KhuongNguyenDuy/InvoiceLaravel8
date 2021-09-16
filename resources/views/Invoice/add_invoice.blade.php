@@ -143,51 +143,7 @@
             </div>
         </div>
         <!--### end table cart info--->
-        <!--table show item-->        
-        <!-- <div style="width:85%; margin:auto;" >
-            <table class="table table-striped table-bordered" id="tab_logic">
-                <thead>
-                    <tr>
-                        <th class="text-center">Tên sản phẩm</th>
-                        <th class="text-center">Đơn giá</th>
-                        <th class="text-center">Số lượng</th>
-                        <th class="text-center">Thành tiền</th>
-                    </tr>
-                </thead>
-                <tbody id="table_tr"></tbody>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <table class="table table-bordered table-hover" id="tab_logic_total">
-                                <tbody>
-                                    <tr>
-                                        <th class="number-right">Tổng phụ :</th>
-                                        <td><input type="text" name='sub_total' placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="number-right">Thuế (%) :</th>
-                                        <td>
-                                            <input type="text" name="tax_rate" class="form-control number-right" id="tax" value=<?php echo config('global.tax');?>>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="number-right">Tổng thuế :</th>
-                                        <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' class="form-control number-right" readonly/></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="number-right">Tổng cộng :</th>
-                                        <td><input type="text" name='total_amount' id="total_amount" value="0" placeholder='0' class="form-control cart_total number-right" readonly/></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
+
         <!--table show tax and total-->
 
         <!--row button sumit add invoice-->
