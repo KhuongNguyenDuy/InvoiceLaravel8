@@ -9,7 +9,7 @@ return [
 
     'estimate_files_path' => 'estimations',
     'order_files_path' => 'orders',
-    'invoice_files_path' => 'invoices'
+    'invoice_files_path' => storage_path('app/invoices/')
 
     //How to call?
     //dd(config('global.tax'));
