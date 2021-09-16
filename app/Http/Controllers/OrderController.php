@@ -43,8 +43,9 @@ class OrderController extends Controller
            $order = array(
             'no' => $request->order_no,
             'name' => $fileName,
+            'amount' => $request->amount,
             'path' => '' ,
-            'project_id' => $request->project      
+            'project_id' => $request->project
             );
             $result = Order::checkFileExist($fileName);
             if($result){
@@ -55,7 +56,7 @@ class OrderController extends Controller
         }
         catch (Exception $e) {
             DB::rollback();
-        }        
+        }
        return redirect('/orders')->with('success', 'Thêm Order thành công');
     }
     /**
@@ -74,7 +75,7 @@ class OrderController extends Controller
      * Upload to folder: storage
      */
     public function editOrder(Request $request){
-        $file = $request->file('orderFile'); 
+        $file = $request->file('orderFile');
         //if do not change file
         if(!$file){
             DB::beginTransaction();
@@ -82,51 +83,53 @@ class OrderController extends Controller
                $order = array(
                    'no' => $request->order_no,
                    'name' => $request->order_name,
+                   'amount' => $request->amount,
                    'path' => '',
-                   'project_id' => $request->project           
+                   'project_id' => $request->project
                 );
                 Order::editOrder($request->order_id,$order);
                 DB::commit();
             }
             catch (Exception $e) {
                 DB::rollback();
-            }         
+            }
             return redirect('/orders')->with('success', 'Sửa Order thành công');
         }else{
             Validator::make($request->all(), [
                 'orderFile' => 'mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
-            ])->validateWithBag('order');  
+            ])->validateWithBag('order');
             $fileOrigin = $request->order_name;
             $newFile = $file->getClientOriginalName();
             $result = Order::checkFileExist($newFile);
             $checkFileName = strcmp($fileOrigin,$newFile);
             //if file input not duplication
-            if($checkFileName == 0 || $result == null){                
+            if($checkFileName == 0 || $result == null){
                 DB::beginTransaction();
                 try {
                     //get path to save
-                    $path = config('global.order_files_path');             
-                    Storage::delete('/'.$path.'/'.$request->order_name);            
+                    $path = config('global.order_files_path');
+                    Storage::delete('/'.$path.'/'.$request->order_name);
                     $request->file('orderFile')->storeAs($path, $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
                     // insert database
                     $order = array(
                        'no' => $request->order_no,
                        'name' => $newFile,
-                       'path' => '',
-                       'project_id' => $request->project           
+                        'amount' => $request->amount,
+                        'path' => '',
+                       'project_id' => $request->project
                     );
                     Order::editOrder($request->order_id,$order);
                     DB::commit();
                 }
                 catch (Exception $e) {
                     DB::rollback();
-                }         
+                }
                 return redirect('/orders')->with('success', 'Sửa Order thành công');
             }else{
                 return redirect('/orders')->with('fail', 'Sửa Order thất bại! File đã tồn tại.');
-            }            
-        } 
-    }    
+            }
+        }
+    }
     /**
      * Delete order
      */
@@ -143,19 +146,19 @@ class OrderController extends Controller
         catch (Exception $e) {
             DB::rollback();
         }
-       return redirect('/orders')->with('success', 'Xoá Order thành công!'); 
+       return redirect('/orders')->with('success', 'Xoá Order thành công!');
     }
 
     /**
      * Download file to my computer
      */
     public function downloadOrder($id){
-        $order = Order::showOrderById($id);        
+        $order = Order::showOrderById($id);
         if( $order != ""){
             $path = config('global.order_files_path');
             $fileName =  $order->name;
             $filePath = storage_path()."/app/".$path."/".$fileName;
             return response()->download($filePath);
-        }   
+        }
     }
 }
