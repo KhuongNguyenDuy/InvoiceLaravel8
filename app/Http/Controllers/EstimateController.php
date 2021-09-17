@@ -17,8 +17,8 @@ class EstimateController extends Controller
      */
     public function index(){
         $estimates = Estimate::showAllEstimate();
-        return view('Estimate.estimate') -> with('estimates',$estimates);
-    }   
+        return view('Estimate.estimate_list')->with('estimates',$estimates);
+    }
 
     /**
      * show form add estimate
@@ -55,7 +55,7 @@ class EstimateController extends Controller
             'no' => $request->est_no,
             'name' => $fileName,
             'path' => '' ,
-            'project_id' => $request->project      
+            'project_id' => $request->project
             );
             $result = Estimate::checkFileExist($fileName);
             if($result){
@@ -66,7 +66,7 @@ class EstimateController extends Controller
         }
         catch (Exception $e) {
             DB::rollback();
-        }        
+        }
        return redirect('/estimates')->with('success', 'Thêm Estimate thành công');
     }
 
@@ -87,7 +87,7 @@ class EstimateController extends Controller
      * Upload to folder: storage
      */
     public function editEstimate(Request $request){
-        $file = $request->file('estFile'); 
+        $file = $request->file('estFile');
         //if do not change file
         if(!$file){
             DB::beginTransaction();
@@ -103,12 +103,12 @@ class EstimateController extends Controller
             }
             catch (Exception $e) {
                 DB::rollback();
-            }         
+            }
             return redirect('/estimates')->with('success', 'Sửa Estimate thành công');
         }else{
             Validator::make($request->all(), [
                 'estFile' => 'mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
-            ])->validateWithBag('estimate');  
+            ])->validateWithBag('estimate');
             $fileOrigin = $request->estimate_name;
             $newFile = $file->getClientOriginalName();
             $result = Estimate::checkFileExist($newFile);
@@ -133,14 +133,14 @@ class EstimateController extends Controller
                 }
                 catch (Exception $e) {
                     DB::rollback();
-                }         
+                }
                 return redirect('/estimates')->with('success', 'Sửa Estimate thành công');
             }else{
                 return redirect('/estimates')->with('fail', 'Sửa Estimate thất bại! File đã tồn tại.');
-            }            
-        }      
+            }
+        }
     }
-    
+
     /**
      * Delete Estimate
      */
@@ -157,7 +157,7 @@ class EstimateController extends Controller
         catch (Exception $e) {
             DB::rollback();
         }
-       return redirect('/estimates')->with('success', 'Xoá Estimate thành công!'); 
+       return redirect('/estimates')->with('success', 'Xoá Estimate thành công!');
     }
 
      /**
@@ -170,9 +170,9 @@ class EstimateController extends Controller
             $fileName =  $estimate->name;
             $filePath = storage_path()."/app/".$path."/".$fileName;
             return response()->download($filePath);
-        }        
+        }
     }
-    
+
 
 
 

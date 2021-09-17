@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model
+class Invoice extends BaseModel
 {
     use HasFactory;
      /**
@@ -21,7 +21,8 @@ class Invoice extends Model
         'estimate_id',
         'order_id',
         'customer_id',
-        'tax_rate'
+        'tax_rate',
+        'file_path'
     ];
 
     protected $table = 'invoices';
@@ -45,6 +46,13 @@ class Invoice extends Model
               ->where('invoices.id','=',$id)
               ->first();
             return $customerInvoice;
+    }
+
+    public static function saveInvoiceFilePath($invoiceId, $filePath) {
+        $invoice = self::find($invoiceId);
+        $invoice->update([
+            'file_path' => $filePath
+        ]);
     }
 
     public static function showInvoiceCart($id){

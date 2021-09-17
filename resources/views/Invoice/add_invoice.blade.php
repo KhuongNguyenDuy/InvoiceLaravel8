@@ -172,10 +172,10 @@ function validateForm() {
     var current_day = new Date(getCurrentDay());
     var create_day = new Date(create_at);
     var expire_day = new Date(expire_at);
-    if(compareDate(current_day,create_day) == 1){ //if current day> create day
-        alert("Ngày tạo nhỏ hơn ngày hiện tại");
-        return false;
-    }
+    // if(compareDate(current_day,create_day) == 1){ //if current day> create day
+    //     alert("Ngày tạo nhỏ hơn ngày hiện tại");
+    //     return false;
+    // }
     if(compareDate(create_day,expire_day) == 1){ //if create day > expire day
         alert("Ngày tạo lớn hơn hạn thanh toán");
         return false;
