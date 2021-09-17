@@ -58,11 +58,11 @@
                 <hr class="sidebar-divider">
                 <!-- Nav Project - Tables -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{URL::to('/projects')}}">                                
+                    <a class="nav-link" href="{{URL::to('/projects')}}">
                         <i class="fas fa-project-diagram" style='font-size:18px;'></i>
                         <span class="font_weight">Quản lý Project</span>
                     </a>
-                </li>                        
+                </li>
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 <!-- Nav Estimate - Tables -->
@@ -85,7 +85,7 @@
                 <hr class="sidebar-divider">
                 <!-- Nav Invoice - Tables -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{URL::to('/invoices')}}">                                
+                    <a class="nav-link" href="{{URL::to('/invoices')}}">
                         <i class="fas fa-file-invoice-dollar" style='font-size:18px;'></i>
                         <span class="font_weight">Quản lý Invoice</span>
                     </a>
@@ -111,7 +111,7 @@
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">             
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <form method="POST" action="{{ route('logout') }}">
                                                 @csrf
                                                 <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
@@ -119,7 +119,7 @@
                                                     {{ __('Log Out') }}
                                                 </x-dropdown-link>
                                         </form>
-                                    </a>                                                                                            
+                                    </a>
                                 </div>
                             </li>
                         </ul>
@@ -128,13 +128,13 @@
                     <div class="container-fluid">
                         <!-- Page Heading -->
                         <div style="margin-top:-15px;">
-                            <h6> @yield('title-detail')</h6>                                   
+                            <h6> @yield('title-detail')</h6>
                         </div>
                     </div>
-                    <!-- End of Topbar -->                            
+                    <!-- End of Topbar -->
                     <!-- show extend content -->
-                    @yield('content')                
-                </div>                        
+                    @yield('content')
+                </div>
                 <!-- End of Main Content -->
                 <!-- Footer -->
                 <footer class="sticky-footer bg-white">

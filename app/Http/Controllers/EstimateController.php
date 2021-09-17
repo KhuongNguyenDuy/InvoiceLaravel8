@@ -96,7 +96,7 @@ class EstimateController extends Controller
                    'no' => $request->est_no,
                    'name' => $request->estimate_name,
                    'path' => '',
-                   'project_id' => $request->project           
+                   'project_id' => $request->project
                 );
                 Estimate::editEstimate($request->estimate_id,$estimate);
                 DB::commit();
@@ -114,19 +114,19 @@ class EstimateController extends Controller
             $result = Estimate::checkFileExist($newFile);
             $checkFileName = strcmp($fileOrigin,$newFile);
             //if file input not duplication
-            if($checkFileName == 0 || $result == null){                
+            if($checkFileName == 0 || $result == null){
                 DB::beginTransaction();
                 try {
                     //get path to save
-                    $path = config('global.estimate_files_path');             
-                    Storage::delete('/'.$path.'/'.$request->estimate_name);            
+                    $path = config('global.estimate_files_path');
+                    Storage::delete('/'.$path.'/'.$request->estimate_name);
                     $request->file('estFile')->storeAs($path, $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
                     // insert database
                     $estimate = array(
                        'no' => $request->est_no,
                        'name' => $newFile,
                        'path' => '',
-                       'project_id' => $request->project           
+                       'project_id' => $request->project
                     );
                     Estimate::editEstimate($request->estimate_id,$estimate);
                     DB::commit();
@@ -164,7 +164,7 @@ class EstimateController extends Controller
      * Download file to my computer
      */
     public function downloadEstimate($id){
-        $estimate = Estimate::showEstimateById($id);        
+        $estimate = Estimate::showEstimateById($id);
         if( $estimate != ""){
             $path = config('global.estimate_files_path');
             $fileName =  $estimate->name;

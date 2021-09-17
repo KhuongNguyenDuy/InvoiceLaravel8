@@ -64,10 +64,4 @@ class Estimate extends Model
         return $result;
     }
 
-
-
-
-
-    
-
 }

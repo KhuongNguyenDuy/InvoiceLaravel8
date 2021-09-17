@@ -134,11 +134,11 @@
                                 <?php $sub_total += $invoiceCart[$i]->amount; ?>
                                 <tr>
                                     <input type="hidden" name="id[]" value="{{ $invoiceCart[$i]->item_id }}">
-                                    <td>{{ $i+1 }}</td>                                              
+                                    <td>{{ $i+1 }}</td>
                                     <td><input type="text" name='product[]' value="{{ $invoiceCart[$i]->item_name }}" class="form-control" required style="width: 95%"/></td>
                                     <td><input type="text" value="<?php echo number_format($invoiceCart[$i]->price); ?>" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="price[]" class="form-control price number-right" min="1" size="20" required style="width: 95%"/></td>
                                     <td><input type="number" id="" name="qty[]" value="{{ $invoiceCart[$i]->quantity }}" class="form-control qty number-right" min="1" required style="width: 90%"/></td>
-                                    <td><input type="text" name="total[]"  id="" value="<?php echo number_format($invoiceCart[$i]->amount); ?>" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>                
+                                    <td><input type="text" name="total[]"  id="" value="<?php echo number_format($invoiceCart[$i]->amount); ?>" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>
                                 </tr>
                             @endfor
                         </tbody>
@@ -147,29 +147,29 @@
             </div>
        
             <div class="row clearfix" style="margin-top:20px;">
-                <div class="col-md-7">                
+                <div class="col-md-7">
                 </div>
                 <div class="col-md-5">
                     
                     <table class="table table-bordered table-hover" id="tab_logic_total">
                         <tbody>
                         <tr>
-                            <th class="number-right">Tổng phụ :</th>                            
+                            <th class="number-right">Tổng phụ :</th>
                             <td><input type="text" name='sub_total' value="{{ number_format($sub_total) }}" class="form-control number-right" id="sub_total" readonly/></td>
                         </tr>
                         <tr>
                             <th class="number-right">Thuế (%) :</th>
-                            <td class="text-center">                            
-                                <input type="text" name="tax_rate" class="form-control number-right" id="tax" value="{{ $customerInvoice->tax_rate }}">                                
+                            <td class="text-center">
+                                <input type="text" name="tax_rate" class="form-control number-right" id="tax" value="{{ $customerInvoice->tax_rate }}">
                             </td>
                         </tr>
                         <tr>
                             <th class="number-right">Tổng thuế :</th>
-                            <td><input type="text" name='tax_amount' id="tax_amount" value="{{ number_format($sub_total*$tax/100) }}" class="form-control number-right" readonly/></td>                            
+                            <td><input type="text" name='tax_amount' id="tax_amount" value="{{ number_format($sub_total*$tax/100) }}" class="form-control number-right" readonly/></td>
                         </tr>
                         <tr>
                             <th class="number-right">Tổng cộng :</th>
-                            <td><input type="text" name='total_amount' id="total_amount" value="{{ number_format($sub_total+($sub_total*$tax/100)) }}" class="form-control cart_total number-right" readonly/></td>                           
+                            <td><input type="text" name='total_amount' id="total_amount" value="{{ number_format($sub_total+($sub_total*$tax/100)) }}" class="form-control cart_total number-right" readonly/></td>
                         </tr>
                         </tbody>
                     </table>

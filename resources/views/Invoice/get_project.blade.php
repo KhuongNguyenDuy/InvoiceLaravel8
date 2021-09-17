@@ -8,7 +8,7 @@
 @csrf
     <div class="form-row" style="margin-left:100px;">
         <div class="form-group col-md-1">
-            <label for="project">Project:</label>     
+            <label for="project">Project:</label>
         </div>
         <div class="form-group col-md-5">
             <select class="form-control" id="project" name="project"> <!--required-->
@@ -18,7 +18,7 @@
                 @endforeach   
             </select>
             <p></p>
-            <div id="name_error" style="color:red;"></div>                               
+            <div id="name_error" style="color:red;"></div>
         </div>
     </div>
     <input style="margin:50px" type="submit" value="Tiếp theo" class="btn btn-success"/>

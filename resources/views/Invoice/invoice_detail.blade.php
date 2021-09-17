@@ -8,7 +8,7 @@
                 <!--row title invoice-->
                 <div class="row">
                     <div class="col-md-8">
-                        <h1 class="text-uppercase">Hoá Đơn</h1>                           
+                        <h1 class="text-uppercase">Hoá Đơn</h1>
                     </div>
                     <div class="col-md-4 text-right mt-3">
                         <h4 class="text-danger mb-0">VAIX CO., LTD</h4><span>Tel: +843-3384-6868</span>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <p></p>
-                <a href="{{URL::to('/export-invoice/'.$customerInvoice->id)}}" class="btn  btn-primary">Xuất file Excel</a>            
+                <a href="{{URL::to('/export-invoice/'.$customerInvoice->id)}}" class="btn  btn-primary">Xuất file Excel</a>
             </div>
         </div>
     </div>

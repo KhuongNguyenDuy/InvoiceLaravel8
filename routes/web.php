@@ -36,8 +36,6 @@ require __DIR__.'/auth.php';
 | Admin PROJECT
 |--------------------------------------------------------------------------
 */
-//Route::get('/projects', 'ProjectController@index');
-//Route::get('/delete-project', 'ProjectController@destroy');
 
 Route::get('/form-add-project', [ProjectController::class, 'formAddProject'])->middleware('auth');
 
@@ -56,7 +54,6 @@ Route::get('/delete-project/{id}', [ProjectController::class, 'deleteProject'])-
 | Admin ESTIMATE
 |--------------------------------------------------------------------------
 */
-//Route::get('/estimates', 'EstimateController@index');
 
 Route::get('/estimates', [EstimateController::class, 'index'])->middleware('auth'); // show list estimate
 

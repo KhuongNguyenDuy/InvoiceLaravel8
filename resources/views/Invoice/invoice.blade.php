@@ -17,14 +17,14 @@
 				<th class="text-mid">STT</th>
 				<th class="text-left">Create Date</th>
 				<th class="text-left">Customer</th>
-				<th class="text-left">Address</th>				
-				<th class="text-left">Estimate</th>   
-				<th class="text-left">Expire Date</th>             
+				<th class="text-left">Address</th>
+				<th class="text-left">Estimate</th>
+				<th class="text-left">Expire Date</th>
 				<th class="number-right">Total</th>
 				<th class="text-mid">Status</th>
                 <th class="text-mid">Detail</th>
 				<th class="display-text">Edit</th>
-				<th class="display-text">Delete</th>				
+				<th class="display-text">Delete</th>
 			</tr>
 		</thead>
 		<tbody>	
@@ -36,7 +36,7 @@
             @endif
 			<tr>
 				<td class="text-mid">{{($invoices->currentPage()-1) * $invoices->perPage() + $loop->index + 1 }}</td>
-				<td class="text-left"><?php echo date_format(new DateTime($invoice->create_date),'Y/m/d');  ?></td>
+				<td class="text-left"><?php echo date_format(new DateTime($invoice->create_date),'Y/m/d');?></td>
 				<td class="text-left">{{$invoice->customer_name}}</td>
 				<td class="text-left">{{$invoice->customer_address}}</td>				
 				<td class="text-left">{{$invoice->estimate_no}}</td>

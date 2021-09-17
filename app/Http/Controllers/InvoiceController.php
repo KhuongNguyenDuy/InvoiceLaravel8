@@ -55,15 +55,8 @@ class InvoiceController extends Controller
      */
      public function formAddInvoice(Request $request){
          $customers = Customer::showAllCustomer();
-         //$projects = Project::getAllProject();
-         //$estimates = Estimate::showAllEstimate();
-         //$orders = Order::showAllOrder();
-
          return view('Invoice.add_invoice',[
             'customers' => $customers
-            //'projects' => $projects,
-            //'orders' => $orders,
-            //'estimates' => $estimates
         ]);
      }
      /**
@@ -98,7 +91,7 @@ class InvoiceController extends Controller
                         'name'  =>  $arrayProduct[$i],
                         'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
                         'project_id'  => $request->project
-                       );                                         
+                       );
                     $itemId = Item::insertItem($item);
                     if( $itemId > 0){
                         array_push($arrayItemId,$itemId);
@@ -114,25 +107,6 @@ class InvoiceController extends Controller
                     );
                     InvoiceItem::insertInvoiceItem($invoiceDetail);
                 }
-                // foreach ($array_id as $id => $key) { //convert to array with key and value
-                //     $result[$key] = array(
-                //         'price'  => (float)str_replace(",", "", $array_price[$id]),
-                //         'qty' => $array_qty[$id],
-                //         'total'  => (float)str_replace(",", "", $array_total[$id])
-                //     );
-                // }
-                // foreach($result as $key => $value){
-                //     if($value['qty'] > 0){
-                //         $invoiceDetail = array(
-                //             'invoice_id' => $invoiceID,
-                //             'item_id' => $key,
-                //             'quantity' => $value['qty'],
-                //             'price' => $value['price'],
-                //             'amount' => $value['total']
-                //         );
-                //         InvoiceItem::insertInvoiceItem($invoiceDetail);
-                //     }
-                // }
             }
             DB::commit();
         }catch (Exception $e) {
@@ -141,20 +115,13 @@ class InvoiceController extends Controller
         }
         return redirect('invoices')->with('success', 'Thêm hoá đơn thành công!');
     }
-    //  public function getItemByProjectId($id){
-    //     $items = Item::showItemByProjectId($id);
-    //     return view('admin.add_invoice', ['items' => $items]);
-    //  }
+
     /**
      * find customer info by id customer->useless because spec change
      */
-    // public function getCustomer(Request $request){
-    //     $customers = Customer::showCustomerById($request->id);
-    //     return response()->json(['success'=>true,'info' => $customers]);
-    // }
     public function getInfoCustomer(Request $request){
         //$customers = Customer::showCustomerById($request->id);
-        $projects = Project::getProjectByCustomerId($request->id);       
+        $projects = Project::getProjectByCustomerId($request->id);
         return response()->json([
             'success'=>true,
             'projects' => $projects
@@ -283,7 +250,7 @@ class InvoiceController extends Controller
     /**
      * Update info invoice
      */
-    public function editInvoice(Request $request){      
+    public function editInvoice(Request $request){
         DB::beginTransaction();
         try {
             $invoice = array(
@@ -312,7 +279,7 @@ class InvoiceController extends Controller
                 Item::editItem($arrayItemId[$i],$item);//update item
             }
             for ($index = 0; $index < count($arrayItemId); $index++) {
-                $invoiceDetail = array(                                              
+                $invoiceDetail = array(
                     'quantity' => $arrayQty[$index],
                     'price' => (float)str_replace(",", "", $arrayPrice[$index]),
                     'amount' => (float)str_replace(",", "", $arrayTotal[$index])
@@ -348,19 +315,6 @@ class InvoiceController extends Controller
      */
     public function getItem(Request $request){
         $project_id = $request->id;
-        // $items = Item::showItemByProjectId($project_id);
-        // $data = '';
-        // foreach($items as $item){
-        //     $price_item = number_format($item->price);
-        //     $data.='<tr>';
-        //         $data.='<input type="hidden" name="id[]" value="'.$item->id.'">';
-        //         $data.='<td class="text-left">'.$item->name.'</td>';
-        //         $data.= '<td><input type="text" name="price[]" class="form-control price number-right" value="'.$price_item.'" readonly/></td>';
-        //         $data.= '<td><input type="number" id="" name="qty[]" value="1" class="form-control qty number-right" min="0" max="500"/></td>';
-        //         $data.='<td><input type="text" name="total[]"  id="" value="'.$price_item.'" class="form-control total number-right" style=" margin-left: 40px;" readonly/></td>';
-        //     $data.='</tr>';
-        // }
-              
         $estimates = Estimate::getEstimateByProjectId($project_id);
         $orders = Order::getOrderByProjectId($project_id);
         return response()->json([

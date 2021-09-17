@@ -13,7 +13,7 @@ class ProjectController extends Controller
      */
     public function index(){
         $projects = Project::showAllProject();
-        return view('Project.project') -> with('projects',$projects);        
+        return view('Project.project') -> with('projects',$projects);
     }
 
     public function show(){
@@ -35,7 +35,7 @@ class ProjectController extends Controller
         try {
            $project = array(
                'name' => $request->project_name,
-               'customer_id' => $request->customer               
+               'customer_id' => $request->customer
         );
            Project::insertProject($project);
            DB::commit();

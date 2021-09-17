@@ -16,7 +16,7 @@
             </div>
             <div class="form-group col-md-10">
                 <input type="text" id="item_name" name="item_name" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập tên Item')" oninput="this.setCustomValidity('')">
-                <p class="help-block" id="mess_name"><i>Tên item không quá 225 ký tự</i></p>                        
+                <p class="help-block" id="mess_name"><i>Tên item không quá 225 ký tự</i></p>
             </div>
         </div>
         <!--row price item -->
@@ -24,9 +24,9 @@
             <div class="form-group col-md-2">
                 <b><label for="item_price" >Giá Item : (*)</label></b>
             </div>
-            <div class="form-group col-md-7">          
+            <div class="form-group col-md-7">
                 <input type="number" id="item_price" name="item_price" placeholder="" class="input-xlarge form-control" min="0" required oninvalid="this.setCustomValidity('Hãy nhập giá từ 0 trở lên')" oninput="this.setCustomValidity('')">
-                <p class="help-block" id="mess_item_price"><i>Giá không quá 20 ký số</i></p>                        
+                <p class="help-block" id="mess_item_price"><i>Giá không quá 20 ký số</i></p>
             </div>
         </div>
          <!--row project-->
@@ -39,8 +39,8 @@
                     <option value="" selected disabled>Chọn project..</option>
                     @foreach($projects as $p)
                         <option value="{{$p->id}}">{{$p->name}}</option>
-                    @endforeach   
-                </select>                       
+                    @endforeach
+                </select>
             </div>
         </div>
  

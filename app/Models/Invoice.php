@@ -31,7 +31,7 @@ class Invoice extends Model
         //get info customer and estimate
         $customerInvoice = DB::table('invoices')
               ->join('customers', 'invoices.customer_id', '=', 'customers.id')
-              ->join('estimates', 'invoices.estimate_id', '=', 'estimates.id')              
+              ->join('estimates', 'invoices.estimate_id', '=', 'estimates.id')
               ->select(
                     'invoices.*',
                     'customers.id as customer_id',
@@ -40,7 +40,7 @@ class Invoice extends Model
                     'customers.phone as customer_phone',
                     'customers.fax as customer_fax',
                     'estimates.name as estimate_name',
-                    'estimates.no as estimate_no'             
+                    'estimates.no as estimate_no'
                      )
               ->where('invoices.id','=',$id)
               ->first();
