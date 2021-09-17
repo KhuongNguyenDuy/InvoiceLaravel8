@@ -1,7 +1,7 @@
 @extends('layout')
 @section('title-detail', 'Danh sách Invoice')
 @section('content')
-<div class="add-button">	
+<div class="add-button">
 	<button type="button" onclick="window.location.href='/form-add-invoice'" class="btn btn-success btn-lg">+ Add Invoice</button>
 </div>
 	<!--check session add invoice if success-->
@@ -11,15 +11,15 @@
 		</div>
 	@endif
 	<!--table show list info invoice-->
-	<table class="table table-hover table-bordered table-border-margin"> 
+	<table class="table table-hover table-bordered table-border-margin">
 		<thead>
 			<tr style="background-color: black;">
-				<th class="text-mid">STT</th>
+				<th class="text-mid">Id</th>
 				<th class="text-left">Create Date</th>
 				<th class="text-left">Customer</th>
-				<th class="text-left">Address</th>
+				<th class="text-left">Project</th>
 				<th class="text-left">Estimate</th>
-				<th class="text-left">Expire Date</th>
+				<th class="text-left">Hạn thanh toán</th>
 				<th class="number-right">Total</th>
 				<th class="text-mid">Status</th>
                 <th class="text-mid">Detail</th>
@@ -27,7 +27,7 @@
 				<th class="display-text">Delete</th>
 			</tr>
 		</thead>
-		<tbody>	
+		<tbody>
 		@foreach($invoices as $invoice)
             @if($invoice->status == 0)
                 <?php $status = "Chưa thanh toán"; $color = "btn-danger"?>
@@ -35,10 +35,11 @@
                 <?php $status = " Đã thanh toán "; $color = "btn-success"?>
             @endif
 			<tr>
-				<td class="text-mid">{{($invoices->currentPage()-1) * $invoices->perPage() + $loop->index + 1 }}</td>
+				{{-- <td class="text-mid">{{($invoices->currentPage()-1) * $invoices->perPage() + $loop->index + 1 }}</td> --}}
+                <td class="text-mid">{{ $invoice->id }}</td>
 				<td class="text-left"><?php echo date_format(new DateTime($invoice->create_date),'Y/m/d');?></td>
 				<td class="text-left">{{$invoice->customer_name}}</td>
-				<td class="text-left">{{$invoice->customer_address}}</td>				
+				<td class="text-left">{{$invoice->project_name}}</td>
 				<td class="text-left">{{$invoice->estimate_no}}</td>
 				<td class="text-left"><?php echo date_format(new DateTime($invoice->expire_date),'Y/m/d');?></td>
 				<td class="number-right"><?php echo number_format($invoice->total)?></td>
@@ -49,7 +50,7 @@
 						<input type="hidden" id="invId" name="invId" value="{{$invoice->id}}">
 						<input type="submit" value="{{$status}}" class="btn {{$color}} btn-sm">
                     </form>
-				</td>				                
+				</td>
                 <td class="text-mid"><a href="{{URL::to('/invoice-detail/'.$invoice->id)}}" style="color:blue;">Details</a></td>
 				<td class="display-text"><a href="{{'/form-edit-invoice/'.$invoice->id}}" class="fas fa-edit" style="color:seagreen;font-size:17px;"></a></td>
 				<td class="display-text"><a href="{{'/delete-invoice/'.$invoice->id}}" class="fas fa-trash delete_invoice" style="color:red;font-size:17px;"></a></td>
@@ -61,7 +62,7 @@
 				echo $date->format('Y/m/d');
 			?> -->
 		@endforeach
-  		</tbody> 
+  		</tbody>
 	</table>
 	<script type="text/javascript">
 		$('.delete_invoice').on('click', function () {

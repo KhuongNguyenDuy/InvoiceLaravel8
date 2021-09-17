@@ -25,7 +25,7 @@ class Invoice extends Model
     ];
 
     protected $table = 'invoices';
-    
+
     public static function showCustomerInvoice($id){
 
         //get info customer and estimate
@@ -72,9 +72,10 @@ class Invoice extends Model
      */
     public static function showAllInvoice(){
         $invoices = DB::table('invoices')
-              ->join('customers', 'invoices.customer_id', '=', 'customers.id')
-              ->join('estimates', 'invoices.estimate_id', '=', 'estimates.id')
-              ->select('invoices.*','estimates.no as estimate_no','customers.name as customer_name','customers.address as customer_address','customers.phone as customer_phone')
+              ->join('customers', 'invoices.customer_id', 'customers.id')
+              ->join('estimates', 'invoices.estimate_id', 'estimates.id')
+              ->leftJoin('projects', 'estimates.project_id', 'projects.id')
+              ->select('invoices.*','estimates.no as estimate_no','customers.name as customer_name','projects.name as project_name','customers.phone as customer_phone')
               ->orderBy('invoices.id', 'DESC')
               ->Paginate(20);
         return $invoices;

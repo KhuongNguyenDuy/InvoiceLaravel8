@@ -37,17 +37,18 @@ class Project extends Model
         return $projects;
     }
     public static function showProjectById($id){
-        $projects = DB::table('projects')->where('id',$id)->first();
+        $projects = DB::table('projects')->where('id', $id)->first();
         return $projects;
     }
     /**
      * get project by customer id
      */
     public static function getProjectByCustomerId($id){
-        $projects = DB::table('projects')->where('customer_id',$id)->get();
+        $projects = DB::table('projects')->where('customer_id', $id)
+            ->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->get();
         return $projects;
     }
-    
+
     /**
      * insert project
      */

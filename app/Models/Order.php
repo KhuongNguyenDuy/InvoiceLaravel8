@@ -34,13 +34,14 @@ class Order extends Model
 
     //show order by project id
     public static function getOrderByProjectId($id){
-        $orders = DB::table('orders')->where('project_id',$id)->get();
+        $orders = DB::table('orders')->where('project_id', $id)
+            ->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->get();
         return $orders;
     }
 
     //show order by id
     public static function showOrderById($id){
-        $order = DB::table('orders')->where('id',$id)->first();
+        $order = DB::table('orders')->where('id', $id)->first();
         return $order;
     }
 
