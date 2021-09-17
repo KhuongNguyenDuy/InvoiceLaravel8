@@ -20,10 +20,10 @@
                 </div>
                 <div class="row">
                     <div class="billed"><span class="font-weight-bold text-uppercase">Khách hàng : </span><span class="ml-1">{{$customerInvoice->customer_name}}</span></div>
-                </div> 
+                </div>
                 <div class="row">
                     <div class="billed"><span class="font-weight-bold text-uppercase">Địa chỉ : </span><span class="ml-1">{{$customerInvoice->customer_address}}</span></div>
-                </div> 
+                </div>
                 <div class="row" style="margin-left:-25px;">
                     <div class="col-md-7">
                         <div class="billed"><span class="font-weight-bold text-uppercase">Số điện thoại : </span><span class="ml-1">{{$customerInvoice->customer_phone}}</span></div>
@@ -31,7 +31,7 @@
                     <div class="col-md-5">
                         <div class="billed"><span class="font-weight-bold text-uppercase">Fax :</span><span class="ml-1"> {{$customerInvoice->customer_fax}}</span></div>
                     </div>
-                </div> 
+                </div>
                 <div class="row" style="margin-left:-25px;">
                     <div class="col-md-7">
                         <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_no}}</span></div>
@@ -39,11 +39,11 @@
                     <div class="col-md-5">
                         <div class="billed"><span class="font-weight-bold text-uppercase">Order No :</span><span class="ml-1"> {{$orderNo}}</span></div>
                     </div>
-                </div> 
+                </div>
                 <div class="row">
                     <div class="billed"><span class="font-weight-bold text-uppercase">Project :</span><span class="ml-1">{{$invoiceCart[0]->project_name}}</span></div>
-                </div>   
-                                          
+                </div>
+
                 <!--invoice detail-->
                 <div class="mt-3">
                     <div class="table-responsive">
@@ -53,8 +53,8 @@
                                     <th class="text-mid">Số TT</th>
                                     <th class="text-left">Sản Phẩm</th>
                                     <th class="number-right">Số Lượng</th>
-                                    <th class="number-right">Đơn Giá</th>
-                                    <th class="number-right">Thành Tiền</th>
+                                    <th class="number-right">Đơn Giá（円）</th>
+                                    <th class="number-right">Thành Tiền（円）</th>
                                 </tr>
                             </thead>
                             <tbody>

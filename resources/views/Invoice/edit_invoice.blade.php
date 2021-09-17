@@ -63,19 +63,19 @@
             <div class="form-group col-md-5">
                 <select class="form-control" id="order" name="order">
                     @if ($customerInvoice->order_id == null)
-                        <option value="" selected disabled>Chọn order...</option>   
-                        @foreach($orders as $od)                    
+                        <option value="" selected disabled>Chọn order...</option>
+                        @foreach($orders as $od)
                             <option value="{{$od->id}}">{{$od->no}}</option>
                         @endforeach -->
                     @else
-                        @foreach($orders as $od)                    
+                        @foreach($orders as $od)
                             @if ($customerInvoice->order_id == $od->id)
                                 <option value="{{$od->id}}" selected>{{$od->no}}</option>
                             @else
                                 <option value="{{$od->id}}">{{$od->no}}</option>
                             @endif
                         @endforeach -->
-                    @endif                    
+                    @endif
                 </select>
             </div>
         </div>
@@ -111,7 +111,7 @@
             </div>
         </div>
         <!--table show item-->
- 
+
         <div style="width:90%; margin:auto;" >
             <div class="row clearfix">
                 <div class="col-md-12">
@@ -120,9 +120,9 @@
                         <tr>
                             <th class="text-center"> STT </th>
                             <th class="text-center">Tên sản phẩm</th>
-                            <th class="text-center">Đơn giá</th>
+                            <th class="text-center">Đơn giá（円）</th>
                             <th class="text-center">Số lượng</th>
-                            <th class="text-center">Thành tiền</th>
+                            <th class="text-center">Thành tiền（円）</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -145,16 +145,16 @@
                     </table>
                 </div>
             </div>
-       
+
             <div class="row clearfix" style="margin-top:20px;">
                 <div class="col-md-7">
                 </div>
                 <div class="col-md-5">
-                    
+
                     <table class="table table-bordered table-hover" id="tab_logic_total">
                         <tbody>
                         <tr>
-                            <th class="number-right">Tổng phụ :</th>
+                            <th class="number-right">Tổng phụ（円）:</th>
                             <td><input type="text" name='sub_total' value="{{ number_format($sub_total) }}" class="form-control number-right" id="sub_total" readonly/></td>
                         </tr>
                         <tr>
@@ -164,11 +164,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="number-right">Tổng thuế :</th>
+                            <th class="number-right">Tổng thuế（円）:</th>
                             <td><input type="text" name='tax_amount' id="tax_amount" value="{{ number_format($sub_total*$tax/100) }}" class="form-control number-right" readonly/></td>
                         </tr>
                         <tr>
-                            <th class="number-right">Tổng cộng :</th>
+                            <th class="number-right">Tổng cộng（円）:</th>
                             <td><input type="text" name='total_amount' id="total_amount" value="{{ number_format($sub_total+($sub_total*$tax/100)) }}" class="form-control cart_total number-right" readonly/></td>
                         </tr>
                         </tbody>

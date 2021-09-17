@@ -97,7 +97,7 @@
                 <!--row order Amount -->
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <b><label for="order_no" >Amout : (*)</label></b>
+                        <b><label for="order_no" >Amout（円） : (*)</label></b>
                     </div>
                     <div class="form-group col-md-7">
                         <input type="text" id="amount" name="amount" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập số tiền')" oninput="this.setCustomValidity('')">

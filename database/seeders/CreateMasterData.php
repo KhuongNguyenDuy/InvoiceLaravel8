@@ -49,11 +49,25 @@ class CreateMasterData extends Seeder
             'name' => 'WebExpo開発支援',
             'customer_id' => 1
         ]);
-
-        DB::table('items')->insert([
-            'name' => '8月分の開発費用',
-            'price' => 300000,
-            'project_id' => 1
+        DB::table('projects')->insert([
+            'name' => '簡易メール送信システム',
+            'customer_id' => 2
+        ]);
+        DB::table('projects')->insert([
+            'name' => 'NippoApp(iOS)',
+            'customer_id' => 1
+        ]);
+        DB::table('projects')->insert([
+            'name' => 'ScheduleRepo',
+            'customer_id' => 1
+        ]);
+        DB::table('projects')->insert([
+            'name' => 'Andtech Site Renewal',
+            'customer_id' => 2
+        ]);
+        DB::table('projects')->insert([
+            'name' => 'Net Master',
+            'customer_id' => 1
         ]);
     }
 }

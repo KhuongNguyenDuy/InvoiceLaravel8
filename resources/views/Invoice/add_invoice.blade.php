@@ -94,9 +94,9 @@
                         <tr>
                             <th class="text-center"> STT </th>
                             <th class="text-center">Tên sản phẩm</th>
-                            <th class="text-center">Đơn giá</th>
+                            <th class="text-center">Đơn giá（円）</th>
                             <th class="text-center">Số lượng</th>
-                            <th class="text-center">Thành tiền</th>
+                            <th class="text-center">Thành tiền（円）</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -112,7 +112,7 @@
                     </table>
                 </div>
             </div>
-       
+
             <div class="row clearfix" style="margin-top:20px;">
                 <div class="col-md-7">
                 </div>
@@ -120,7 +120,7 @@
                     <table class="table table-bordered table-hover" id="tab_logic_total">
                         <tbody>
                         <tr>
-                            <th class="number-right">Tổng phụ :</th>
+                            <th class="number-right">Tổng phụ（円）:</th>
                             <td><input type="text" name='sub_total' placeholder='0' class="form-control number-right" id="sub_total" readonly/></td>
                         </tr>
                         <tr>
@@ -130,11 +130,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="number-right">Tổng thuế :</th>
+                            <th class="number-right">Tổng thuế（円）:</th>
                             <td><input type="text" name='tax_amount' id="tax_amount" placeholder='0' class="form-control number-right" readonly/></td>
                         </tr>
                         <tr>
-                            <th class="number-right">Tổng cộng :</th>
+                            <th class="number-right">Tổng cộng（円）:</th>
                             <td><input type="text" name='total_amount' id="total_amount" value="0" placeholder='0' class="form-control cart_total number-right" readonly/></td>
                         </tr>
                         </tbody>
