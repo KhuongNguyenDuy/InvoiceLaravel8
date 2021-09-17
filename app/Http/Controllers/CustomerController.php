@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    
+
     /**
      * Get list customer
      */
     public function index(){
         $customers = Customer::showAllCustomer();
-        return view('Customer.customer')->with('customers',$customers);
+        return view('Customer.customer_list')->with('customers',$customers);
     }
 
     /**
@@ -21,7 +21,7 @@ class CustomerController extends Controller
      */
     public function formAddCustomer(){
         return view('Customer.add_customer');
-    } 
+    }
 
     /**
      * function insert customer
@@ -46,16 +46,16 @@ class CustomerController extends Controller
        catch (Exception $e) {
             DB::rollback();
        }
-       return redirect('customers')->with('success', 'Thêm khách hàng thành công!'); 
+       return redirect('customers')->with('success', 'Thêm khách hàng thành công!');
     }
     /**
-     * 
+     *
      */
     //show edit customer
     public function formEditCustomer($id){
         $customers = Customer::showCustomerById($id);
-        return view('Customer.edit_customer')->with('customers',$customers);; 
-    } 
+        return view('Customer.edit_customer')->with('customers',$customers);;
+    }
 
 
     /**
@@ -81,15 +81,15 @@ class CustomerController extends Controller
         catch (Exception $e) {
                DB::rollback();
         }
-        return redirect('customers')->with('success', 'Cập nhật khách hàng thành công!'); 
-    } 
+        return redirect('customers')->with('success', 'Cập nhật khách hàng thành công!');
+    }
 
-    
+
     /**
      * Delete customer
      */
     public function deleteCustomer($id){
-        
+
         DB::beginTransaction();
         try {
            Customer::destroy($id);
@@ -98,7 +98,7 @@ class CustomerController extends Controller
         catch (Exception $e) {
             DB::rollback();
         }
-       return redirect('customers')->with('success', 'Xoá khách hàng thành công!'); 
-    } 
-    
+       return redirect('customers')->with('success', 'Xoá khách hàng thành công!');
+    }
+
 }

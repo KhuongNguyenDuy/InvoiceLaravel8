@@ -22,7 +22,7 @@ class InvoiceController extends Controller
      */
     public function index(){
         $invoices = Invoice::showAllInvoice();
-        return view('Invoice.invoice', ['invoices' => $invoices]);
+        return view('Invoice.invoice_list', ['invoices' => $invoices]);
      }
      /**
       * show project to choose for invoice
@@ -41,7 +41,7 @@ class InvoiceController extends Controller
         if($customerInvoice->order_id != null){
             $ord = Order::showOrderById($customerInvoice->order_id);
             $orderNo = $ord->no;
-        }       
+        }
         return view('Invoice.invoice_detail',
         [
             'customerInvoice' => $customerInvoice,
@@ -67,46 +67,47 @@ class InvoiceController extends Controller
         $invoiceID = 0; // 0: insert fail. >0: insert success
         DB::beginTransaction();
         try {
-           $invoice = array(
-               'create_date' => $request->ngaytao,
-               'status' => false,
-               'total' => (float)str_replace(",", "", $request->total_amount),
-               'expire_date' => $request->hantt,
-               'estimate_id' => $request->estimate,
-               'order_id' => $request->order,
-               'customer_id' => $request->khachhang,
-               'tax_rate' => $request->tax_rate
-              );
-            //get id of invoice inserted
-            $invoiceID = Invoice::insertInvoice($invoice);
-            if($invoiceID > 0){ //if insert success -> insert invoice detail
-                $arrayPrice = $request->price;
-                $arrayQty = $request->qty;
-                $arrayProduct= $request->product;
-                $arrayTotal = $request->total;
-                $count = count($arrayPrice);
-                $arrayItemId = array();
-                for ($i = 0; $i < $count; $i++) {
-                    $item = array(                   
-                        'name'  =>  $arrayProduct[$i],
-                        'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
-                        'project_id'  => $request->project
-                       );
-                    $itemId = Item::insertItem($item);
-                    if( $itemId > 0){
-                        array_push($arrayItemId,$itemId);
-                    }                   
-                }
-                for ($index = 0; $index < count($arrayItemId); $index++) {
-                    $invoiceDetail = array(
-                        'invoice_id' => $invoiceID,
-                        'item_id' => $arrayItemId[$index],
-                        'quantity' => $arrayQty[$index],
-                        'price' => (float)str_replace(",", "", $arrayPrice[$index]),
-                        'amount' => (float)str_replace(",", "", $arrayTotal[$index])
+            $invoice = new Invoice();
+            $invoice->create_date = $request->ngaytao;
+            $invoice->status = false;
+            $invoice->total = (float)str_replace(",", "", $request->total_amount);
+            $invoice->expire_date = $request->hantt;
+            $invoice->estimate_id = $request->estimate;
+            $invoice->order_id = $request->order;
+            $invoice->customer_id = $request->khachhang;
+            $invoice->tax_rate = $request->tax_rate;
+            $invoice->save();
+
+            // After saving or creating a new model that uses auto-incrementing IDs, you may retrieve the ID by accessing the object's id attribute
+            $invoiceID = $invoice->id;
+
+            // insert invoice detail
+            $arrayPrice = $request->price;
+            $arrayQty = $request->qty;
+            $arrayProduct= $request->product;
+            $arrayTotal = $request->total;
+            $count = count($arrayPrice);
+            $arrayItemId = array();
+            for ($i = 0; $i < $count; $i++) {
+                $item = array(
+                    'name'  =>  $arrayProduct[$i],
+                    'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
+                    'project_id'  => $request->project
                     );
-                    InvoiceItem::insertInvoiceItem($invoiceDetail);
+                $itemId = Item::insertItem($item);
+                if( $itemId > 0){
+                    array_push($arrayItemId,$itemId);
                 }
+            }
+            for ($index = 0; $index < count($arrayItemId); $index++) {
+                $invoiceDetail = array(
+                    'invoice_id' => $invoiceID,
+                    'item_id' => $arrayItemId[$index],
+                    'quantity' => $arrayQty[$index],
+                    'price' => (float)str_replace(",", "", $arrayPrice[$index]),
+                    'amount' => (float)str_replace(",", "", $arrayTotal[$index])
+                );
+                InvoiceItem::insertInvoiceItem($invoiceDetail);
             }
             DB::commit();
         }catch (Exception $e) {
@@ -149,79 +150,100 @@ class InvoiceController extends Controller
         return redirect('invoices');
     }
 
-     /**
-      * export file excel: import exist file excel-> map data
-      */
-     public function exportInvoice($invoice_id){
+    /**
+     * export file excel: import exist file excel-> map data
+     */
+    public function exportInvoice($invoice_id){
 
-        $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
-        $cart = Invoice::showInvoiceCart($invoice_id);
-        $orderNo = '';
-        if($customerInvoice->order_id != null){
-            $ord = Order::showOrderById($customerInvoice->order_id);
-            $orderNo = $ord->no;
-        }    
+       $customerInvoice = Invoice::showCustomerInvoice($invoice_id);
+       $cart = Invoice::showInvoiceCart($invoice_id);
+       $orderNo = '';
+       if($customerInvoice->order_id != null){
+           $ord = Order::showOrderById($customerInvoice->order_id);
+           $orderNo = $ord->no;
+       }
 
-        $templateFile = resource_path('assets/templates/invoice.xlsx');
+       $templateFile = resource_path('assets/templates/invoice.xlsx');
 
-         //get invoie detail from model
-        $count = $cart->count();
-        $date = new DateTime($customerInvoice->create_date);
-        $spreadsheet = IOFactory::load($templateFile);
+        //get invoie detail from model
+       $count = $cart->count();
+       $date = new DateTime($customerInvoice->create_date);
+       $spreadsheet = IOFactory::load($templateFile);
 
-        //set active sheet Invoice
-        $spreadsheet->setActiveSheetIndex(0);
-        $worksheet = $spreadsheet->getActiveSheet();
+       //set active sheet Invoice
+       $spreadsheet->setActiveSheetIndex(0);
+       $worksheet = $spreadsheet->getActiveSheet();
 
-        $projectName = $cart[0]->project_name;
-        $itemName = $cart[0]->item_name;
-        $worksheet->getCell('E9')->setValue($date->format('Y/m/d'));
-        $worksheet->getCell('E10')->setValue($customerInvoice->customer_name . ' 御中');
-        $worksheet->getCell('E11')->setValue($customerInvoice->customer_address);
-        $worksheet->getCell('E12')->setValue($customerInvoice->customer_phone);
-        $worksheet->getCell('H12')->setValue($customerInvoice->customer_fax);
-        $worksheet->setCellValueExplicit('E13',$customerInvoice->estimate_no, DataType::TYPE_STRING);
-        $worksheet->getStyle('E13')->getNumberFormat()->setFormatCode("00000000000");
-        $worksheet->setCellValueExplicit('H13',$orderNo, DataType::TYPE_STRING);
-        $worksheet->getStyle('H13')->getNumberFormat()->setFormatCode("00000000000");
-        $worksheet->getCell('E15')->setValue($projectName);
+       $projectName = $cart[0]->project_name;
+       $itemName = $cart[0]->item_name;
+       $worksheet->getCell('E9')->setValue($date->format('Y/m/d'));
+       $worksheet->getCell('E10')->setValue($customerInvoice->customer_name . ' 御中');
+       $worksheet->getCell('E11')->setValue($customerInvoice->customer_address);
+       $worksheet->getCell('E12')->setValue($customerInvoice->customer_phone);
+       $worksheet->getCell('H12')->setValue($customerInvoice->customer_fax);
+       $worksheet->setCellValueExplicit('E13',$customerInvoice->estimate_no, DataType::TYPE_STRING);
+       $worksheet->getStyle('E13')->getNumberFormat()->setFormatCode("00000000000");
+       $worksheet->setCellValueExplicit('H13',$orderNo, DataType::TYPE_STRING);
+       $worksheet->getStyle('H13')->getNumberFormat()->setFormatCode("00000000000");
+       $worksheet->getCell('E15')->setValue($projectName);
 
-        //table content list item
-        if($count > 1){
-            $worksheet->insertNewRowBefore(20, $count-1); //insert $count-1 row before row 20
+       //table content list item
+       if($count > 1){
+           $worksheet->insertNewRowBefore(20, $count-1); //insert $count-1 row before row 20
+       }
+
+       $rows = 18;
+       $subTotal = 0;
+       $tax = $customerInvoice->tax_rate;
+
+       for ( $i = 0; $i < $count; $i++ ) {
+           $subTotal += $cart[$i]->amount;
+           $worksheet->mergeCells('D'.$rows.':G'.$rows);
+           $worksheet->setCellValue('C' . $rows, $i+1);
+           $worksheet->setCellValue('D' . $rows, $cart[$i]->item_name);
+           $worksheet->setCellValue('H' . $rows, ($cart[$i]->quantity).'式');
+           $worksheet->setCellValue('I' . $rows, $cart[$i]->price);
+           $worksheet->setCellValue('J' . $rows, $cart[$i]->amount);
+           $rows++;
+       }
+
+       $worksheet->setCellValue('C' . $rows, $i+1);
+       $subTax = $subTotal * $tax / 100;
+       $worksheet->setCellValue('J'.(21 + $count),$subTotal);
+       $worksheet->setCellValue('C'.(22 + $count), '消費税(' . $tax . '%)');
+       $worksheet->setCellValue('J'.(22 + $count),$subTax);
+       $worksheet->setCellValue('J'.(23 + $count),($subTax+$subTotal));
+       $expireDate = new DateTime($customerInvoice->expire_date);
+       $worksheet->getCell('E'.(29 + $count))->setValue($expireDate->format('Y/m/d'));
+
+       $excelFileName = 'Invoice_' . $projectName . '_' . $itemName . '_' . $date->format('Ymd') . '.xlsx';
+       $savedFilePath = config('global.invoice_files_path') . $excelFileName;
+       $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+       $writer->save($savedFilePath);
+
+       // Save file path to DB
+       Invoice::saveInvoiceFilePath($invoice_id, $savedFilePath);
+
+       return response()->download($savedFilePath);
+    }
+
+    /**
+     * Path to download invoice file
+     * /download-invoice/{id}
+     */
+    public function downloadInvoice($invoiceId) {
+        $invoice = Invoice::find($invoiceId);
+        if(!$invoice) {
+            abort(404);
         }
 
-        $rows = 18;
-        $subTotal = 0;
-        $tax = $customerInvoice->tax_rate;
-
-        for ( $i = 0; $i < $count; $i++ ) {
-            $subTotal += $cart[$i]->amount;
-            $worksheet->mergeCells('D'.$rows.':G'.$rows);
-            $worksheet->setCellValue('C' . $rows, $i+1);
-            $worksheet->setCellValue('D' . $rows, $cart[$i]->item_name);
-            $worksheet->setCellValue('H' . $rows, ($cart[$i]->quantity).'式');
-            $worksheet->setCellValue('I' . $rows, $cart[$i]->price);
-            $worksheet->setCellValue('J' . $rows, $cart[$i]->amount);
-            $rows++;
+        $filePath = $invoice->file_path;
+        if(!$filePath) {
+            abort(404);
         }
 
-        $worksheet->setCellValue('C' . $rows, $i+1);
-        $subTax = $subTotal * $tax / 100;
-        $worksheet->setCellValue('J'.(21 + $count),$subTotal);
-        $worksheet->setCellValue('C'.(22 + $count), '消費税(' . $tax . '%)');
-        $worksheet->setCellValue('J'.(22 + $count),$subTax);
-        $worksheet->setCellValue('J'.(23 + $count),($subTax+$subTotal));
-        $expireDate = new DateTime($customerInvoice->expire_date);
-        $worksheet->getCell('E'.(29 + $count))->setValue($expireDate->format('Y/m/d'));
-
-        $excelFileName = 'Invoice_' . $projectName . '_' . $itemName . '_' . $date->format('Ymd') . '.xlsx';
-        $savedFilePath = config('global.invoice_files_path') . $excelFileName;
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($savedFilePath);
-
-        return response()->download($savedFilePath);
-     }
+        return response()->download($filePath);
+    }
 
      /**
      *
@@ -271,11 +293,11 @@ class InvoiceController extends Controller
             $arrayTotal = $request->total;
             $count = count($arrayPrice);
             for ($i = 0; $i < $count; $i++) {
-                $item = array(                   
+                $item = array(
                     'name'  =>  $arrayProduct[$i],
                     'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
                     'project_id'  => $request->project
-                );                    
+                );
                 Item::editItem($arrayItemId[$i],$item);//update item
             }
             for ($index = 0; $index < count($arrayItemId); $index++) {
@@ -285,7 +307,7 @@ class InvoiceController extends Controller
                     'amount' => (float)str_replace(",", "", $arrayTotal[$index])
                 );
                 InvoiceItem::updateInvoiceItem($request->invoice_id,$arrayItemId[$index],$invoiceDetail);//update invoice item
-            }         
+            }
             DB::commit();
         }
         catch (Exception $e) {

@@ -62,7 +62,7 @@
                                 $stt = 0;
                                 $sub_total = 0;
                             ?>
-                            @for ($y = 0; $y < $invoiceCart->count();$y++)
+                            @for ($y = 0; $y < $invoiceCart->count(); $y++)
                                 <?php $sub_total += $invoiceCart[$y]->amount; ?>
                                 <tr>
                                     <td class="text-mid">{{++$stt}}</td>
@@ -108,7 +108,16 @@
                     </div>
                 </div>
                 <p></p>
-                <a href="{{URL::to('/export-invoice/'.$customerInvoice->id)}}" class="btn  btn-primary">Xuất file Excel</a>
+                @if($customerInvoice->file_path)
+                    <a href="{{'/download-invoice/' . $customerInvoice->id}}" class="btn  btn-primary">Download Excel</a>
+                @endif
+                <a href="{{URL::to('/export-invoice/' . $customerInvoice->id)}}" class="btn  btn-primary">
+                    @if(empty($customerInvoice->file_path))
+                        Export Excel
+                    @else
+                        Update Excel
+                    @endif
+                </a>
             </div>
         </div>
     </div>

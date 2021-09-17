@@ -8,7 +8,8 @@
 <div style="font-size:0.9rem; margin: auto; width:80%;border: solid 1px gray;padding:15px;">
     <!--form submit request add invoice-->
     <form action='/edit-project' method="post" name="form_edit_project" onsubmit="return validateForm()">
-         @csrf
+        @method('PUT')
+        @csrf
          <div class="form-row">
               <div class="form-group col-md-2">
                   <b><label for="project_name" >Khách hàng : (*)</label></b>
@@ -22,7 +23,7 @@
                             <option value="{{$c->id}}" >{{$c->name}}</option>
                         @endif
                     @endforeach
-                </select>                      
+                </select>
               </div>
         </div>
         <!--row ten project name-->
@@ -33,7 +34,7 @@
             <div class="form-group col-md-10">
                 <input type="hidden" name="project_id" value="{{$projects->id}}">
                 <input type="text" value="{{$projects->name}}" id="project_name" name="project_name" placeholder="" class="input-xlarge form-control" required oninvalid="this.setCustomValidity('Hãy nhập tên dự án')" oninput="this.setCustomValidity('')">
-                <p class="help-block" id="mess_name"><i>Tên dự án không quá 225 ký tự</i></p>                        
+                <p class="help-block" id="mess_name"><i>Tên dự án không quá 225 ký tự</i></p>
             </div>
         </div>
          <!--row ten project name-->

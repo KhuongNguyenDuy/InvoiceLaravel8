@@ -16,7 +16,7 @@ class OrderController extends Controller
      */
     public function index(){
         $orders = Order::showAllOrder();
-        return view('Order.order') -> with('orders',$orders);
+        return view('Order.order_list') -> with('orders',$orders);
     }
     /**
      * Add order and upload file to server
