@@ -6,6 +6,7 @@ use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LoginAuthController;
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +36,6 @@ require __DIR__.'/auth.php';
 | Admin PROJECT
 |--------------------------------------------------------------------------
 */
-//Route::get('/projects', 'ProjectController@index');
-//Route::get('/delete-project', 'ProjectController@destroy');
 
 Route::get('/form-add-project', [ProjectController::class, 'formAddProject'])->middleware('auth');
 
@@ -55,7 +54,6 @@ Route::get('/delete-project/{id}', [ProjectController::class, 'deleteProject'])-
 | Admin ESTIMATE
 |--------------------------------------------------------------------------
 */
-//Route::get('/estimates', 'EstimateController@index');
 
 Route::get('/estimates', [EstimateController::class, 'index'])->middleware('auth'); // show list estimate
 
@@ -70,6 +68,7 @@ Route::get('/form-edit-estimate/{id}', [EstimateController::class, 'formEditEsti
 Route::post('/edit-estimate', [EstimateController::class, 'editEstimate'])->middleware('auth'); // edit estimate 
 
 Route::get('/delete-estimate/{id}', [EstimateController::class, 'deleteEstimate'])->middleware('auth'); //delete estimate by id
+
 
 /*
 |--------------------------------------------------------------------------
@@ -102,9 +101,9 @@ Route::post('/add-invoice', [InvoiceController::class, 'addInvoice'])->middlewar
 
 //Route::get('/get-project', [InvoiceController::class, 'getProject'])->middleware('auth');// show all project
 
-Route::get('/get-customer', [InvoiceController::class, 'getCustomer'])->middleware('auth');//show customer info by ajax
+Route::get('/get-info-customer', [InvoiceController::class, 'getInfoCustomer'])->middleware('auth');//show customer info by ajax
 
-Route::get('/export-invoice/{id}={type}', [InvoiceController::class, 'exportInvoice'])->middleware('auth');//export excel
+Route::get('/export-invoice/{id}', [InvoiceController::class, 'exportInvoice'])->middleware('auth');//export excel
 
 Route::post('/update-status', [InvoiceController::class, 'updateStatus'])->middleware('auth'); //update status invoice
 
@@ -136,3 +135,22 @@ Route::post('/edit-item', [ItemController::class, 'editItem'])->middleware('auth
 
 Route::get('/delete-item/{id}', [ItemController::class, 'deleteItem'])->middleware('auth'); //delete item by id
 
+
+/*
+|--------------------------------------------------------------------------
+| Admin ORDER
+|--------------------------------------------------------------------------
+*/
+Route::get('/orders', [OrderController::class, 'index'])->middleware('auth'); // show list order
+
+Route::post('/add-order', [OrderController::class, 'addOrder'])->middleware('auth'); // add order and upload file
+
+Route::get('/form-add-order', [EstimateController::class, 'formAddEstimate'])->middleware('auth'); //show form add order
+
+Route::get('/download-order/{id}', [OrderController::class, 'downloadOrder'])->middleware('auth'); //download file
+
+Route::get('/form-edit-order/{id}', [OrderController::class, 'formEditOrder'])->middleware('auth'); //show form edit estimate
+
+Route::post('/edit-order', [OrderController::class, 'editOrder'])->middleware('auth'); // edit estimate 
+
+Route::get('/delete-order/{id}', [OrderController::class, 'deleteOrder'])->middleware('auth'); //delete estimate by id

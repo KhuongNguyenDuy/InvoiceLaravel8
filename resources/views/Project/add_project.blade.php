@@ -9,6 +9,19 @@
     <!--form submit request add project-->
     <form action='/add-project' method="post" name="form_add_project" onsubmit="return validateForm()">
          @csrf
+         <div class="form-row">
+              <div class="form-group col-md-2">
+                  <b><label for="project_name" >Khách hàng : (*)</label></b>
+              </div>
+              <div class="form-group col-md-10">
+                  <select class="form-control" id="customer" name="customer" required oninvalid="this.setCustomValidity('Xin vui lòng chọn khách hàng')" oninput="this.setCustomValidity('')">
+                    <option value="" selected disabled>Chọn khách hàng..</option>
+                    @foreach($customers as $c)
+                      <option value="{{$c->id}}">{{$c->name}}</option>
+                    @endforeach
+                  </select>                       
+              </div>
+          </div>
          <!--row ten project name-->
         <div class="form-row">
             <div class="form-group col-md-2">

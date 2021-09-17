@@ -19,45 +19,13 @@ class Invoice extends Model
         'total',
         'expire_date',
         'estimate_id',
+        'order_id',
         'customer_id',
         'tax_rate'
     ];
 
     protected $table = 'invoices';
-
-    //show invoice detail by id
-    /** showInvoiceDetail2()
-     * this old function useless
-     */
-    public static function showInvoiceDetail2($id){
-
-        $invoiceDetails = DB::table('invoices')
-              ->join('invoice_item', 'invoices.id', '=', 'invoice_item.invoice_id')
-              ->join('customers', 'invoices.customer_id', '=', 'customers.id')
-              ->join('items', 'items.id', '=', 'invoice_item.item_id')
-              ->join('projects', 'items.project_id', '=', 'projects.id')
-              ->select(
-                    'invoices.id',
-                    'invoices.create_date',
-                    'invoices.status',
-                    'invoices.tax_rate',
-                    'customers.name as customer_name',
-                    'customers.address as customer_address',
-                    'customers.phone as customer_phone',
-                    'customers.fax as customer_fax',
-                    'invoices.estimate_id',
-                    'invoices.expire_date',
-                    'items.name as item_name',
-                    'invoice_item.quantity',
-                    'items.price',
-                    'invoice_item.amount',
-                    'projects.name as project_name'
-                     )
-              ->where('invoices.id','=',$id)
-              ->get();
-              return $invoiceDetails;
-    }
-
+    
     public static function showCustomerInvoice($id){
 
         //get info customer and estimate
@@ -72,6 +40,7 @@ class Invoice extends Model
                     'customers.phone as customer_phone',
                     'customers.fax as customer_fax',
                     'estimates.name as estimate_name',
+                    'estimates.no as estimate_no'
                      )
               ->where('invoices.id','=',$id)
               ->first();
@@ -105,7 +74,7 @@ class Invoice extends Model
         $invoices = DB::table('invoices')
               ->join('customers', 'invoices.customer_id', '=', 'customers.id')
               ->join('estimates', 'invoices.estimate_id', '=', 'estimates.id')
-              ->select('invoices.*','estimates.name as estimate_name','customers.name as customer_name','customers.address as customer_address','customers.phone as customer_phone')
+              ->select('invoices.*','estimates.no as estimate_no','customers.name as customer_name','customers.address as customer_address','customers.phone as customer_phone')
               ->orderBy('invoices.id', 'DESC')
               ->Paginate(20);
         return $invoices;

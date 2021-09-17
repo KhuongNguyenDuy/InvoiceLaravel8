@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\Estimate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\Project;
+use App\Models\Order;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 
 class EstimateController extends Controller
@@ -15,32 +18,14 @@ class EstimateController extends Controller
     public function index(){
         $estimates = Estimate::showAllEstimate();
         return view('Estimate.estimate') -> with('estimates',$estimates);
-    }
-
-    /**
-     * Download file to my computer
-     */
-    public function downloadEstimate($id){
-
-        $estimate = Estimate::showEstimateById($id);
-        
-        if( $estimate != ""){
-
-            $fileName =  $estimate->name;
-
-            $filePath = storage_path()."/app/download_upload/".$fileName;
-
-            return response()->download($filePath);
-
-        }
-        
-    }
+    }   
 
     /**
      * show form add estimate
      */
     public function formAddEstimate(){
-        return view('Estimate.add_estimate');
+        $projects = Project::getAllProject();
+        return view('Estimate.add_estimate')->with('projects',$projects);
     }
 
     /**
@@ -48,46 +33,53 @@ class EstimateController extends Controller
      * Upload to folder: storage
      */
     public function addEstimate(Request $request){
-
-        $request->validate([
-            'file' => 'required|mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
-            ]);
-
-        if (!$request->hasFile('file')) {
-
+        //validate
+        Validator::make($request->all(), [
+            'estFile' => 'required|mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
+        ])->validateWithBag('estimate');
+        //check have file
+        if (!$request->hasFile('estFile')) {
             return redirect('/estimates')->with('success', 'Chưa chọn file cần upload');
         }
-
-        $file = $request->file('file'); //get file
-
-        //$filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); get file name not include extension
-
-        $request->file('file')->storeAs('download_upload',  $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
-
+        //get path to save
+        $path = config('global.estimate_files_path');
+        //get file
+        $file = $request->file('estFile');
+        //$filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); //get file name not include extension
+        $request->file('estFile')->storeAs($path,  $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
+        $fileName = $file->getClientOriginalName();
         // insert database
         DB::beginTransaction();
         try {
            $estimate = array(
-               'name' => $file->getClientOriginalName(),
-               'path' => ''           
+            'no' => $request->est_no,
+            'name' => $fileName,
+            'path' => '' ,
+            'project_id' => $request->project      
             );
-            Estimate::insert($estimate);
+            $result = Estimate::checkFileExist($fileName);
+            if($result){
+                return redirect('/estimates')->with('fail', 'Thêm Estimate thất bại! File đã tồn tại.');
+            }
+            Estimate::insertEstimate($estimate);
             DB::commit();
         }
         catch (Exception $e) {
             DB::rollback();
-        }
-        
-        return redirect('/estimates')->with('success', 'Thêm Estimate thành công');
+        }        
+       return redirect('/estimates')->with('success', 'Thêm Estimate thành công');
     }
 
-
-      /**
+    /**
      * show form edit estimate
      */
     public function formEditEstimate($id){
-        $estimates = Estimate::showEstimateById($id); 
-        return view('Estimate.edit_estimate')->with('estimates',$estimates);
+        $estimate = Estimate::showEstimateById($id);
+        $projects = Project::getAllProject();
+        return view('Estimate.edit_estimate',[
+            'projects' => $projects,
+            'estimate' => $estimate
+        ]);
     }
 
      /**
@@ -95,53 +87,92 @@ class EstimateController extends Controller
      * Upload to folder: storage
      */
     public function editEstimate(Request $request){
-        $request->validate([
-            'file' => 'required|mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
-        ]);
-        if (!$request->hasFile('file')) {
-            return redirect('/estimates')->with('success', 'Chưa chọn file cần upload');
-        }
-        
-        Storage::delete('/download_upload/'.$request->estimate_name);
-        $file = $request->file('file'); 
-        $request->file('file')->storeAs('download_upload',  $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
- 
-         // insert database
-        DB::beginTransaction();
-        try {
-           $estimate = array(
-               'name' => $file->getClientOriginalName(),
-               'path' => ''           
-            );
-            Estimate::editEstimate($request->estimate_id,$estimate);
-            DB::commit();
-        }
-        catch (Exception $e) {
-            DB::rollback();
-        }
-         
-        return redirect('/estimates')->with('success', 'Sửa Estimate thành công');
-
+        $file = $request->file('estFile'); 
+        //if do not change file
+        if(!$file){
+            DB::beginTransaction();
+            try {
+               $estimate = array(
+                   'no' => $request->est_no,
+                   'name' => $request->estimate_name,
+                   'path' => '',
+                   'project_id' => $request->project
+                );
+                Estimate::editEstimate($request->estimate_id,$estimate);
+                DB::commit();
+            }
+            catch (Exception $e) {
+                DB::rollback();
+            }         
+            return redirect('/estimates')->with('success', 'Sửa Estimate thành công');
+        }else{
+            Validator::make($request->all(), [
+                'estFile' => 'mimes:csv,xlsx,txt,xlx,xls,pdf|max:2048'
+            ])->validateWithBag('estimate');  
+            $fileOrigin = $request->estimate_name;
+            $newFile = $file->getClientOriginalName();
+            $result = Estimate::checkFileExist($newFile);
+            $checkFileName = strcmp($fileOrigin,$newFile);
+            //if file input not duplication
+            if($checkFileName == 0 || $result == null){
+                DB::beginTransaction();
+                try {
+                    //get path to save
+                    $path = config('global.estimate_files_path');
+                    Storage::delete('/'.$path.'/'.$request->estimate_name);
+                    $request->file('estFile')->storeAs($path, $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
+                    // insert database
+                    $estimate = array(
+                       'no' => $request->est_no,
+                       'name' => $newFile,
+                       'path' => '',
+                       'project_id' => $request->project
+                    );
+                    Estimate::editEstimate($request->estimate_id,$estimate);
+                    DB::commit();
+                }
+                catch (Exception $e) {
+                    DB::rollback();
+                }         
+                return redirect('/estimates')->with('success', 'Sửa Estimate thành công');
+            }else{
+                return redirect('/estimates')->with('fail', 'Sửa Estimate thất bại! File đã tồn tại.');
+            }            
+        }      
     }
     
     /**
      * Delete Estimate
      */
     public function deleteEstimate($id){
-        
+        //get path to save
+        $path = config('global.estimate_files_path');
         $fileName = Estimate::showEstimateById($id);
         DB::beginTransaction();
         try {
-            Storage::delete('/download_upload/'.$fileName->name);
+            Storage::delete('/'.$path.'/'.$fileName->name);
             Estimate::deleteEstimate($id);
             DB::commit();
         }
         catch (Exception $e) {
-
             DB::rollback();
         }
        return redirect('/estimates')->with('success', 'Xoá Estimate thành công!'); 
-    } 
+    }
+
+     /**
+     * Download file to my computer
+     */
+    public function downloadEstimate($id){
+        $estimate = Estimate::showEstimateById($id);
+        if( $estimate != ""){
+            $path = config('global.estimate_files_path');
+            $fileName =  $estimate->name;
+            $filePath = storage_path()."/app/".$path."/".$fileName;
+            return response()->download($filePath);
+        }        
+    }
+    
 
 
 

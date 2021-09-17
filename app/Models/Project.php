@@ -15,6 +15,7 @@ class Project extends Model
      */
     protected $fillable = [
         'name',
+        'customer_id'
     ];
     protected $table = 'projects';
     /**
@@ -25,6 +26,8 @@ class Project extends Model
     }
     public static function showAllProject(){
         $projects = DB::table('projects')
+        ->join('customers', 'projects.customer_id', '=', 'customers.id')
+        ->select('projects.*','customers.name as customer_name')
         ->orderBy('projects.id', 'DESC')
         ->Paginate(20);
         return $projects;
@@ -37,7 +40,15 @@ class Project extends Model
         $projects = DB::table('projects')->where('id',$id)->first();
         return $projects;
     }
-        /**
+    /**
+     * get project by customer id
+     */
+    public static function getProjectByCustomerId($id){
+        $projects = DB::table('projects')->where('customer_id',$id)->get();
+        return $projects;
+    }
+    
+    /**
      * insert project
      */
     public static function insertProject($project){

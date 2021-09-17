@@ -14,8 +14,10 @@ class Estimate extends Model
      * @var array
      */
     protected $fillable = [
+        'no',
         'name',
         'path',
+        'project_id'
     ];
     protected $table = 'estimates';
 
@@ -24,17 +26,24 @@ class Estimate extends Model
         $estimate = DB::table('estimates')->where('id',$id)->first();
         return $estimate;
     }
+    //show estimate by project id
+    public static function getEstimateByProjectId($id){
+        $estimate = DB::table('estimates')->where('project_id',$id)->get();
+        return $estimate;
+    }
     //show all estimate
     public static function showAllEstimate(){
-        $estimates = DB::table('estimates')->Paginate(20);;
+        $estimates = DB::table('estimates')
+        ->join('projects', 'estimates.project_id', '=', 'projects.id')
+        ->select('estimates.*','projects.name as project_name')
+        ->orderBy('estimates.id', 'DESC')
+        ->Paginate(20);
         return $estimates;
-    }
-
+    }    
      //add estimate
-    public static function insert($estimate){
+    public static function insertEstimate($estimate){
         DB::table('estimates')->insert($estimate);
     }
-
     /**
      * update estimate
      */
@@ -46,6 +55,13 @@ class Estimate extends Model
      */
     public static function deleteEstimate($id){
         DB::table('estimates')->where('id', '=', $id)->delete();
+    }
+    /**
+     * check file estimate exist
+     */
+    public static function checkFileExist($fileName){
+        $result = DB::table('estimates')->where('name', '=', $fileName)->first();
+        return $result;
     }
 
 }

@@ -46,7 +46,8 @@ class CreateMasterData extends Seeder
         ]);
 
         DB::table('projects')->insert([
-            'name' => 'WebExpo開発支援'
+            'name' => 'WebExpo開発支援',
+            'customer_id' => 1
         ]);
 
         DB::table('items')->insert([

@@ -20,6 +20,10 @@
 			<th class="display-text">Address</th>
 			<th class="display-text">Phone</th>
             <th class="display-text">Fax</th>
+			<th class="display-text">Director</th>
+			<th class="display-text">Establish</th>
+			<th class="display-text">Capital</th>
+			<th class="display-text">Employee Number</th>
 			<th class="display-text">Edit</th>
 			<th class="display-text">Delete</th>
 		</tr>
@@ -33,6 +37,10 @@
 			<td>{{$customer->address}}</td>
             <td>{{$customer->phone}}</td>
 			<td>{{$customer->fax}}</td>
+			<td>{{$customer->director_name}}</td>
+			<td>{{$customer->establish_date}}</td>
+			<td>{{$customer->capital}}</td>
+			<td>{{$customer->employee_num}}</td>
 			<td class="display-text"><a href="{{'/form-edit-customer/'.$customer->id}}" class="fas fa-edit" style="color:seagreen;font-size:17px;"></a></td>
 			<td class="display-text"><a href="{{'/delete-customer/'.$customer->id}}" class="fas fa-trash delete_customer" style="color:red;font-size:17px;"></a></td>
 		</tr>

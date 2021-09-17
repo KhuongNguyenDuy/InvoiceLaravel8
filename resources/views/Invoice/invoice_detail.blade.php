@@ -8,19 +8,42 @@
                 <!--row title invoice-->
                 <div class="row">
                     <div class="col-md-8">
-                            <h1 class="text-uppercase">Hoá Đơn</h1>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Ngày tạo : </span><span class="ml-1"><?php echo date_format(new DateTime($customerInvoice->create_date),'Y/m/d');?></span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Khách hàng : </span><span class="ml-1">{{$customerInvoice->customer_name}}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Địa chỉ : </span><span class="ml-1">{{$customerInvoice->customer_address}}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Số điện thoại : </span><span class="ml-1">{{$customerInvoice->customer_phone}}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Fax :</span><span class="ml-1"> {{$customerInvoice->customer_fax}}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_id}}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase">Project :</span><span class="ml-1">{{$invoiceCart[0]->project_name}}</span></div>
+                        <h1 class="text-uppercase">Hoá Đơn</h1>
                     </div>
                     <div class="col-md-4 text-right mt-3">
                         <h4 class="text-danger mb-0">VAIX CO., LTD</h4><span>Tel: +843-3384-6868</span>
                     </div>
                 </div>
+                 <!--row info invoice-->
+                <div class="row">
+                    <div class="billed"><span class="font-weight-bold text-uppercase">Ngày tạo : </span><span class="ml-1"><?php echo date_format(new DateTime($customerInvoice->create_date),'Y/m/d');?></span></div>
+                </div>
+                <div class="row">
+                    <div class="billed"><span class="font-weight-bold text-uppercase">Khách hàng : </span><span class="ml-1">{{$customerInvoice->customer_name}}</span></div>
+                </div> 
+                <div class="row">
+                    <div class="billed"><span class="font-weight-bold text-uppercase">Địa chỉ : </span><span class="ml-1">{{$customerInvoice->customer_address}}</span></div>
+                </div> 
+                <div class="row" style="margin-left:-25px;">
+                    <div class="col-md-7">
+                        <div class="billed"><span class="font-weight-bold text-uppercase">Số điện thoại : </span><span class="ml-1">{{$customerInvoice->customer_phone}}</span></div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="billed"><span class="font-weight-bold text-uppercase">Fax :</span><span class="ml-1"> {{$customerInvoice->customer_fax}}</span></div>
+                    </div>
+                </div> 
+                <div class="row" style="margin-left:-25px;">
+                    <div class="col-md-7">
+                        <div class="billed"><span class="font-weight-bold text-uppercase">Estimate No :</span><span class="ml-1">{{$customerInvoice->estimate_no}}</span></div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="billed"><span class="font-weight-bold text-uppercase">Order No :</span><span class="ml-1"> {{$orderNo}}</span></div>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="billed"><span class="font-weight-bold text-uppercase">Project :</span><span class="ml-1">{{$invoiceCart[0]->project_name}}</span></div>
+                </div>   
+                                          
                 <!--invoice detail-->
                 <div class="mt-3">
                     <div class="table-responsive">
@@ -85,8 +108,7 @@
                     </div>
                 </div>
                 <p></p>
-                <a href="{{URL::to('/export-invoice/'.$customerInvoice->id)}}=xlsx" class="btn  btn-primary">Xuất file .xlsx</a>
-                <a href="{{URL::to('/export-invoice/'.$customerInvoice->id)}}=xls" class="btn btn-success">Xuất file .xls</a>
+                <a href="{{URL::to('/export-invoice/'.$customerInvoice->id)}}" class="btn  btn-primary">Xuất file Excel</a>
             </div>
         </div>
     </div>
