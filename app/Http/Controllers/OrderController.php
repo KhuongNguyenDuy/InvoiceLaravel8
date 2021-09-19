@@ -39,25 +39,24 @@ class OrderController extends Controller
         $fileName = $file->getClientOriginalName();
         // insert database
         DB::beginTransaction();
+        $result = Order::checkFileExist($fileName);
+        if($result){
+            return redirect('/orders')->with('fail', 'Thêm Order thất bại! File đã tồn tại.');
+        }
+        $order = new Order();
         try {
-           $order = array(
-            'no' => $request->order_no,
-            'name' => $fileName,
-            'amount' => $request->amount,
-            'path' => '' ,
-            'project_id' => $request->project
-            );
-            $result = Order::checkFileExist($fileName);
-            if($result){
-                return redirect('/orders')->with('fail', 'Thêm Order thất bại! File đã tồn tại.');
-            }
-            Order::insertOrder($order);
+            $order->no = $request->order_no;
+            $order->name = $fileName;
+            $order->amount = $request->amount;
+            $order->path = '';
+            $order->project_id = $request->project;
+            $order->save();
             DB::commit();
         }
-        catch (Exception $e) {
+        catch (Exception $e){
             DB::rollback();
         }
-       return redirect('/orders')->with('success', 'Thêm Order thành công');
+        return redirect('/orders')->with('success', 'Thêm Order thành công');
     }
     /**
      * show form edit order
@@ -75,19 +74,19 @@ class OrderController extends Controller
      * Upload to folder: storage
      */
     public function editOrder(Request $request){
+        $order = Order::find($request->order_id);
         $file = $request->file('orderFile');
         //if do not change file
         if(!$file){
             DB::beginTransaction();
             try {
-               $order = array(
-                   'no' => $request->order_no,
-                   'name' => $request->order_name,
-                   'amount' => $request->amount,
-                   'path' => '',
-                   'project_id' => $request->project
-                );
-                Order::editOrder($request->order_id,$order);
+                $order->update([
+                    'no' => $request->order_no,
+                    'name' => $request->order_name,
+                    'amount' => $request->amount,
+                    'path' => '',
+                    'project_id' => $request->project
+                ]);
                 DB::commit();
             }
             catch (Exception $e) {
@@ -111,14 +110,13 @@ class OrderController extends Controller
                     Storage::delete('/'.$path.'/'.$request->order_name);
                     $request->file('orderFile')->storeAs($path, $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
                     // insert database
-                    $order = array(
-                       'no' => $request->order_no,
-                       'name' => $newFile,
+                    $order->update([
+                        'no' => $request->order_no,
+                        'name' => $newFile,
                         'amount' => $request->amount,
                         'path' => '',
-                       'project_id' => $request->project
-                    );
-                    Order::editOrder($request->order_id,$order);
+                        'project_id' => $request->project
+                    ]);
                     DB::commit();
                 }
                 catch (Exception $e) {

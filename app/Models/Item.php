@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 
-class Item extends Model
+class Item extends BaseModel
 {
     use HasFactory;
      /**

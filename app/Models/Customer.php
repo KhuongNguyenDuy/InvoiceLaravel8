@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Customer extends BaseModel
 {
     use HasFactory;
      /**
@@ -19,6 +19,10 @@ class Customer extends Model
         'address',
         'phone',
         'fax',
+        'director_name',
+        'establish_date',
+        'capital',
+        'employee_num'
     ];
     protected $table = 'customers'; 
     /**

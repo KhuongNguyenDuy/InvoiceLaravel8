@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Order extends BaseModel
 {
     use HasFactory;
      /**
@@ -17,6 +17,7 @@ class Order extends Model
         'no',
         'name',
         'path',
+        'amount',
         'project_id'
     ];
     protected $table = 'orders';
