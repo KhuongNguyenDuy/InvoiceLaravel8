@@ -28,25 +28,24 @@ class CustomerController extends Controller
      */
     public function addCustomer(Request $request){
         DB::beginTransaction();
+        $customer = new Customer();
         try {
-            $customer = array(
-               'name' => $request->customer_name,
-               'abbreviate' => $request->abbreviate_name,
-               'address' => $request->address,
-               'phone' => $request->phone_number,
-               'fax' => $request->fax_number,
-               'director_name' => $request->director_name,
-               'establish_date' => $request->establish_date,
-               'capital' => $request->capital,
-               'employee_num' => $request->employee_num
-       );
-            Customer::insertCustomer($customer);
+            $customer->name = $request->customer_name;
+            $customer->abbreviate = $request->abbreviate_name;
+            $customer->address = $request->address;
+            $customer->phone = $request->phone_number;
+            $customer->fax = $request->fax_number;
+            $customer->director_name = $request->director_name;
+            $customer->establish_date = $request->establish_date;
+            $customer->capital = $request->capital;
+            $customer->employee_num = $request->employee_num;
+            $customer->save();
             DB::commit();
-       }
-       catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollback();
-       }
-       return redirect('customers')->with('success', 'Thêm khách hàng thành công!');
+        }
+        return redirect('customers')->with('success', 'Thêm khách hàng thành công!');
     }
     /**
      *
@@ -54,32 +53,32 @@ class CustomerController extends Controller
     //show edit customer
     public function formEditCustomer($id){
         $customers = Customer::showCustomerById($id);
-        return view('Customer.edit_customer')->with('customers',$customers);;
+        return view('Customer.edit_customer')->with('customers',$customers);
     }
 
 
     /**
      * Update info customer
      */
-    public function editCustomer(Request $request){
+    public function editCustomer(Request $request){       
         DB::beginTransaction();
+        $customer = Customer::find($request->customer_id);
         try {
-           $customer = array(
-               'name' => $request->customer_name,
-               'address' => $request->address,
-               'abbreviate' => $request->abbreviate_name,
-               'phone' => $request->phone_number,
-               'fax' => $request->fax_number,
-               'director_name' => $request->director_name,
-               'establish_date' => $request->establish_date,
-               'capital' => $request->capital,
-               'employee_num' => $request->employee_num
-        );
-           Customer::edit($request->customer_id,$customer);
-           DB::commit();
+            $customer->update([
+                'name' => $request->customer_name,
+                'address' => $request->address,
+                'abbreviate' => $request->abbreviate_name,
+                'phone' => $request->phone_number,
+                'fax' => $request->fax_number,
+                'director_name' => $request->director_name,
+                'establish_date' => $request->establish_date,
+                'capital' => $request->capital,
+                'employee_num' => $request->employee_num
+            ]);
+            DB::commit();
         }
         catch (Exception $e) {
-               DB::rollback();
+            DB::rollback();
         }
         return redirect('customers')->with('success', 'Cập nhật khách hàng thành công!');
     }

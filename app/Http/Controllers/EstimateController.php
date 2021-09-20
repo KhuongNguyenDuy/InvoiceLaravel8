@@ -50,24 +50,23 @@ class EstimateController extends Controller
         $fileName = $file->getClientOriginalName();
         // insert database
         DB::beginTransaction();
+        $result = Estimate::checkFileExist($fileName);
+        if($result){
+            return redirect('/estimates')->with('fail', 'Thêm Estimate thất bại! File đã tồn tại.');
+        }
+        $estimate = new Estimate();
         try {
-           $estimate = array(
-            'no' => $request->est_no,
-            'name' => $fileName,
-            'path' => '' ,
-            'project_id' => $request->project
-            );
-            $result = Estimate::checkFileExist($fileName);
-            if($result){
-                return redirect('/estimates')->with('fail', 'Thêm Estimate thất bại! File đã tồn tại.');
-            }
-            Estimate::insertEstimate($estimate);
+            $estimate->no = $request->est_no;
+            $estimate->name = $fileName;
+            $estimate->path = '';
+            $estimate->project_id = $request->project;
+            $estimate->save();
             DB::commit();
         }
-        catch (Exception $e) {
+        catch (Exception $e){
             DB::rollback();
         }
-       return redirect('/estimates')->with('success', 'Thêm Estimate thành công');
+        return redirect('/estimates')->with('success', 'Thêm Estimate thành công');
     }
 
     /**
@@ -87,21 +86,21 @@ class EstimateController extends Controller
      * Upload to folder: storage
      */
     public function editEstimate(Request $request){
+        $estimate = Estimate::find($request->estimate_id);
         $file = $request->file('estFile');
         //if do not change file
         if(!$file){
-            DB::beginTransaction();
+            DB::beginTransaction();           
             try {
-               $estimate = array(
-                   'no' => $request->est_no,
-                   'name' => $request->estimate_name,
-                   'path' => '',
-                   'project_id' => $request->project
-                );
-                Estimate::editEstimate($request->estimate_id,$estimate);
+                $estimate->update([
+                    'no' => $request->est_no,
+                    'name' => $request->estimate_name,
+                    'path' => '',
+                    'project_id' => $request->project
+                ]);
                 DB::commit();
             }
-            catch (Exception $e) {
+            catch (Exception $e){
                 DB::rollback();
             }
             return redirect('/estimates')->with('success', 'Sửa Estimate thành công');
@@ -120,15 +119,14 @@ class EstimateController extends Controller
                     //get path to save
                     $path = config('global.estimate_files_path');
                     Storage::delete('/'.$path.'/'.$request->estimate_name);
-                    $request->file('estFile')->storeAs($path, $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload
+                    $request->file('estFile')->storeAs($path, $file->getClientOriginalName(),'local'); // set folder to upload and set file name: local:storage->app->download_upload | public: storage->app->public->download_upload                    
                     // insert database
-                    $estimate = array(
-                       'no' => $request->est_no,
-                       'name' => $newFile,
-                       'path' => '',
-                       'project_id' => $request->project
-                    );
-                    Estimate::editEstimate($request->estimate_id,$estimate);
+                    $estimate->update([
+                        'no' => $request->est_no,
+                        'name' => $newFile,
+                        'path' => '',
+                        'project_id' => $request->project
+                    ]);
                     DB::commit();
                 }
                 catch (Exception $e) {
@@ -172,11 +170,4 @@ class EstimateController extends Controller
             return response()->download($filePath);
         }
     }
-
-
-
-
 }
-
-
-

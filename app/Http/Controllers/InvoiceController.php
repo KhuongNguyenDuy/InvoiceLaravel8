@@ -89,15 +89,13 @@ class InvoiceController extends Controller
             $count = count($arrayPrice);
             $arrayItemId = array();
             for ($i = 0; $i < $count; $i++) {
-                $item = array(
-                    'name'  =>  $arrayProduct[$i],
-                    'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
-                    'project_id'  => $request->project
-                    );
-                $itemId = Item::insertItem($item);
-                if( $itemId > 0){
-                    array_push($arrayItemId,$itemId);
-                }
+                $item = new Item();
+                $item->name = $arrayProduct[$i];
+                $item->price = (float)str_replace(",", "", $arrayPrice[$i]);
+                $item->project_id = $request->project;
+                $item->save();
+                $itemId = $item->id;
+                array_push($arrayItemId,$itemId);
             }
             for ($index = 0; $index < count($arrayItemId); $index++) {
                 $invoiceDetail = array(
@@ -140,7 +138,10 @@ class InvoiceController extends Controller
         }
         DB::beginTransaction();
         try {
-            Invoice::updateStatus($request->invId,$status);
+            $invoice = Invoice::find($request->invId);
+            $invoice->update([
+                'status' => $status
+            ]);           
             DB::commit();
         }
         catch (Exception $e) {
@@ -274,8 +275,9 @@ class InvoiceController extends Controller
      */
     public function editInvoice(Request $request){
         DB::beginTransaction();
+        $invoice = Invoice::find($request->invoice_id);
         try {
-            $invoice = array(
+            $invoice->update([
                 'create_date' => $request->ngaytao,
                 'total' => (float)str_replace(",", "", $request->total_amount),
                 'expire_date' => $request->hantt,
@@ -283,9 +285,7 @@ class InvoiceController extends Controller
                 'order_id' => $request->order,
                 'customer_id' => $request->khachhang,
                 'tax_rate' => $request->tax_rate
-            );
-            Invoice::updateInvoice($request->invoice_id, $invoice);//update invoice
-
+            ]);
             $arrayPrice = $request->price;
             $arrayQty = $request->qty;
             $arrayItemId = $request->id;
@@ -293,12 +293,12 @@ class InvoiceController extends Controller
             $arrayTotal = $request->total;
             $count = count($arrayPrice);
             for ($i = 0; $i < $count; $i++) {
-                $item = array(
+                $item = Item::find($arrayItemId[$i]);
+                $item->update([
                     'name'  =>  $arrayProduct[$i],
                     'price'  => (float)str_replace(",", "", $arrayPrice[$i]),
                     'project_id'  => $request->project
-                );
-                Item::editItem($arrayItemId[$i],$item);//update item
+                ]);
             }
             for ($index = 0; $index < count($arrayItemId); $index++) {
                 $invoiceDetail = array(
